@@ -69,7 +69,12 @@
 -- queued again on all of them, behind that one, and checks `p` again
 -- (the paper's `whenever`).  One still waiting once every other
 -- behaviour of the program is done is dropped, its body never run.
--- The same cown twice in one `when` abandons, there.
+-- The same cown twice in one `when` or `with` -- two names bound to one
+-- cown, each written back, would leave no answer which is kept -- is a
+-- failure, found as the behaviour is spawned: said as a body's is,
+-- with where among its cowns the two are (its 1st and 2nd, say), the
+-- behaviour never queued, the one spawning it going on.  Where two
+-- cowns may be one, the program tells them apart first.
 --
 -- A body is a computation of the world the `when` is in (the `with`'s),
 -- held by the operation and wrapped, as an operation's computations are
@@ -468,7 +473,8 @@ behaviour cs written body =
 -- | before it on any of them is done; then `body` is given what they
 -- | hold, a tuple as `cs` is, and what it gives back is what they hold
 -- | after.  The body is a computation of this world, run later, on
--- | whichever thread takes it.  The same cown twice abandons.
+-- | whichever thread takes it.  The same cown twice is a failure, the
+-- | behaviour not spawned.
 when : {c : Type}
      -> {e : HFunctor}
      -> c

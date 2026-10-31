@@ -454,9 +454,43 @@ static void bc_enqueue(BcBehaviour *b) {
   bc_through(b);
 }
 
+static void bc_failed(BcPool *pl, const char *why);
+
+// (where in `cs` the cown `t` is, from `*i`: the first two times, the
+// first cown counted 1)
+static void bc_where(V cs, BcCown *t, int *i, int at[2]) {
+  if (bc_is_cown(cs)) {
+    ++*i;
+    if (BC_COWN(cs) == t && !at[1]) at[at[0] != 0] = *i;
+    return;
+  }
+  if (BC_NONE(cs)) return;
+  bc_where(heff_field(cs, 0), t, i, at);
+  bc_where(heff_field(cs, 1), t, i, at);
+}
+
+static const char *bc_th(int n) {
+  if (n % 100 / 10 == 1) return "th";
+  return n % 10 == 1 ? "st" : n % 10 == 2 ? "nd" : n % 10 == 3 ? "rd" : "th";
+}
+
+// (a behaviour asked for on the cowns `cs`, `t` among them twice: a
+// failure, said as a body's is, where in `cs` it is)
+static void bc_twice(BcPool *pl, V cs, BcCown *t) {
+  int i = 0, at[2] = {0, 0};
+  bc_where(cs, t, &i, at);
+  char why[160];
+  snprintf(why, sizeof why,
+           "boc: the same cown twice in one `with`, its %d%s and %d%s cowns: the behaviour not spawned",
+           at[0], bc_th(at[0]), at[1], bc_th(at[1]));
+  bc_failed(pl, why);
+}
+
 // (`body` queued on the cowns `cs`, in the pool, `cond` what it waits
 // for, `ws` the cowns it writes back, `rs` those its condition reads;
-// all consumed.  The same cown twice abandons, here)
+// all consumed.  The same cown twice is found here, as the cowns are
+// put in order: a failure, the behaviour never queued, the spawner
+// going on)
 static void bc_behave(BcPool *pl, V cs, V body, V cond, int64_t ws, int64_t rs) {
   int n = bc_count(cs);
   if (n > 62 && (ws >= 0 || rs > 0)) heff_fail("boc: a behaviour on more than 62 cowns, some not written");
@@ -465,6 +499,7 @@ static void bc_behave(BcPool *pl, V cs, V body, V cond, int64_t ws, int64_t rs) 
   int i = 0;
   bc_each(cs, b->req, &i);
   if (n == 2) {
+    i = 1;
     if (b->req[0].t == b->req[1].t) goto twice;
     if ((uintptr_t)b->req[0].t > (uintptr_t)b->req[1].t) {
       BcCown *t = b->req[0].t;
@@ -489,11 +524,11 @@ static void bc_behave(BcPool *pl, V cs, V body, V cond, int64_t ws, int64_t rs) 
   bc_enqueue(b);
   return;
 twice:
+  bc_twice(pl, cs, b->req[i].t);
   bc_behaviour_free(b);
   heff_drop(cs);
   heff_drop(body);
   heff_drop(cond);
-  heff_abandon();
 }
 
 static void bc_behaved_all(BcBehaviour *b) {

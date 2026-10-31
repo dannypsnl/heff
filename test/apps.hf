@@ -290,7 +290,8 @@ pages = do
             ^ "an array in a cown: 1 0 0 4, given on by a body that failed: 7, a write not kept: 1 0 3 0, one read: 9, given on: 5, strings: a b\n"
             ^ "an array in a pair in a cown: 1 0 5 and 0, given on by a body that failed: 7\n"
             ^ "parMap, in order: 1 4 9 16 25 36, of none: 0\n"
-            ^ "a pattern bound: 1 24, read 13")
+            ^ "a pattern bound: 1 24, read 13\n"
+            ^ "the same cown twice: 1 11")
          ])
   -- (std.fuel's `limited` in JavaScript: test/node/fuel-program.hf,
   -- the same lines as on the C backend's, test/backends.hf's)

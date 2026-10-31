@@ -11,8 +11,9 @@
 -- does; a `with` whose name holds two cowns; an array a cown holds,
 -- written by bodies that fail, that do not write the cown, and that give
 -- it to another behaviour; one a pair in a cown holds, by bodies that
--- fail, give it on, and read the pair after; and `parMap`'s values, in
--- order.  Each part is started by the one before it, once that one's
+-- fail, give it on, and read the pair after; `parMap`'s values, in
+-- order; and a `with` on one cown twice, a failure said as it is
+-- spawned, the behaviour spawning it going on.  Each part is started by the one before it, once that one's
 -- line is put: what its cowns hold, once every behaviour of it is done,
 -- is put in a line by a behaviour on them and on the lines, spawned
 -- after those -- or waiting until they hold what the last writes -- and
@@ -436,11 +437,29 @@ patterned = do
     b := b * 2
   pure (c, seen)
 
+-- | a `with` on one cown twice, spawned by a behaviour on another: a
+-- | failure, said, that `with` never queued, the one spawning it going
+-- | on and its write kept: 1 and 11
+twiceIn : {e : HFunctor}
+        -> {{bc : BOC.boc <: e}}
+        -> Co e (BOC.Cown Int, BOC.Cown Int)
+twiceIn = do
+  r <- BOC.newCown (1 : Int)
+  s <- BOC.newCown (10 : Int)
+  with b := s do
+    with x := r
+         y := s
+         z := r do
+      x := x + 100
+    b := b + 1
+  pure (r, s)
+
 -- | what the program says, line by line, given to `out` by a last
 -- | behaviour once every part is done: each part started by the one
 -- | before it, once that one's line is put.  `cores`, how many threads
 -- | run behaviours at once.  The failures of the parts' bodies are said
--- | on stderr, one a line: at 1 and five abandons, in that order
+-- | on stderr, one a line: at 1, five abandons and the same cown twice,
+-- | in that order
 said : {e : HFunctor}
      -> {{bc : BOC.boc <: e}}
      -> Int
@@ -604,6 +623,13 @@ said cores out = do
                  ^ debug b
                  ^ ", read "
                  ^ debug s)
+              next
+      , \next -> do
+          rs <- twiceIn
+          line
+              ls
+              rs
+              (\(r, s) -> "the same cown twice: " ^ debug r ^ " " ^ debug s)
               next
       ]
       (BOC.when ls (\l -> do

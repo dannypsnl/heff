@@ -179,7 +179,10 @@ said (Just place) who (Just user) t respond = do
 said _ who _ t respond = answered respond 404 "no such room or user"
 
 -- | `POST /users/U/move/FROM/TO`: the user taken out of one room and
--- | put in the other.  One behaviour on the user and both rooms.
+-- | put in the other.  One behaviour on the user and both rooms.  A
+-- | move from a room to itself is the request's mistake, answered 409
+-- | before: those would be one cown twice in the `with`, a failure that
+-- | answers nothing.
 moved : {e : HFunctor}
       -> {{bc : BOC.boc <: e}}
       -> String
