@@ -43,8 +43,8 @@
 -- runs.  `lines?after=N` waits for the room's line N + 1 with `once`: the
 -- behaviour lets go of the room and waits for one to write it, the
 -- connection meanwhile holding no thread and no cown.  The server's
--- `idle`, 30 seconds unless another is given, closes a connection whose
--- answer has not come in that time.
+-- `idle` is not counted while the answer is awaited: the client is not
+-- read then, so a line may be waited for as long as it takes.
 --
 -- A room's streams are a group of std.http.broadcast's.  A line is
 -- broadcast from the behaviour on the room that adds it, so two lines
