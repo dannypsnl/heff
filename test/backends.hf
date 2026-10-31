@@ -3100,7 +3100,8 @@ bocServed = do
 -- | other sent heartbeats; a client that reads nothing, closed past the
 -- | most a connection may have waiting; a socket echoing, its ping
 -- | answered, its close answered; a silent socket pinged, then closed;
--- | a handshake refused; a frame not masked; the server stopped, a
+-- | a handshake refused; a frame not masked; a body in chunks, in
+-- | pieces, and chunks beside a length; the server stopped, a
 -- | stream ended and a socket closed, and the server ended by itself
 bocStreams : {e : HFunctor}
            -> {{chk : check <: e}}
@@ -3146,6 +3147,8 @@ bocStreams = do
                   , "a silent socket: [\"1:early\",\"9:\"], pinged in time: true, closed unanswered: true"
                   , "a handshake refused: HTTP/1.1 426 "
                   , "a frame not masked: [\"close 1002 a client's frame not masked\"], closed"
+                  , "a chunked body in pieces: \"HTTP/1.1 100 Continue\\r\\n\\r\\nHTTP/1.1 200 OK\\r\\nContent-Type: text/plain; charset=utf-8\\r\\nContent-Length: 12\\r\\n\\r\\nhello, worldHTTP/1.1 200 OK\\r\\nContent-Type: text/plain; charset=utf-8\\r\\nContent-Length: 6\\r\\nConnection: close\\r\\n\\r\\n/hello\""
+                  , "chunks and a length: HTTP/1.1 400 Bad Request"
                   , "gone, sockets: 3 time(s)"
                   , "stopped, a stream open: its last chunk, closed"
                   , "stopped, a socket open: [\"close 1001 \"], closed"
@@ -3301,13 +3304,30 @@ servedWant =
        ["POST /echo HTTP/1.1, b[\"hello\"]"])
   , MkPair
     "a chunked body"
+    (MkPair
+       ("HTTP/1.1 200 OK\r\nX-Method: POST\r\nX-Version: HTTP/1.1\r\nX-Peer: 127.0.0.1\r\nX-Heff: none\r\n"
+        ^ "Content-Length: 3\r\nConnection: close\r\n\r\nabc")
+       ["POST /echo HTTP/1.1, b[\"abc\"]"])
+  , MkPair
+    "a chunked body in pieces"
+    (MkPair
+       ("HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 200 OK\r\nX-Method: POST\r\nX-Version: HTTP/1.1\r\nX-Peer: 127.0.0.1\r\nX-Heff: none\r\n"
+        ^ "Content-Length: 12\r\n\r\nhello, world"
+        ^ hello
+        ^ "Connection: close\r\n\r\nhello, GET\n")
+       ["POST /echo HTTP/1.1, b[\"hello, world\"]", "GET /hello HTTP/1.1, b[]"])
+  , MkPair
+    "chunks and a length"
+    (MkPair (refusal "400 Bad Request" "12" "Bad Request\n") Nil)
+  , MkPair
+    "a body in gzip"
     (MkPair (refusal "501 Not Implemented" "16" "Not Implemented\n") Nil)
   , MkPair
     "a body too long, sent on"
     (MkPair (refusal "413 Content Too Large" "18" "Content Too Large\n") Nil)
   , MkPair
-    "a chunked body, sent on"
-    (MkPair (refusal "501 Not Implemented" "16" "Not Implemented\n") Nil)
+    "a chunk too long, sent on"
+    (MkPair (refusal "413 Content Too Large" "18" "Content Too Large\n") Nil)
   , MkPair
     "no request"
     (MkPair (refusal "400 Bad Request" "12" "Bad Request\n") Nil)
@@ -3405,7 +3425,8 @@ servedWant =
 -- | client in the same program; by Node.js's -- node:http, its
 -- | connection kept for each request, bytes written to a socket
 -- | (requests one after another in one write, a head in parts,
--- | HTTP/1.0, `Expect: 100-continue`, a chunked body, a body refused
+-- | HTTP/1.0, `Expect: 100-continue`, a chunked body, whole and in
+-- | pieces, chunks beside a length, a body in gzip, bodies refused
 -- | that the client sends on after the response, no request at all;
 -- | replies streamed, in chunks, to HTTP/1.0 and to a `HEAD`, events,
 -- | a connection taken over, by itself and as a WebSocket's (messages

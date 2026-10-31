@@ -1,19 +1,19 @@
-@6072
+@6803
 nothing there
-@12626
-strSlice : String -> Int -> Int -> String   (global)
-@18580
+@16841
 nothing there
-@23116
-Net.net : HFunctor   (global)
-@28013
-Bytes : Type   (global)
-@34016
-Bool : Type   (global)
-@38396
-Bytes : Type   (global)
-@41292
-idle : Int   (local)
+@23548
+nothing there
+@29891
+Net.read : {e : HFunctor} -> {s : Type} -> {timeout : Int := 0} -> {{ev : Net.net <: e}} -> With s Net.TcpStream -> Int -> Co e (Either Net.NetError Bytes)   (global)
+@36233
+nothing there
+@41644
+nothing there
+@50381
+Co : (h : HFunctor) -> (a : Type) -> Type   (global)
+@55052
+Net.TcpStream : Type   (global)
 @0
 nothing there
 @nope

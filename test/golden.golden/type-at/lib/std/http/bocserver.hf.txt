@@ -1,19 +1,19 @@
-@12449
+@12507
 nothing there
-@24973
-socketStep : {e : HFunctor} -> {err : Type} -> Int -> Int -> Maybe WebSocket.Message -> Conn e err -> Conn e err   (global)
-@33158
-nothing there
-@40763
+@25462
 e : HFunctor   (local)
-@47188
-cn : Connection e rg err   (local)
-@53897
+@33994
+nothing there
+@41660
 err : Type   (local)
-@60726
-Conn : (e : HFunctor) -> (err : Type) -> Type   (global)
-@67892
-got : Either Net.NetError Bytes   (local)
+@48446
+BOC.boc : HFunctor   (global)
+@55163
+given : {e : HFunctor} -> {rg err : Type} -> {{bc : BOC.boc <: e}} -> {{nt : Net.net <: e}} -> {{clock : Time.time <: e}} -> Serving e rg err -> Connection e rg err -> Server.Request -> Conn e err -> Co e (Conn e err)   (global)
+@62062
+cn : Connection e rg err   (local)
+@69551
+Time.time : HFunctor   (global)
 @0
 nothing there
 @nope

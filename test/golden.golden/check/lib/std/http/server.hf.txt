@@ -1,4 +1,4 @@
-module std.http.server (Request, header, plain, json, notAllowed, segments, queries, queryAll, query, parseHead, BodyIs(..), HeadRead(..), Got(..), requestIn, reason, responseBytes, chunk, Head, streamedHead, takeoverHead, keptAlive, After(..), Taken, Reply(..), serveConnection, serveUntil, serve)
+module std.http.server (Request, header, plain, json, notAllowed, segments, queries, queryAll, query, parseHead, BodyIs(..), HeadRead(..), Got(..), Wanted(..), requestIn, Chunks, chunks, Dechunked(..), feedChunks, reason, responseBytes, chunk, Head, streamedHead, takeoverHead, keptAlive, After(..), Taken, Reply(..), serveConnection, serveUntil, serve)
 
 import co
 import exception
@@ -24,10 +24,15 @@ segments : Request -> List String
 queries : Request -> List (String, String)
 queryAll : String -> Request -> List String
 query : String -> Request -> Maybe String
-data BodyIs = Length Int | Refuse Int
+data BodyIs = Length Int | Chunked | Refuse Int
+type Chunks = { at : ChunkAt, line : Bytes, parts : List Bytes, taken : List Bytes, size : Int, trailer : Int }
+chunks : Chunks
+data Dechunked = BodyRead Bytes Bytes | ChunksToCome Chunks | ChunksRefused Int
+feedChunks : Chunks -> Bytes -> Dechunked
 data HeadRead = HeadAt Bytes Int | HeadTooLong | HeadEnded
 data Got = Asked Request Bytes | Refused Int | Ended
-requestIn : {from : Int := 0} -> Net.Address -> Bytes -> Either (Maybe Request, Int) Got
+data Wanted = MoreHead Int | MoreBody Request Int | MoreChunks Request Chunks
+requestIn : {from : Int := 0} -> Net.Address -> Bytes -> Either Wanted Got
 reason : Int -> String
 responseBytes : String -> Bool -> HTTP.Response -> Bytes
 chunk : Bytes -> Bytes
