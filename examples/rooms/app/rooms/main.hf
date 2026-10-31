@@ -1,0 +1,345 @@
+-- Chat rooms, served by std.http.bocserver: what boc gives a handler
+-- beyond answering at once.  Each room is a cown, and so is each user:
+-- requests about different rooms and users run at once, on the pool's
+-- threads; two about the same one run one after the other, in the
+-- order they came.  There is no lock, and nothing to take in an order.
+-- Run from the project's root:
+--
+--   .heff/bin/rooms [PORT]      (8080 where none is given)
+--
+-- ann and bob are in the lobby, cy in games.  Then, with curl:
+--
+--   curl -N localhost:8080/rooms/lobby/events          (a stream; leave it open)
+--   curl localhost:8080/rooms/lobby/after/0            (waits for the first line)
+--   curl -d 'hi all' localhost:8080/rooms/lobby/say/ann
+--   curl -X POST localhost:8080/users/bob/move/lobby/games
+--   curl localhost:8080/users/ann
+--   curl localhost:8080/rooms/games
+--
+-- To say a line in a room, the handler takes the room and its speaker
+-- in one `with`: one behaviour on both.  It checks that the speaker is
+-- in the room, adds the line to the room and one to the speaker's
+-- count, as one step: no request sees the line and not the count, and
+-- none moves the speaker out between the check and the writes.  Taken
+-- one inside the other -- `with room := ...` and, in its body, `with
+-- speaker := ...` -- the inner is a behaviour of its own, spawned by
+-- the outer and run after it: the room is let go of before the speaker
+-- is taken, a move can come between, and the inner cannot write the
+-- room (a body sets no variable of the block around).  Locks taken one
+-- inside the other are worse: saying takes the room, then the user;
+-- moving takes the user, then the rooms; two such requests at once
+-- each hold what the other waits for.  A behaviour takes its cowns all
+-- at once, so no order is there to get wrong.  A move takes three
+-- cowns, the user and both rooms, the same way; a cown twice in one
+-- `with` abandons, so a move from a room to itself is answered before.
+--
+-- The handler need not answer before it ends: it is given a responder,
+-- called here from the behaviour it spawns on the room, once that
+-- runs.  `after/N` waits for the room's line N + 1 with `once`: the
+-- behaviour lets go of the room and waits for one to write it, the
+-- connection meanwhile holding no thread and no cown.  The server's
+-- `idle`, 30 seconds unless another is given, closes a connection whose
+-- answer has not come in that time.
+--
+-- A room's streams are a group of std.http.broadcast's.  A line is
+-- broadcast from the behaviour on the room that adds it, so two lines
+-- of a room come to each stream in the order the room took them.
+
+module app.rooms.main
+
+import boc as BOC
+import bytes as Bytes
+import co
+import custodian as Custodian
+import exception
+import std.http.bocserver as BocServer
+import std.http.broadcast as Broadcast
+import std.http.server as Server
+import std.http.sse as SSE
+import std.io
+import std.net as Net
+import std.ordmap as OrdMap
+import std.process
+import std.time as Time
+import resource
+
+-- | A room: its lines, the newest first, how many, and who is in it.
+type Room = { lines : List String, count : Int, members : List String }
+
+-- | A user: the room they are in, and how many lines they have said.
+type User = { room : String, spoken : Int }
+
+-- | A room's name, its cown, and its streams.
+type Place =
+  { name : String
+  , cown : BOC.Cown Room
+  , streams : Broadcast.Group Bytes
+  }
+
+-- | The rooms and the users, by their names: made at the start and
+-- | never changed, so finding a cown is reading a map, not a behaviour
+-- | on a cown every request would share.
+type Town =
+  { rooms : OrdMap.OrdMap String Place
+  , users : OrdMap.OrdMap String (BOC.Cown User)
+  }
+
+-- (an answer, whole: a status and a line)
+answered : {e : HFunctor}
+         -> {f : HFunctor}
+         -> {{bc : BOC.boc <: f}}
+         -> BocServer.Responder e Empty
+         -> Int
+         -> String
+         -> Co f Unit
+answered respond status t = respond (Whole (Server.plain status (t ^ "\n")))
+
+-- (a line of a room's: who said it, and what)
+lineOf : String -> String -> String
+lineOf who t = who ^ ": " ^ t
+
+-- (the names other than `who`)
+without : String -> List String -> List String
+without who names = List.keepIf (\n -> not (n == who)) names
+
+-- | `GET /rooms/R`: who is in the room, and its lines, the oldest
+-- | first.
+roomShown : {e : HFunctor}
+          -> {{bc : BOC.boc <: e}}
+          -> Maybe Place
+          -> BocServer.Responder e Empty
+          -> Co (exception Empty <+> e) Unit
+roomShown (Just place) respond = do
+  with room := place.cown do
+    answered
+        respond
+        200
+        (joinWith
+           "\n"
+           (("in " ^ place.name ^ ": " ^ joinWith ", " room.members)
+            :: List.reverse room.lines))
+roomShown Nothing respond = answered respond 404 "no such room"
+
+-- | `GET /rooms/R/events`: a stream of server-sent events, each line
+-- | said in the room and each user come and gone, until the client
+-- | goes.
+listened : {e : HFunctor}
+         -> {{bc : BOC.boc <: e}}
+         -> Maybe Place
+         -> BocServer.Responder e Empty
+         -> Co (exception Empty <+> e) Unit
+listened (Just place) respond =
+  respond
+    (Streamed
+       { status = 200, headers = SSE.headers }
+       { opened = Broadcast.join place.streams
+       , gone = Broadcast.leave place.streams
+       })
+listened Nothing respond = answered respond 404 "no such room"
+
+-- | `GET /rooms/R/after/N`: the room's lines after its first `N`, once
+-- | it has one: the answer is the behaviour's that sees it.
+waited : {e : HFunctor}
+       -> {{bc : BOC.boc <: e}}
+       -> Maybe Place
+       -> Maybe Int
+       -> BocServer.Responder e Empty
+       -> Co (exception Empty <+> e) Unit
+waited (Just place) (Just n) respond = do
+  with room := place.cown once room.count > n do
+    answered
+        respond
+        200
+        (joinWith "\n" (List.reverse (List.take (room.count - n) room.lines)))
+waited _ _ respond = answered respond 404 "no such room, or no number"
+
+-- | `POST /rooms/R/say/U`: the body said in the room by the user, who
+-- | must be in it.  One behaviour on the room and the user.
+said : {e : HFunctor}
+     -> {{bc : BOC.boc <: e}}
+     -> Maybe Place
+     -> String
+     -> Maybe (BOC.Cown User)
+     -> String
+     -> BocServer.Responder e Empty
+     -> Co (exception Empty <+> e) Unit
+said (Just place) who (Just user) t respond = do
+  with room := place.cown
+       speaker := user do
+    if speaker.room == place.name
+    then do
+      room :=
+        { room | lines = lineOf who t :: room.lines, count = room.count + 1 }
+      speaker := { speaker | spoken = speaker.spoken + 1 }
+      Broadcast.broadcast
+          place.streams
+          (SSE.event [Event "said", Data (lineOf who t)])
+      answered respond 200 ("line " ^ debug room.count ^ " of " ^ place.name)
+    else answered respond 403 (who ^ " is not in " ^ place.name)
+said _ who _ t respond = answered respond 404 "no such room or user"
+
+-- | `POST /users/U/move/FROM/TO`: the user taken out of one room and
+-- | put in the other.  One behaviour on the user and both rooms.
+moved : {e : HFunctor}
+      -> {{bc : BOC.boc <: e}}
+      -> String
+      -> Maybe (BOC.Cown User)
+      -> Maybe Place
+      -> Maybe Place
+      -> BocServer.Responder e Empty
+      -> Co (exception Empty <+> e) Unit
+moved who (Just user) (Just from) (Just to) respond =
+  if from.name == to.name
+  then answered respond 409 ("from and to are both " ^ from.name)
+  else do
+    with mover := user
+         here := from.cown
+         there := to.cown do
+      if mover.room == from.name
+      then do
+        here := { here | members = without who here.members }
+        there := { there | members = who :: there.members }
+        mover := { mover | room = to.name }
+        Broadcast.broadcast from.streams (SSE.event [Event "left", Data who])
+        Broadcast.broadcast to.streams (SSE.event [Event "came", Data who])
+        answered respond 200 (who ^ " moved to " ^ to.name)
+      else answered respond 409 (who ^ " is in " ^ mover.room)
+moved who _ _ _ respond = answered respond 404 "no such user or room"
+
+-- | `GET /users/U`: where the user is, and how many lines they have
+-- | said.
+userShown : {e : HFunctor}
+          -> {{bc : BOC.boc <: e}}
+          -> String
+          -> Maybe (BOC.Cown User)
+          -> BocServer.Responder e Empty
+          -> Co (exception Empty <+> e) Unit
+userShown who (Just user) respond = do
+  with u := user do
+    answered
+        respond
+        200
+        (who ^ " is in " ^ u.room ^ " and has said " ^ debug u.spoken)
+userShown who Nothing respond = answered respond 404 "no such user"
+
+-- (a request answered, by its method and its path's pieces)
+routed : {e : HFunctor}
+       -> {{bc : BOC.boc <: e}}
+       -> Town
+       -> String
+       -> List String
+       -> String
+       -> BocServer.Responder e Empty
+       -> Co (exception Empty <+> e) Unit
+routed town "GET" ["", "rooms", r] body respond =
+  roomShown (OrdMap.lookup town.rooms r) respond
+routed town "GET" ["", "rooms", r, "events"] body respond =
+  listened (OrdMap.lookup town.rooms r) respond
+routed town "GET" ["", "rooms", r, "after", n] body respond =
+  waited (OrdMap.lookup town.rooms r) (parseInt n) respond
+routed town "POST" ["", "rooms", r, "say", u] body respond =
+  said (OrdMap.lookup town.rooms r) u (OrdMap.lookup town.users u) body respond
+routed town "GET" ["", "users", u] body respond =
+  userShown u (OrdMap.lookup town.users u) respond
+routed town "POST" ["", "users", u, "move", a, b] body respond =
+  moved
+    u
+    (OrdMap.lookup town.users u)
+    (OrdMap.lookup town.rooms a)
+    (OrdMap.lookup town.rooms b)
+    respond
+routed town method path body respond = answered respond 404 "no such page"
+
+-- | The handler: each request in a behaviour on its connection's cown.
+handled : {e : HFunctor}
+        -> {{bc : BOC.boc <: e}}
+        -> Town
+        -> Server.Request
+        -> BocServer.Responder e Empty
+        -> Co (exception Empty <+> e) Unit
+handled town r respond =
+  routed
+    town
+    r.method
+    (split "/" r.target)
+    (trim (Bytes.asString r.body))
+    respond
+
+-- (a room, by its name, and who is in it)
+placeMade : {e : HFunctor}
+          -> {{bc : BOC.boc <: e}}
+          -> {{sys : process <: e}}
+          -> String
+          -> List String
+          -> Co e (Pair String Place)
+placeMade name members = do
+  c <- BOC.newCown { lines = (Nil : List String), count = 0, members = members }
+  g <- Broadcast.newGroup
+  pure (MkPair name { name = name, cown = c, streams = g })
+
+-- (a user, by their name, and the room they are in)
+userMade : {e : HFunctor}
+         -> {{bc : BOC.boc <: e}}
+         -> String
+         -> String
+         -> Co e (Pair String (BOC.Cown User))
+userMade name room = do
+  c <- BOC.newCown { room = room, spoken = 0 }
+  pure (MkPair name c)
+
+-- (the listener's connections served, until the program is ended)
+listening : {e : HFunctor}
+          -> {s : Type}
+          -> {{bc : BOC.boc <: e}}
+          -> {{io : stdio <: e}}
+          -> {{nt : Net.net <: e}}
+          -> {{clock : Time.time <: e}}
+          -> Town
+          -> With s Net.TcpListener
+          -> Co e Unit
+listening town l = do
+  at <- Net.local l
+  print
+      ("listening on http://127.0.0.1:"
+       ^ either (\err -> "?") (\(a : Net.Address) -> debug a.port) at)
+  flush
+  BocServer.serve Empty l (handled (e := e) town)
+
+-- (a port not listened on, said)
+listenedOr : {e : HFunctor}
+           -> {{io : stdio <: e}}
+           -> Either Net.NetError Unit
+           -> Co e Unit
+listenedOr (Left err) = printErr ("rooms: cannot listen: " ^ show err)
+listenedOr (Right u) = pure MkUnit
+
+-- (the port the arguments say, 8080 where they say none)
+portOf : List String -> Int
+portOf (p :: rest) = fromMaybe 8080 (parseInt p)
+portOf [] = 8080
+
+main : Co
+       (BOC.boc
+        <+> Custodian.custodian
+        <+> stdio
+        <+> Net.net
+        <+> Time.time
+        <+> process)
+       Unit
+main = do
+  argv <- args
+  lobby <- placeMade "lobby" ["ann", "bob"]
+  games <- placeMade "games" ["cy"]
+  ann <- userMade "ann" "lobby"
+  bob <- userMade "bob" "lobby"
+  cy <- userMade "cy" "games"
+  let town : Town =
+    { rooms = OrdMap.fromList [lobby, games]
+    , users = OrdMap.fromList [ann, bob, cy]
+    }
+  served <-
+    Net.withListener
+      { host = "127.0.0.1", port = portOf argv }
+      128
+      (listening town)
+  listenedOr served

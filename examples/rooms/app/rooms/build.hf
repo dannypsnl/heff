@@ -1,0 +1,7 @@
+-- The program's `main`, compiled through C (by `zig cc`): `heff build`
+-- builds it as the program `rooms`.
+
+import manifest
+
+build : Build
+build = { backend = C, run = "main" }

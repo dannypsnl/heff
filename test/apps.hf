@@ -593,6 +593,19 @@ touch = do
         (said r ^ "made: " ^ debug made ^ ", kept: " ^ debug kept)
         "status 1\ntouch: missing/file: ENOENT: No such file or directory\nmade: \"\", kept: \"as it was\""
 
+-- | the rooms, a server on boc's cowns: built
+rooms : {e : HFunctor}
+      -> {{chk : check <: e}}
+      -> {{sys : process <: e}}
+      -> Co e Unit
+rooms = do
+  heff <- given "HEFF"
+  root <- given "HEFF_TEST_ROOT"
+  dir <- pure (root ^ "/examples/rooms")
+  built <- run { command = heff, args = ["build"], dir = dir, timeout = 600000 }
+  if not (succeeded built) then failure ("heff build: " ^ said built)
+  else pure MkUnit
+
 -- | an effect of one operation, a C function's, `module name`: the
 -- | function described with its header, `header`, and what the module's
 -- | C needs, `links` (ffi's `Links`, as written)
@@ -834,8 +847,8 @@ linked = do
   else pure ()
 
 -- | the example apps, on a pretend page, the notes' page and server, the
--- | first program, the todos, fs_tree and touch, and a program linked
--- | with a library
+-- | first program, the todos, fs_tree, touch and the rooms, and a
+-- | program linked with a library
 apps : Test
 apps =
   group
@@ -846,5 +859,6 @@ apps =
     , withinTime 600000 (integration "todos" todos)
     , withinTime 600000 (integration "fs_tree" fsTree)
     , withinTime 600000 (integration "touch" touch)
+    , withinTime 600000 (integration "rooms" rooms)
     , withinTime 600000 (integration "linked" linked)
     ]
