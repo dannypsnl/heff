@@ -38,18 +38,41 @@ jobs:
   versions:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.versions.outputs.matrix }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
       list: ${{ steps.versions.outputs.list }}
+      releases: ${{ steps.versions.outputs.releases }}
+      cached: ${{ steps.releases.outputs.cache-hit }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: main
+      # (the releases' pages, all of them together, are kept as they
+      # were last published while the tags stay the same: then only main
+      # is built.  The leading v1 is bumped when the way a version is
+      # built here changes)
       - id: versions
         run: |
           git ls-remote --tags origin 'v*' > tags
-          echo "matrix=$(node scripts/doc-versions.mjs matrix < tags)" >> "$GITHUB_OUTPUT"
           echo "list=$(node scripts/doc-versions.mjs json < tags)" >> "$GITHUB_OUTPUT"
+          if [ -n "$(node scripts/doc-versions.mjs < tags)" ]; then
+            echo "releases=heff-docs-releases-v1-$(sha256sum tags | cut -c 1-16)" >> "$GITHUB_OUTPUT"
+          fi
           node scripts/doc-versions.mjs < tags
+      - id: releases
+        if: steps.versions.outputs.releases
+        uses: actions/cache/restore@v6
+        with:
+          path: releases
+          key: ${{ steps.versions.outputs.releases }}
+          lookup-only: true
+      - id: matrix
+        run: |
+          node scripts/doc-versions.mjs matrix < tags > matrix.json
+          if [ "${{ steps.releases.outputs.cache-hit }}" = true ]; then
+            jq -c 'map(select(.ref == "main"))' matrix.json > main.json
+            mv main.json matrix.json
+          fi
+          echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
 
   build:
     needs: versions
@@ -69,8 +92,8 @@ jobs:
           echo "dirs=$(echo '${{ matrix.dirs }}' | tr ' ' '+')" >> "$GITHUB_OUTPUT"
           echo "zig=$(sed -n 's/^ *version: \([0-9][0-9.]*\)$/\1/p' .github/workflows/ci.yml | head -n 1)" >> "$GITHUB_OUTPUT"
       # (a release's pages, built before at the same commit for the same
-      # places, are not built again; the leading v1 is bumped when the
-      # way a version is built here changes)
+      # places, are not built again, when a new release is: the leading
+      # v1 is bumped with the one above)
       - id: site
         if: matrix.ref != 'main'
         uses: actions/cache@v6
@@ -128,11 +151,28 @@ jobs:
     needs: [versions, build]
     runs-on: ubuntu-latest
     steps:
+      - if: needs.versions.outputs.cached == 'true'
+        uses: actions/cache/restore@v6
+        with:
+          path: releases
+          key: ${{ needs.versions.outputs.releases }}
       - uses: actions/download-artifact@v8
         with:
           pattern: site-*
           merge-multiple: true
           path: site
+      - if: needs.versions.outputs.releases && needs.versions.outputs.cached != 'true'
+        run: |
+          mkdir -p releases
+          cp -R site/. releases/
+          rm -rf releases/dev
+      - if: needs.versions.outputs.releases && needs.versions.outputs.cached != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: releases
+          key: ${{ needs.versions.outputs.releases }}
+      - if: needs.versions.outputs.cached == 'true'
+        run: cp -R releases/. site/
       - env:
           LIST: ${{ needs.versions.outputs.list }}
         run: printf '%s\n' "$LIST" > site/versions.json
