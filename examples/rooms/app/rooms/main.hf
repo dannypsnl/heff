@@ -2,8 +2,7 @@
 -- beyond answering at once.  Each room is a cown, and so is each user:
 -- requests about different rooms and users run at once, on the pool's
 -- threads; two about the same one run one after the other, in the
--- order they came.  There is no lock, and nothing to take in an order.
--- Run from the project's root:
+-- order they came.  Run from the project's root:
 --
 --   .heff/bin/rooms [PORT]      (8080 where none is given)
 --
@@ -20,18 +19,18 @@
 -- in one `with`: one behaviour on both.  It checks that the speaker is
 -- in the room, adds the line to the room and one to the speaker's
 -- count, as one step: no request sees the line and not the count, and
--- none moves the speaker out between the check and the writes.  Taken
--- one inside the other -- `with room := ...` and, in its body, `with
--- speaker := ...` -- the inner is a behaviour of its own, spawned by
--- the outer and run after it: the room is let go of before the speaker
--- is taken, a move can come between, and the inner cannot write the
--- room (a body sets no variable of the block around).  Locks taken one
--- inside the other are worse: saying takes the room, then the user;
--- moving takes the user, then the rooms; two such requests at once
--- each hold what the other waits for.  A behaviour takes its cowns all
--- at once, so no order is there to get wrong.  A move takes three
--- cowns, the user and both rooms, the same way; a cown twice in one
--- `with` abandons, so a move from a room to itself is answered before.
+-- none moves the speaker out between the check and the writes.  A
+-- `with` in another's body -- `with room := ...` and, in its body,
+-- `with speaker := ...` -- is not that: the inner is a behaviour of its
+-- own, spawned by the outer and run after the outer has ended.  The
+-- room is let go of before the speaker is taken, so another request
+-- can come between, and the inner cannot write the outer's names (a
+-- body sets no variable of the block around).  A `with` takes all its
+-- cowns at once, so the order they are named in does not matter.  A
+-- move takes three cowns, the user and both rooms, the same way.  A
+-- move from a room to itself is answered 409 before its `with`: those
+-- would be one cown twice in it, which boc tells as a failure, the
+-- behaviour not spawned and the request not answered.
 --
 -- The handler need not answer before it ends: it is given a responder,
 -- called here from the behaviour it spawns on the room, once that
@@ -179,7 +178,10 @@ said (Just place) who (Just user) t respond = do
 said _ who _ t respond = answered respond 404 "no such room or user"
 
 -- | `POST /users/U/move/FROM/TO`: the user taken out of one room and
--- | put in the other.  One behaviour on the user and both rooms.
+-- | put in the other.  One behaviour on the user and both rooms.  A
+-- | move from a room to itself is the request's mistake, answered 409
+-- | before: those would be one cown twice in the `with`, a failure that
+-- | answers nothing.
 moved : {e : HFunctor}
       -> {{bc : BOC.boc <: e}}
       -> String
@@ -268,7 +270,6 @@ handled town r respond =
 -- (a room, by its name, and who is in it)
 placeMade : {e : HFunctor}
           -> {{bc : BOC.boc <: e}}
-          -> {{sys : process <: e}}
           -> String
           -> List String
           -> Co e (Pair String Place)

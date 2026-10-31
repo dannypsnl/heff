@@ -1,19 +1,19 @@
-@12013
+@12437
 nothing there
-@15540
+@15991
+Maybe : (a : Type) -> Type   (global)
+@18264
+tn : Turn   (local)
+@20179
 nothing there
-@17729
+@23460
 nothing there
-@19628
+@26655
 nothing there
-@22566
-Contents : Type   (global)
-@25820
-Cown : (a : Type) -> Type   (global)
-@28324
-nothing there
-@31768
-e : HFunctor   (local)
+@29320
+boc : HFunctor   (global)
+@32687
+HFunctor : Theory   (global)
 @0
 nothing there
 @nope

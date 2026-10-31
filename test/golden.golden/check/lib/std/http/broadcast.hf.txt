@@ -3,10 +3,9 @@ module std.http.broadcast (Group, newGroup, join, leave, finish, broadcast, size
 import co
 import boc as BOC
 import std.http.bocserver as BocServer
-import std.process as Process
 
 data Group a
-newGroup : {f : HFunctor} -> {a : Type} -> {shards : Int := 0} -> {{bc : BOC.boc <: f}} -> {{sys : Process.process <: f}} -> Co f (Group a)
+newGroup : {f : HFunctor} -> {a : Type} -> {shards : Int := 0} -> {{bc : BOC.boc <: f}} -> Co f (Group a)
 join : {f : HFunctor} -> {a : Type} -> {{bc : BOC.boc <: f}} -> Group a -> BocServer.Sender a -> Co f Unit
 leave : {f : HFunctor} -> {a : Type} -> {{bc : BOC.boc <: f}} -> Group a -> BocServer.Sender a -> Co f Unit
 finish : {f : HFunctor} -> {a : Type} -> {{bc : BOC.boc <: f}} -> Group a -> BocServer.Sender a -> Co f Unit
