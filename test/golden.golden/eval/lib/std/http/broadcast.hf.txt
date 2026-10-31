@@ -1,0 +1,19 @@
+Shard = #erased
+Group = #erased
+shardsMade = #fun
+shardsOf = #fun
+newGroup = #fun
+shardAt = #fun
+onShard = #fun
+shardOf = #fun
+without = #fun
+join = #fun
+leave = #fun
+finish = #fun
+sentTo = #fun
+spread = #fun
+broadcast = #fun
+countedFrom = #fun
+size = #fun
+--stderr--
+--exit 0

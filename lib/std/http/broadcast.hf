@@ -1,0 +1,254 @@
+-- One thing sent to many of std.http.bocserver's senders at once: a
+-- group of them, split into shards, each a cown of its own, so that
+-- what is broadcast is sent to each shard's senders by a behaviour of
+-- its own, the shards in parallel, on as many threads as there are
+-- shards.  A broadcast is one behaviour on each shard, however many
+-- senders there are; each sender's `send` is then a behaviour on its
+-- connection's cown, as it always is.  Import it by a name,
+-- `import std.http.broadcast as Broadcast`.
+--
+-- > [!CAUTION]
+-- > Unstable: concurrency in heff is not settled. What this module offers
+-- > may change, or go, in any release.
+--
+-- ```haskell
+-- import boc as BOC
+-- import co
+-- import exception
+-- import std.duration as Duration
+-- import std.http.bocserver as BocServer
+-- import std.http.broadcast as Broadcast
+-- import std.http.server as Server
+-- import std.http.sse as SSE
+-- import std.time as Time
+--
+-- -- | `/events`, a stream of events, in the group until it is gone
+-- listened : {e : HFunctor}
+--          -> {{bc : BOC.boc <: e}}
+--          -> Broadcast.Group Bytes
+--          -> Server.Request
+--          -> BocServer.Responder e Empty
+--          -> Co (exception Empty <+> e) Unit
+-- listened g r respond =
+--   if r.target == "/events"
+--   then respond
+--       (Streamed
+--          { status = 200, headers = SSE.headers }
+--          { opened = Broadcast.join g, gone = Broadcast.leave g })
+--   else respond (Whole (Server.plain 404 "no such page\n"))
+--
+-- -- | tick `i`, then the next a second later, each to every stream
+-- ticked : {e : HFunctor}
+--        -> {{bc : BOC.boc <: e}}
+--        -> {{clock : Time.time <: e}}
+--        -> Broadcast.Group Bytes
+--        -> Int
+--        -> Co e Unit
+-- ticked g i = do
+--   Broadcast.broadcast g (SSE.event [Event "tick", Data (debug i)])
+--   with _ := BOC.await (Time.sleep (Duration.seconds 1)) do
+--     ticked g (i + 1)
+-- ```
+--
+-- A group is made by `newGroup`, of as many shards as the machine has
+-- cores (std.process's `processors`) unless another number is given,
+-- by name, `Broadcast.newGroup (shards := 4)`.  A sender is in one
+-- shard, by its number (`senderNumber`, its connection's, no two open
+-- at once numbered the same): `join` puts it in, `leave` takes it out
+-- -- in a stream's `gone`, as above -- and `finish` takes it out and
+-- finishes it, after what was broadcast before.  Each is a behaviour on
+-- the sender's shard.  `size g k` gives `k` how many senders the group
+-- has, counted a shard after another, in a behaviour on each: so it
+-- counts what each shard has once the behaviours spawned on it before
+-- are done, not the whole group at one moment.
+--
+-- What is broadcast comes to each sender in the order it was
+-- broadcast, where one broadcast comes after the other: from one
+-- behaviour, one after the other, or from behaviours one after another
+-- on a cown they share.  Each broadcast spawns a behaviour on each
+-- shard; a shard's behaviours run one after another, in the order they
+-- were spawned, so the first broadcast's has spawned its `send` on the
+-- sender's connection before the second's runs, and a connection's
+-- behaviours run in the order they were spawned too: so the first is
+-- written before the second.  `join`, `leave` and `finish` are put in
+-- that order the same way, on the shard: a sender joined before a
+-- broadcast is sent it, and one finished after a broadcast is sent it
+-- first.  Two broadcasts at once, from behaviours not one after the
+-- other, come to each sender each, in an order of their own, which two
+-- senders may not share.  What is sent to a sender by its own `send`,
+-- not broadcast, is in no order with what is broadcast to it.
+
+module std.http.broadcast
+  ( Group
+  , newGroup
+  , join
+  , leave
+  , finish
+  , broadcast
+  , size
+  )
+import boc as BOC
+import co
+import std.http.bocserver as BocServer
+import std.process as Process
+
+-- (a shard: the senders in it)
+type Shard a = BOC.Cown (List (BocServer.Sender a))
+
+-- | Senders, in shards, to broadcast to.
+data Group a = MkGroup Int (List (Shard a))
+
+-- (`k` shards more, empty, before `made`)
+shardsMade : {f : HFunctor}
+           -> {a : Type}
+           -> {{bc : BOC.boc <: f}}
+           -> Int
+           -> List (Shard a)
+           -> Co f (List (Shard a))
+shardsMade k made =
+  if k <= 0 then pure made
+  else do
+    c <- BOC.newCown Nil
+    shardsMade (k - 1) (c :: made)
+
+-- (the shards, as many as `k`, or as the machine has cores where `k`
+-- is none)
+shardsOf : {f : HFunctor}
+         -> {{sys : Process.process <: f}}
+         -> Int
+         -> Co f Int
+shardsOf k = if k > 0 then pure k else Process.processors
+
+-- | A group, empty, of `shards` shards: as many as the machine has
+-- | cores unless another number is given, by name.
+newGroup : {f : HFunctor}
+         -> {a : Type}
+         -> {shards : Int := 0}
+         -> {{bc : BOC.boc <: f}}
+         -> {{sys : Process.process <: f}}
+         -> Co f (Group a)
+newGroup = do
+  k <- shardsOf shards
+  made <- shardsMade k Nil
+  pure (MkGroup k made)
+
+-- (the `i`th shard)
+shardAt : {a : Type} -> Int -> List (Shard a) -> Maybe (Shard a)
+shardAt i shards = List.head (List.drop i shards)
+
+-- (`body` a behaviour on the shard, where there is one)
+onShard : {f : HFunctor}
+        -> {a : Type}
+        -> {{bc : BOC.boc <: f}}
+        -> Maybe (Shard a)
+        -> (List (BocServer.Sender a) -> Co f (List (BocServer.Sender a)))
+        -> Co f Unit
+onShard Nothing body = pure ()
+onShard (Just c) body = BOC.when c body
+
+-- (the shard a sender is in)
+shardOf : {a : Type} -> Group a -> BocServer.Sender a -> Maybe (Shard a)
+shardOf (MkGroup k shards) out =
+  shardAt (((BocServer.senderNumber out % k) + k) % k) shards
+
+-- (the senders other than the one numbered `n`)
+without : {a : Type}
+        -> Int
+        -> List (BocServer.Sender a)
+        -> List (BocServer.Sender a)
+without n senders =
+  List.keepIf (\o -> not (BocServer.senderNumber o == n)) senders
+
+-- | The sender put in the group: sent what is broadcast after.
+join : {f : HFunctor}
+     -> {a : Type}
+     -> {{bc : BOC.boc <: f}}
+     -> Group a
+     -> BocServer.Sender a
+     -> Co f Unit
+join g out = onShard (shardOf g out) (\senders -> pure (out :: senders))
+
+-- | The sender taken out of the group, the one of its number: sent
+-- | nothing broadcast after.
+leave : {f : HFunctor}
+      -> {a : Type}
+      -> {{bc : BOC.boc <: f}}
+      -> Group a
+      -> BocServer.Sender a
+      -> Co f Unit
+leave g out =
+  onShard
+    (shardOf g out)
+    (\senders -> pure (without (BocServer.senderNumber out) senders))
+
+-- | The sender taken out of the group and finished (`BocServer.finish`),
+-- | after what was broadcast before is sent it.
+finish : {f : HFunctor}
+       -> {a : Type}
+       -> {{bc : BOC.boc <: f}}
+       -> Group a
+       -> BocServer.Sender a
+       -> Co f Unit
+finish g out =
+  onShard
+    (shardOf g out) (\senders -> do
+      BocServer.finish out
+      pure (without (BocServer.senderNumber out) senders))
+
+-- (`x` sent by each sender)
+sentTo : {f : HFunctor}
+       -> {a : Type}
+       -> {{bc : BOC.boc <: f}}
+       -> a
+       -> List (BocServer.Sender a)
+       -> Co f Unit
+sentTo x [] = pure ()
+sentTo x (out :: rest) = do
+  BocServer.send out x
+  sentTo x rest
+
+-- (`x` sent to each of the shards' senders, a behaviour on each shard)
+spread : {f : HFunctor}
+       -> {a : Type}
+       -> {{bc : BOC.boc <: f}}
+       -> a
+       -> List (Shard a)
+       -> Co f Unit
+spread x [] = pure ()
+spread x (c :: rest) = do
+  with senders := c do
+    sentTo x senders
+  spread x rest
+
+-- | `x` sent to each sender in the group: a behaviour on each shard,
+-- | sending it to the shard's senders; this one goes on.
+broadcast : {f : HFunctor}
+          -> {a : Type}
+          -> {{bc : BOC.boc <: f}}
+          -> Group a
+          -> a
+          -> Co f Unit
+broadcast (MkGroup k shards) x = spread x shards
+
+-- (the senders of the shards counted, `n` so far, then given to `k`)
+countedFrom : {f : HFunctor}
+            -> {a : Type}
+            -> {{bc : BOC.boc <: f}}
+            -> List (Shard a)
+            -> Int
+            -> (Int -> Co f Unit)
+            -> Co f Unit
+countedFrom [] n k = k n
+countedFrom (c :: rest) n k = do
+  with senders := c do
+    countedFrom rest (n + List.length senders) k
+
+-- | How many senders the group has, given to `k`: counted by a
+-- | behaviour on a shard, then one on the next, `k` called in the last.
+size : {f : HFunctor}
+     -> {a : Type}
+     -> {{bc : BOC.boc <: f}}
+     -> Group a
+     -> (Int -> Co f Unit)
+     -> Co f Unit
+size (MkGroup k shards) cont = countedFrom shards 0 cont

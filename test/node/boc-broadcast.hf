@@ -1,0 +1,142 @@
+-- std.http.broadcast over std.http.bocserver's streams, by C alone,
+-- driven by Node.js (the tests' peers, `broadcast`).
+--
+--   main PORT: served there, a group of three shards; until asked for
+--        `/stop`
+--
+-- `/events`, a stream of events, in the group until it is gone;
+-- `/publish`, its body broadcast as an event, answered with how many
+-- the group had after it; `/burst?n`, events 1 to n broadcast one after
+-- another; `/last`, a stream sent one event, then finished, by the
+-- group; `/size`, how many the group has.
+
+module test.node.boc-broadcast
+
+import boc as BOC
+import bytes as Bytes
+import co
+import custodian as Custodian
+import exception
+import std.http.bocserver as BocServer
+import std.http.broadcast as Broadcast
+import std.http.server as Server
+import std.http.sse as SSE
+import std.io
+import std.net as Net
+import std.process
+import std.time
+import resource
+
+-- | What a handler throws.
+data Thrown = MkThrown
+
+-- (events `i` to `n` broadcast, one after another)
+burst : {f : HFunctor}
+      -> {{bc : BOC.boc <: f}}
+      -> Broadcast.Group Bytes
+      -> Int
+      -> Int
+      -> Co f Unit
+burst g i n =
+  if i > n then pure ()
+  else do
+    Broadcast.broadcast g (SSE.event [Data (debug i)])
+    burst g (i + 1) n
+
+-- (the number after `?` in a target, or 0)
+numberIn : String -> Int
+numberIn t = fromMaybe 0 (parseInt (joinWith "?" (List.drop 1 (split "?" t))))
+
+-- (how many the group has, as a response's body)
+sized : {e : HFunctor}
+      -> {{bc : BOC.boc <: e}}
+      -> Broadcast.Group Bytes
+      -> String
+      -> BocServer.Responder e Thrown
+      -> Co (exception Thrown <+> e) Unit
+sized g what respond =
+  Broadcast.size g (\n -> respond (Whole (Server.plain 200 (what ^ debug n))))
+
+-- (a stream joined, sent one event, then finished by the group)
+lasting : {f : HFunctor}
+        -> {{bc : BOC.boc <: f}}
+        -> Broadcast.Group Bytes
+        -> BocServer.Sender Bytes
+        -> Co f Unit
+lasting g out = do
+  Broadcast.join g out
+  Broadcast.broadcast g (SSE.event [Data "last"])
+  Broadcast.finish g out
+
+-- (each request answered)
+answering : {e : HFunctor}
+          -> {rg : Type}
+          -> {{bc : BOC.boc <: e}}
+          -> {{nt : Net.net <: e}}
+          -> Broadcast.Group Bytes
+          -> With rg Net.TcpListener
+          -> Server.Request
+          -> BocServer.Responder e Thrown
+          -> Co (exception Thrown <+> e) Unit
+answering g l r respond =
+  if r.target == "/events"
+  then respond
+      (Streamed
+         { status = 200, headers = SSE.headers }
+         { opened = Broadcast.join g, gone = Broadcast.leave g })
+  else if r.target == "/publish"
+  then do
+    Broadcast.broadcast g (SSE.event [Data (Bytes.asString r.body)])
+    sized g "sent, in the group " respond
+  else if startsWith "/burst?" r.target
+  then do
+    burst g 1 (numberIn r.target)
+    respond (Whole (Server.plain 200 "burst"))
+  else if r.target == "/last"
+  then respond
+      (Streamed
+         { status = 200, headers = SSE.headers }
+         { opened = lasting g, gone = Broadcast.leave g })
+  else if r.target == "/size"
+  then sized g "" respond
+  else if r.target == "/stop"
+  then do
+    respond (Whole (Server.plain 200 "stopping"))
+    _ <- Net.closeListener l
+    pure ()
+  else respond (Whole (Server.plain 404 r.target))
+
+-- (the n-th argument, a number, or `fallback`)
+argument : List String -> Int -> Int -> Int
+argument argv n fallback =
+  fromMaybe fallback (parseInt (fromMaybe "" (List.head (List.drop n argv))))
+
+program : {e : HFunctor}
+        -> {{bc : BOC.boc <: e}}
+        -> {{io : stdio <: e}}
+        -> {{clock : time <: e}}
+        -> {{nt : Net.net <: e}}
+        -> {{sys : process <: e}}
+        -> Co e Unit
+program = do
+  argv <- args
+  g <- Broadcast.newGroup (shards := 3)
+  r <-
+    Net.withListener
+      { host = "127.0.0.1", port = argument argv 0 0 }
+      128
+      (\l -> BocServer.serve Thrown l (answering (e := e) g l))
+  case r of
+    Left err -> print (show err)
+    Right u -> pure ()
+
+-- | served until asked for `/stop`
+main : Co
+       (BOC.boc
+        <+> Custodian.custodian
+        <+> stdio
+        <+> time
+        <+> Net.net
+        <+> process)
+       Unit
+main = program

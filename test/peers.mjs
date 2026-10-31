@@ -52,6 +52,13 @@
 //                                   a client that reads nothing; a
 //                                   socket echoing, pinged, closed; then
 //                                   /stop; says what each came to
+//   node test/peers.mjs broadcast PORT
+//                                   std.http.broadcast over the
+//                                   server's streams: an event
+//                                   broadcast to three, one client
+//                                   gone and taken out, a burst come
+//                                   in order to each, a stream
+//                                   finished by the group; then /stop
 import { spawn, spawnSync } from "node:child_process";
 import { Agent, createServer, request } from "node:http";
 import { connect } from "node:net";
@@ -691,4 +698,70 @@ if (mode === "streams") {
   const evClosed = await ended(ev, 5000), wsClosed = await ended(ws, 5000);
   said("stopped, a stream open", `${ev.text().endsWith("0\r\n\r\n") ? "its last chunk" : JSON.stringify(ev.text())}, ${evClosed ? "closed" : "still open"}`);
   said("stopped, a socket open", `${JSON.stringify(frames(afterHead(ws)).filter((f) => f.startsWith("close")))}, ${wsClosed ? "closed" : "still open"}`);
+}
+
+if (mode === "broadcast") {
+  const port = Number(arg);
+  const wait = (ms) => new Promise((ok) => setTimeout(ok, ms));
+  const said = (what, got) => console.log(`${what}: ${got}`);
+  for (let i = 0; i < 600 && !(await new Promise((ok) => {
+    const s = connect({ host: "127.0.0.1", port });
+    s.on("connect", () => { s.destroy(); ok(true); });
+    s.on("error", () => ok(false));
+  })); i++) await wait(50);
+  const opened = async () => {
+    const s = await reached(port);
+    s.setNoDelay(true);
+    let got = Buffer.alloc(0), closed = false;
+    const ended = new Promise((ok) => s.on("close", () => { closed = true; ok(); }));
+    s.on("data", (d) => { got = Buffer.concat([got, d]); });
+    s.on("error", () => {});
+    const until = async (p, ms = 5000) => {
+      for (let t = 0; t < ms && !p(got.toString("latin1")) && !closed; t += 10) await wait(10);
+      return p(got.toString("latin1"));
+    };
+    return { s, until, text: () => got.toString("latin1"), ended };
+  };
+  const asked = async (target, body = "") => {
+    const c = await opened();
+    c.s.write(`POST ${target} HTTP/1.1\r\nHost: x\r\nContent-Length: ${body.length}\r\nConnection: close\r\n\r\n${body}`);
+    await Promise.race([c.ended, wait(5000)]);
+    const t = c.text();
+    return t.slice(t.indexOf("\r\n\r\n") + 4);
+  };
+  // (the data of each event a stream was sent, its chunks undone)
+  const data = (t) => [...t.matchAll(/data: ([^\n]*)\n\n/g)].map((m) => m[1]);
+  const streams = [];
+  for (let i = 0; i < 3; i++) {
+    const c = await opened();
+    c.s.write("GET /events HTTP/1.1\r\nHost: x\r\n\r\n");
+    await c.until((g) => g.includes("\r\n\r\n"));
+    streams.push(c);
+  }
+  await wait(100);
+  const sent = await asked("/publish", "hello");
+  const got = await Promise.all(streams.map((c) => c.until((g) => data(g).includes("hello"))));
+  said("broadcast to three", `${sent}, received: ${got.join(" ")}`);
+  const [gone, ...kept] = streams;
+  gone.s.destroy();
+  await wait(300);
+  said("one client gone", `in the group ${await asked("/size")}`);
+  const again = await asked("/publish", "again");
+  const both = await Promise.all(kept.map((c) => c.until((g) => data(g).includes("again"))));
+  said("broadcast to the others", `${again}, received: ${both.join(" ")}`);
+  await asked("/burst?200");
+  const want = Array.from({ length: 200 }, (_, i) => String(i + 1)).join(",");
+  const inOrder = await Promise.all(kept.map(async (c) => {
+    await c.until((g) => data(g).includes("200"));
+    return data(c.text()).filter((d) => /^\d+$/.test(d)).join(",") === want;
+  }));
+  said("a burst of 200, in order", inOrder.join(" "));
+  const last = await opened();
+  last.s.write("GET /last HTTP/1.1\r\nHost: x\r\n\r\n");
+  const finished = await last.until((g) => g.endsWith("0\r\n\r\n"));
+  said("a stream finished by the group", `${JSON.stringify(data(last.text()))}, finished: ${finished}, in the group ${await asked("/size")}`);
+  last.s.destroy();
+  await asked("/stop");
+  const closed = await Promise.all(kept.map((c) => Promise.race([c.ended.then(() => true), wait(5000).then(() => false)])));
+  said("stopped", `streams closed: ${closed.join(" ")}`);
 }

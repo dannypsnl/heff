@@ -3158,6 +3158,52 @@ bocStreams = do
             { out = Just "", err = Just "" }
             (snd both)))
 
+-- | std.http.broadcast over std.http.bocserver's streams, by C alone,
+-- | driven by Node.js: an event broadcast to three streams in a group of
+-- | three shards; one client gone, taken out by its `gone`, and the
+-- | next sent to the other two; a burst of 200 come to each in order; a
+-- | stream joined, sent one event and finished by the group; the server
+-- | stopped, the streams closed
+bocBroadcast : {e : HFunctor}
+             -> {{chk : check <: e}}
+             -> {{sys : process <: e}}
+             -> {{ex : exception ProcessError <: e}}
+             -> {{cu : Custodian.custodian <: e}}
+             -> Co e Unit
+bocBroadcast = do
+  root <- given "HEFF_TEST_ROOT"
+  ports <- freePorts 1
+  bin <- built "test/node/boc-broadcast.hf" "main" Nil ""
+  both <-
+    withProcess
+      { command = bin, args = List.take 1 ports, timeout = 60000 } (\p -> do
+        client <-
+          run
+            { command = "node"
+            , args = [root ^ "/test/peers.mjs", "broadcast", firstOf ports]
+            , timeout = 60000
+            }
+        server <- wait p
+        pure (MkPair client server))
+  failingWith
+      (List.append
+         (against
+            "boc broadcast: the clients"
+            { out =
+                Just
+                  (linesOf
+                  [ "broadcast to three: sent, in the group 3, received: true true true"
+                  , "one client gone: in the group 2"
+                  , "broadcast to the others: sent, in the group 2, received: true true"
+                  , "a burst of 200, in order: true true"
+                  , "a stream finished by the group: [\"last\"], finished: true, in the group 2"
+                  , "stopped: streams closed: true true"
+                  ])
+            , err = Just ""
+            }
+            (fst both))
+         (against "boc broadcast" { out = Just "", err = Just "" } (snd both)))
+
 -- | an API over HTTP, both sides of std.remote, by C alone: calls
 -- | answered, the server's count kept between them; a client of another
 -- | build refused; no server there; a GET, no call
@@ -4619,6 +4665,7 @@ backends =
               "answered 2\nmain done\n"))
       , withinTime 180000 (integration "boc server" bocServed)
       , withinTime 180000 (integration "boc server, streams and sockets" bocStreams)
+      , withinTime 180000 (integration "boc broadcast" bocBroadcast)
       , withinTime 180000 (integration "remote" remote)
       , integration "http server" httpServer
       , integration "a module named main, as parts" mainParts
