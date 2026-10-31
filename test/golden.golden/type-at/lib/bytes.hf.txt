@@ -1,19 +1,19 @@
 @748
 nothing there
-@964
-nothing there
-@1350
+@1151
+List : (a : Type) -> Type   (global)
+@1989
 Bytes : Type   (global)
-@1723
-Nil : List UInt8   (global)
-@2541
-bytesLength : Bytes -> Int   (global)
-@3149
-bytesAppend : Bytes -> Bytes -> Bytes   (global)
-@3709
+@3198
+Bytes : Type   (global)
+@4460
+Nothing : Maybe Int   (global)
+@5334
 nothing there
-@3870
-bytesAt : Bytes -> Int -> UInt8   (global)
+@5676
+sep : Bytes   (local)
+@6170
+nothing there
 @0
 nothing there
 @nope

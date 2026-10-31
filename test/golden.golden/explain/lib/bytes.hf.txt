@@ -1,164 +1,369 @@
-48:10  unify  Bytes -> Int  =?=  Bytes -> Int   ok
-51:10  unify  Bytes -> List UInt8  =?=  Bytes -> List UInt8   ok
-59:12  unify  List UInt8 -> Bytes  =?=  List UInt8 -> Bytes   ok
-56:18  unify  Bytes  =?=  Bytes   ok
-65:9  unify  Bytes  =?=  Bytes   ok
-62:17  unify  Bytes  =?=  Bytes   ok
-73:14  unify  String -> Bytes  =?=  String -> Bytes   ok
-68:29  unify  String  =?=  String   ok
-68:18  unify  Bytes  =?=  Bytes   ok
-70:29  unify  String  =?=  String   ok
-70:18  unify  Bytes  =?=  Bytes   ok
-80:12  unify  Bytes -> String  =?=  Bytes -> String   ok
-77:46  meta  ?0 (a) : Type
-77:46  meta  ?1 (eq) : prelude.Equality ?0
-77:46  instance  wanted Equality ?0  [waits for implicits]
-77:20  unify  Bytes  =?=  Bytes   ok
-77:46  solve  ?0 (a) := String
-77:10  unify  String  =?=  String   ok
-77:46  solve  ?1 (eq) := prelude.instanceEqualityString
-77:46  instance  found instanceEqualityString : Equality String
-77:49  unify  String  =?=  String   ok
-89:18  meta  ?0 (a) : Type
-89:18  meta  ?1 (ord) : prelude.Order (?0 bytes.index x1 x2)
-89:18  instance  wanted Order (?0 bytes.index b i)  [waits for implicits]
-89:16  meta  ?2 (literal) : ?0 bytes.index x1 x2
-89:16  delay  literal waits for its type ?2
-89:18  solve  ?0 (a) := \x x x -> Int
-89:21  unify  (\x x x -> Int) bytes.index b i  =?=  Int   ok
-89:16  solve  ?2 (literal) := \x x x -> 0
-89:18  solve  ?1 (ord) := \x x x -> prelude.instanceOrderInt
-89:18  instance  found instanceOrderInt : Order Int
-89:18  unify  Bool  =?=  Bool   ok
-89:28  meta  ?3 (a) : Type
-89:28  meta  ?4 (ord) : prelude.Order (?3 bytes.index x1 x2)
-89:28  instance  wanted Order (?3 bytes.index b i)  [waits for implicits]
-89:28  solve  ?3 (a) := \x x x -> Int
-89:26  unify  (\x x x -> Int) bytes.index b i  =?=  Int   ok
-89:28  solve  ?4 (ord) := \x x x -> prelude.instanceOrderInt
-89:28  instance  found instanceOrderInt : Order Int
-89:42  unify  Bytes  =?=  Bytes   ok
-89:30  unify  Int  =?=  Int   ok
-89:28  unify  Bool  =?=  Bool   ok
-89:63  unify  Bytes  =?=  Bytes   ok
-89:65  unify  Int  =?=  Int   ok
-89:55  unify  UInt8  =?=  UInt8   ok
-86:10  meta  ?0 (a) : Type
-86:10  meta  ?1 (b) : Type
-86:38  unify  String  =?=  String   ok
-86:27  unify  Bytes  =?=  Bytes   ok
-86:10  solve  ?0 (a) := Int
-86:10  solve  ?1 (b) := prelude.Maybe UInt8
-86:20  unify  Int -> Maybe UInt8  =?=  Int -> Maybe UInt8   ok
-97:9  unify  Bytes -> Int -> Int -> Bytes  =?=  Bytes -> Int -> Int -> Bytes   ok
-94:10  meta  ?0 (a) : Type
-94:10  meta  ?1 (b) : Type
-94:19  meta  ?2 (a) : Type
-94:19  meta  ?3 (text) : prelude.Show ?2
-94:19  instance  wanted Show ?2  [waits for implicits]
-94:10  solve  ?0 (a) := ?2
-94:10  solve  ?1 (b) := String
-94:19  unify  ?2 -> String  =?=  ?2 -> String   ok
-94:43  unify  String  =?=  String   ok
-94:32  unify  Bytes  =?=  Bytes   ok
-94:19  solve  ?2 (a) := prelude.Bytes
-94:25  unify  Bytes  =?=  Bytes   ok
-94:19  solve  ?3 (text) := prelude.instanceShowBytes
-94:19  instance  found instanceShowBytes : Show Bytes
-94:75  unify  String  =?=  String   ok
-94:64  unify  Bytes  =?=  Bytes   ok
-94:57  unify  Bytes  =?=  Bytes   ok
-94:107  unify  String  =?=  String   ok
-94:96  unify  Bytes  =?=  Bytes   ok
-94:89  unify  Bytes  =?=  Bytes   ok
-103:10  unify  Bytes -> Bytes -> Bytes  =?=  Bytes -> Bytes -> Bytes   ok
-100:10  meta  ?0 (a) : Type
-100:10  meta  ?1 (text) : prelude.Show ?0
-100:10  instance  wanted Show ?0  [waits for implicits]
-100:35  unify  String  =?=  String   ok
-100:24  unify  Bytes  =?=  Bytes   ok
-100:53  unify  String  =?=  String   ok
-100:42  unify  Bytes  =?=  Bytes   ok
-100:10  solve  ?0 (a) := prelude.Bytes
-100:16  unify  Bytes  =?=  Bytes   ok
-100:10  solve  ?1 (text) := prelude.instanceShowBytes
-100:10  instance  found instanceShowBytes : Show Bytes
-109:15  unify  Type  =?=  Type   ok
-110:10  unify  List Bytes -> Bytes  =?=  List Bytes -> Bytes   ok
-107:26  unify  Bytes  =?=  Bytes   ok
-107:40  unify  Bytes  =?=  Bytes   ok
-107:47  unify  Bytes  =?=  Bytes   ok
-107:18  unify  Bytes  =?=  Bytes   ok
-124:10  meta  ?0 (a) : Type
-124:10  meta  ?1 (ord) : prelude.Order (?0 bytes.foldl x1 x2 x3 x4 x5 x6 x7)
-124:10  instance  wanted Order (?0 bytes.foldl a f z b from i acc)  [waits for implicits]
-124:10  solve  ?0 (a) := \x x x x x x x x -> Int
-124:8  unify  (\x x x x x x x x -> Int) bytes.foldl a f z b from i acc  =?=  Int   ok
-124:10  solve  ?1 (ord) := \x x x x x x x x -> prelude.instanceOrderInt
-124:10  instance  found instanceOrderInt : Order Int
-124:25  unify  Bytes  =?=  Bytes   ok
-124:13  unify  Int  =?=  Int   ok
-124:32  unify  a  =?=  a   ok
-124:49  meta  ?2 (a) : Type
-124:49  meta  ?3 (add) : prelude.Addition (?2 bytes.foldl x1 x2 x3 x4 x5 x6 x7)
-124:49  instance  wanted Addition (?2 bytes.foldl a f z b from i acc)  [waits for implicits]
-124:49  solve  ?2 (a) := \x x x x x x x x -> Int
-124:47  unify  (\x x x x x x x x -> Int) bytes.foldl a f z b from i acc  =?=  Int   ok
-124:49  solve  ?3 (add) := \x x x x x x x x -> prelude.instanceAdditionInt
-124:49  instance  found instanceAdditionInt : Addition Int
-124:49  unify  Int  =?=  Int   ok
-124:57  unify  a  =?=  a   ok
-124:70  unify  Bytes  =?=  Bytes   ok
-124:72  unify  Int  =?=  Int   ok
-124:62  unify  UInt8  =?=  UInt8   ok
-124:55  unify  a  =?=  a   ok
-124:41  unify  a  =?=  a   ok
-119:22  unify  a  =?=  a   ok
-119:15  unify  a  =?=  a   ok
-116:10  meta  ?0 (a) : Type
-116:33  meta  ?1 (a) : Type
-116:33  meta  ?2 (add) : prelude.Addition ?1
-116:33  instance  wanted Addition ?1  [waits for implicits]
-116:27  meta  ?3 (a) : Type
-116:27  meta  ?4 (mul) : prelude.Multiplication ?3
-116:27  instance  wanted Multiplication ?3  [waits for implicits]
-116:27  solve  ?3 (a) := \x x -> ?0
-116:25  unify  (\x x -> ?0) n b  =?=  ?0   ok
-116:29  meta  ?5 (literal) : ?0
-116:29  delay  literal waits for its type ?5
-116:33  solve  ?1 (a) := \x x -> ?0
-116:27  unify  (\x x -> ?0) n b  =?=  ?0   ok
-116:47  unify  UInt8  =?=  UInt8   ok
-116:10  solve  ?0 (a) := Int
-116:35  unify  Int  =?=  Int   ok
-116:29  solve  ?5 (literal) := \x x -> 256
-116:33  solve  ?2 (add) := \x x -> prelude.instanceAdditionInt
-116:33  instance  found instanceAdditionInt : Addition Int
-116:27  solve  ?4 (mul) := \x x -> prelude.instanceMultiplicationInt
-116:27  instance  found instanceMultiplicationInt : Multiplication Int
-116:33  unify  Int  =?=  Int   ok
-116:53  unify  Bytes  =?=  Bytes   ok
-132:52  unify  Int  =?=  Int   ok
-132:38  unify  UInt8  =?=  UInt8   ok
-132:35  unify  UInt8  =?=  UInt8   ok
-132:22  unify  Int  =?=  Int   ok
-132:72  unify  Bytes  =?=  Bytes   ok
-132:58  unify  String  =?=  String   ok
-132:6  unify  String  =?=  String   ok
-131:3  unify  Bytes  =?=  Bytes   ok
-127:31  meta  ?0 (a) : Type
-127:31  meta  ?1 (add) : prelude.Addition ?0
-127:31  instance  wanted Addition ?0  [waits for implicits]
-127:31  solve  ?0 (a) := \x -> UInt8
-127:29  unify  (\x -> UInt8) x  =?=  UInt8   ok
-127:31  solve  ?1 (add) := \x -> uint8.instanceAdditionUInt8
-127:31  instance  found UInt8.instanceAdditionUInt8 : Addition UInt8
-127:31  unify  UInt8  =?=  UInt8   ok
-127:37  unify  Bytes  =?=  Bytes   ok
-127:18  unify  Bytes  =?=  Bytes   ok
-142:6  unify  Bytes -> Bytes -> Bool  =?=  Bytes -> Bytes -> Bool   ok
-139:25  unify  String  =?=  String   ok
-139:14  unify  Bytes  =?=  Bytes   ok
-139:32  unify  Bytes  =?=  Bytes   ok
+51:10  unify  Bytes -> Int  =?=  Bytes -> Int   ok
+54:10  unify  Bytes -> List UInt8  =?=  Bytes -> List UInt8   ok
+62:12  unify  List UInt8 -> Bytes  =?=  List UInt8 -> Bytes   ok
+59:18  unify  Bytes  =?=  Bytes   ok
+68:9  unify  Bytes  =?=  Bytes   ok
+65:17  unify  Bytes  =?=  Bytes   ok
+76:14  unify  String -> Bytes  =?=  String -> Bytes   ok
+71:29  unify  String  =?=  String   ok
+71:18  unify  Bytes  =?=  Bytes   ok
+73:29  unify  String  =?=  String   ok
+73:18  unify  Bytes  =?=  Bytes   ok
+83:12  unify  Bytes -> String  =?=  Bytes -> String   ok
+80:46  meta  ?0 (a) : Type
+80:46  meta  ?1 (eq) : prelude.Equality ?0
+80:46  instance  wanted Equality ?0  [waits for implicits]
+80:20  unify  Bytes  =?=  Bytes   ok
+80:46  solve  ?0 (a) := String
+80:10  unify  String  =?=  String   ok
+80:46  solve  ?1 (eq) := prelude.instanceEqualityString
+80:46  instance  found instanceEqualityString : Equality String
+80:49  unify  String  =?=  String   ok
+92:18  meta  ?0 (a) : Type
+92:18  meta  ?1 (ord) : prelude.Order (?0 bytes.index x1 x2)
+92:18  instance  wanted Order (?0 bytes.index b i)  [waits for implicits]
+92:16  meta  ?2 (literal) : ?0 bytes.index x1 x2
+92:16  delay  literal waits for its type ?2
+92:18  solve  ?0 (a) := \x x x -> Int
+92:21  unify  (\x x x -> Int) bytes.index b i  =?=  Int   ok
+92:16  solve  ?2 (literal) := \x x x -> 0
+92:18  solve  ?1 (ord) := \x x x -> prelude.instanceOrderInt
+92:18  instance  found instanceOrderInt : Order Int
+92:18  unify  Bool  =?=  Bool   ok
+92:28  meta  ?3 (a) : Type
+92:28  meta  ?4 (ord) : prelude.Order (?3 bytes.index x1 x2)
+92:28  instance  wanted Order (?3 bytes.index b i)  [waits for implicits]
+92:28  solve  ?3 (a) := \x x x -> Int
+92:26  unify  (\x x x -> Int) bytes.index b i  =?=  Int   ok
+92:28  solve  ?4 (ord) := \x x x -> prelude.instanceOrderInt
+92:28  instance  found instanceOrderInt : Order Int
+92:42  unify  Bytes  =?=  Bytes   ok
+92:30  unify  Int  =?=  Int   ok
+92:28  unify  Bool  =?=  Bool   ok
+92:63  unify  Bytes  =?=  Bytes   ok
+92:65  unify  Int  =?=  Int   ok
+92:55  unify  UInt8  =?=  UInt8   ok
+89:10  meta  ?0 (a) : Type
+89:10  meta  ?1 (b) : Type
+89:38  unify  String  =?=  String   ok
+89:27  unify  Bytes  =?=  Bytes   ok
+89:10  solve  ?0 (a) := Int
+89:10  solve  ?1 (b) := prelude.Maybe UInt8
+89:20  unify  Int -> Maybe UInt8  =?=  Int -> Maybe UInt8   ok
+100:9  unify  Bytes -> Int -> Int -> Bytes  =?=  Bytes -> Int -> Int -> Bytes   ok
+97:10  meta  ?0 (a) : Type
+97:10  meta  ?1 (b) : Type
+97:19  meta  ?2 (a) : Type
+97:19  meta  ?3 (text) : prelude.Show ?2
+97:19  instance  wanted Show ?2  [waits for implicits]
+97:10  solve  ?0 (a) := ?2
+97:10  solve  ?1 (b) := String
+97:19  unify  ?2 -> String  =?=  ?2 -> String   ok
+97:43  unify  String  =?=  String   ok
+97:32  unify  Bytes  =?=  Bytes   ok
+97:19  solve  ?2 (a) := prelude.Bytes
+97:25  unify  Bytes  =?=  Bytes   ok
+97:19  solve  ?3 (text) := prelude.instanceShowBytes
+97:19  instance  found instanceShowBytes : Show Bytes
+97:75  unify  String  =?=  String   ok
+97:64  unify  Bytes  =?=  Bytes   ok
+97:57  unify  Bytes  =?=  Bytes   ok
+97:107  unify  String  =?=  String   ok
+97:96  unify  Bytes  =?=  Bytes   ok
+97:89  unify  Bytes  =?=  Bytes   ok
+106:10  unify  Bytes -> Bytes -> Bytes  =?=  Bytes -> Bytes -> Bytes   ok
+103:10  meta  ?0 (a) : Type
+103:10  meta  ?1 (text) : prelude.Show ?0
+103:10  instance  wanted Show ?0  [waits for implicits]
+103:35  unify  String  =?=  String   ok
+103:24  unify  Bytes  =?=  Bytes   ok
+103:53  unify  String  =?=  String   ok
+103:42  unify  Bytes  =?=  Bytes   ok
+103:10  solve  ?0 (a) := prelude.Bytes
+103:16  unify  Bytes  =?=  Bytes   ok
+103:10  solve  ?1 (text) := prelude.instanceShowBytes
+103:10  instance  found instanceShowBytes : Show Bytes
+112:15  unify  Type  =?=  Type   ok
+113:10  unify  List Bytes -> Bytes  =?=  List Bytes -> Bytes   ok
+110:26  unify  Bytes  =?=  Bytes   ok
+110:40  unify  Bytes  =?=  Bytes   ok
+110:47  unify  Bytes  =?=  Bytes   ok
+110:18  unify  Bytes  =?=  Bytes   ok
+138:20  meta  ?0 (a) : Type
+138:20  meta  ?1 (ord) : prelude.Order (?0 bytes.indexOf x1 x2 x3 x4 x5)
+138:20  instance  wanted Order (?0 bytes.indexOf needle b from foundAt j)  [waits for implicits]
+138:20  solve  ?0 (a) := \x x x x x x -> Int
+138:18  unify  (\x x x x x x -> Int) bytes.indexOf needle b from foundAt j  =?=  Int   ok
+138:20  solve  ?1 (ord) := \x x x x x x -> prelude.instanceOrderInt
+138:20  instance  found instanceOrderInt : Order Int
+138:47  unify  Int  =?=  Int   ok
+134:44  unify  Bytes  =?=  Bytes   ok
+134:51  unify  Bytes  =?=  Bytes   ok
+134:53  unify  Int  =?=  Int   ok
+134:34  unify  Int  =?=  Int   ok
+134:25  unify  Maybe Int  =?=  Maybe Int   ok
+121:10  meta  ?0 (a) : Type
+121:10  meta  ?1 (b) : Type
+121:28  unify  Bytes  =?=  Bytes   ok
+121:36  unify  Bytes  =?=  Bytes   ok
+121:10  solve  ?0 (a) := Int
+121:10  solve  ?1 (b) := prelude.Maybe Int
+121:20  unify  Int -> Maybe Int  =?=  (from : Int) -> Maybe Int   ok
+123:10  meta  ?0 (a) : Type
+123:10  meta  ?1 (b) : Type
+123:28  unify  Bytes  =?=  Bytes   ok
+123:36  unify  Bytes  =?=  Bytes   ok
+123:10  solve  ?0 (a) := Int
+123:10  solve  ?1 (b) := prelude.Maybe Int
+123:20  unify  Int -> Maybe Int  =?=  (from : Int) -> Maybe Int   ok
+125:18  unify  Bytes  =?=  Bytes   ok
+125:25  unify  Bytes  =?=  Bytes   ok
+127:10  meta  ?0 (a) : Type
+127:10  meta  ?1 (b) : Type
+127:28  unify  Bytes  =?=  Bytes   ok
+127:36  unify  Bytes  =?=  Bytes   ok
+127:10  solve  ?0 (a) := Int
+127:10  solve  ?1 (b) := prelude.Maybe Int
+127:20  unify  Int -> Maybe Int  =?=  (from : Int) -> Maybe Int   ok
+129:10  meta  ?0 (a) : Type
+129:10  meta  ?1 (b) : Type
+129:28  unify  Bytes  =?=  Bytes   ok
+129:32  unify  Bytes  =?=  Bytes   ok
+129:10  solve  ?0 (a) := Int
+129:10  solve  ?1 (b) := prelude.Maybe Int
+129:20  unify  Int -> Maybe Int  =?=  (from : Int) -> Maybe Int   ok
+131:18  unify  Bytes  =?=  Bytes   ok
+131:28  unify  Bytes  =?=  Bytes   ok
+156:32  unify  Type  =?=  Type   ok
+160:20  unify  Type  =?=  Type   ok
+160:34  unify  Type  =?=  Type   ok
+160:48  unify  Type  =?=  Type   ok
+161:22  unify  List Bytes  =?=  List Bytes   ok
+162:39  unify  List Bytes  =?=  List Bytes   ok
+162:45  meta  ?0 (a) : Type
+162:45  solve  ?0 (a) := \x x x x x x x x -> prelude.Bytes
+162:43  unify  (\x x x x x x x x -> Bytes) bytes.split sep b backwards x1 out x xs  =?=  Bytes   ok
+162:48  unify  List ((\x x x x x x x x -> Bytes) bytes.split sep b backwards x1 out x xs)  =?=  List Bytes   ok
+162:45  unify  List Bytes  =?=  List ((\x x x x x x x x -> Bytes) bytes.split sep b backwards x1 out x xs)   ok
+162:29  unify  List Bytes  =?=  List Bytes   ok
+166:34  unify  Type  =?=  Type   ok
+166:48  unify  Type  =?=  Type   ok
+168:10  meta  ?1 (a) : Type
+168:10  meta  ?2 (ord) : prelude.Order (?1 bytes.split x1 x2 x3 x4 x5 x6 x7)
+168:10  instance  wanted Order (?1 bytes.split sep b backwards splitFrom i j acc)  [waits for implicits]
+168:10  solve  ?1 (a) := \x x x x x x x x -> Int
+168:8  unify  (\x x x x x x x x -> Int) bytes.split sep b backwards splitFrom i j acc  =?=  Int   ok
+168:10  solve  ?2 (ord) := \x x x x x x x x -> prelude.instanceOrderInt
+168:10  instance  found instanceOrderInt : Order Int
+168:61  meta  ?3 (a) : Type
+168:41  unify  Bytes  =?=  Bytes   ok
+168:43  unify  Int  =?=  Int   ok
+168:58  unify  Bytes  =?=  Bytes   ok
+168:46  unify  Int  =?=  Int   ok
+168:61  solve  ?3 (a) := \x x x x x x x x -> prelude.Bytes
+168:30  unify  (\x x x x x x x x -> Bytes) bytes.split sep b backwards splitFrom i j acc  =?=  Bytes   ok
+168:64  unify  List ((\x x x x x x x x -> Bytes) bytes.split sep b backwards splitFrom i j acc)  =?=  List Bytes   ok
+168:61  unify  List Bytes  =?=  List ((\x x x x x x x x -> Bytes) bytes.split sep b backwards splitFrom i j acc)   ok
+168:19  unify  List Bytes  =?=  List Bytes   ok
+170:12  meta  ?4 (a) : Type
+170:12  meta  ?5 (add) : prelude.Addition (?4 bytes.split x1 x2 x3 x4 x5 x6 x7)
+170:12  instance  wanted Addition (?4 bytes.split sep b backwards splitFrom i j acc)  [waits for implicits]
+170:12  solve  ?4 (a) := \x x x x x x x x -> Int
+170:10  unify  (\x x x x x x x x -> Int) bytes.split sep b backwards splitFrom i j acc  =?=  Int   ok
+170:12  solve  ?5 (add) := \x x x x x x x x -> prelude.instanceAdditionInt
+170:12  instance  found instanceAdditionInt : Addition Int
+170:26  unify  Bytes  =?=  Bytes   ok
+170:14  unify  Int  =?=  Int   ok
+170:12  unify  Int  =?=  Int   ok
+171:20  unify  Bytes  =?=  Bytes   ok
+171:24  unify  Bytes  =?=  Bytes   ok
+171:29  meta  ?6 (a) : Type
+171:29  meta  ?7 (add) : prelude.Addition (?6 bytes.split x1 x2 x3 x4 x5 x6 x7)
+171:29  instance  wanted Addition (?6 bytes.split sep b backwards splitFrom i j acc)  [waits for implicits]
+171:29  solve  ?6 (a) := \x x x x x x x x -> Int
+171:27  unify  (\x x x x x x x x -> Int) bytes.split sep b backwards splitFrom i j acc  =?=  Int   ok
+171:29  solve  ?7 (add) := \x x x x x x x x -> prelude.instanceAdditionInt
+171:29  instance  found instanceAdditionInt : Addition Int
+171:43  unify  Bytes  =?=  Bytes   ok
+171:31  unify  Int  =?=  Int   ok
+171:29  unify  Int  =?=  Int   ok
+171:10  unify  Int  =?=  Int   ok
+172:27  meta  ?8 (a) : Type
+172:21  unify  Bytes  =?=  Bytes   ok
+172:23  unify  Int  =?=  Int   ok
+172:25  unify  Int  =?=  Int   ok
+172:27  solve  ?8 (a) := \x x x x x x x x -> prelude.Bytes
+172:10  unify  (\x x x x x x x x -> Bytes) bytes.split sep b backwards splitFrom i j acc  =?=  Bytes   ok
+172:30  unify  List ((\x x x x x x x x -> Bytes) bytes.split sep b backwards splitFrom i j acc)  =?=  List Bytes   ok
+172:27  unify  List Bytes  =?=  List ((\x x x x x x x x -> Bytes) bytes.split sep b backwards splitFrom i j acc)   ok
+169:10  unify  List Bytes  =?=  List Bytes   ok
+158:22  meta  ?9 (a) : Type
+158:22  meta  ?10 (eq) : prelude.Equality (?9 bytes.split x1 x2 x3 x4)
+158:22  instance  wanted Equality (?9 bytes.split sep b backwards splitFrom)  [waits for implicits]
+158:18  unify  Bytes  =?=  Bytes   ok
+158:22  solve  ?9 (a) := \x x x x x -> Int
+158:6  unify  (\x x x x x -> Int) bytes.split sep b backwards splitFrom  =?=  Int   ok
+158:22  solve  ?10 (eq) := \x x x x x -> prelude.instanceEqualityInt
+158:22  instance  found instanceEqualityInt : Equality Int
+158:33  unify  Bytes  =?=  Bytes   ok
+158:64  unify  Bytes  =?=  Bytes   ok
+158:68  unify  Bytes  =?=  Bytes   ok
+158:54  unify  Int  =?=  Int   ok
+158:41  unify  List Bytes  =?=  List Bytes   ok
+144:10  meta  ?0 (a) : Type
+144:10  meta  ?1 (b) : Type
+144:19  meta  ?2 (a) : Type
+144:19  meta  ?3 (text) : prelude.Show ?2
+144:19  instance  wanted Show ?2  [waits for implicits]
+144:10  solve  ?0 (a) := ?2
+144:10  solve  ?1 (b) := String
+144:19  unify  ?2 -> String  =?=  ?2 -> String   ok
+144:31  unify  Bytes  =?=  Bytes   ok
+144:39  unify  Bytes  =?=  Bytes   ok
+144:19  solve  ?2 (a) := prelude.Bytes
+144:25  unify  List Bytes  =?=  List Bytes   ok
+144:19  solve  ?3 (text) := prelude.instanceShowBytes
+144:19  instance  found instanceShowBytes : Show Bytes
+146:10  meta  ?0 (a) : Type
+146:10  meta  ?1 (b) : Type
+146:19  meta  ?2 (a) : Type
+146:19  meta  ?3 (text) : prelude.Show ?2
+146:19  instance  wanted Show ?2  [waits for implicits]
+146:10  solve  ?0 (a) := ?2
+146:10  solve  ?1 (b) := String
+146:19  unify  ?2 -> String  =?=  ?2 -> String   ok
+146:31  unify  Bytes  =?=  Bytes   ok
+146:41  unify  Bytes  =?=  Bytes   ok
+146:19  solve  ?2 (a) := prelude.Bytes
+146:25  unify  List Bytes  =?=  List Bytes   ok
+146:19  solve  ?3 (text) := prelude.instanceShowBytes
+146:19  instance  found instanceShowBytes : Show Bytes
+148:10  meta  ?0 (a) : Type
+148:10  meta  ?1 (b) : Type
+148:19  meta  ?2 (a) : Type
+148:19  meta  ?3 (text) : prelude.Show ?2
+148:19  instance  wanted Show ?2  [waits for implicits]
+148:10  solve  ?0 (a) := ?2
+148:10  solve  ?1 (b) := String
+148:19  unify  ?2 -> String  =?=  ?2 -> String   ok
+148:31  unify  Bytes  =?=  Bytes   ok
+148:38  unify  Bytes  =?=  Bytes   ok
+148:19  solve  ?2 (a) := prelude.Bytes
+148:25  unify  List Bytes  =?=  List Bytes   ok
+148:19  solve  ?3 (text) := prelude.instanceShowBytes
+148:19  instance  found instanceShowBytes : Show Bytes
+150:10  meta  ?0 (a) : Type
+150:10  meta  ?1 (b) : Type
+150:19  meta  ?2 (a) : Type
+150:19  meta  ?3 (text) : prelude.Show ?2
+150:19  instance  wanted Show ?2  [waits for implicits]
+150:10  solve  ?0 (a) := ?2
+150:10  solve  ?1 (b) := String
+150:19  unify  ?2 -> String  =?=  ?2 -> String   ok
+150:31  unify  Bytes  =?=  Bytes   ok
+150:39  unify  Bytes  =?=  Bytes   ok
+150:19  solve  ?2 (a) := prelude.Bytes
+150:25  unify  List Bytes  =?=  List Bytes   ok
+150:19  solve  ?3 (text) := prelude.instanceShowBytes
+150:19  instance  found instanceShowBytes : Show Bytes
+152:10  meta  ?0 (a) : Type
+152:10  meta  ?1 (b) : Type
+152:19  meta  ?2 (a) : Type
+152:19  meta  ?3 (text) : prelude.Show ?2
+152:19  instance  wanted Show ?2  [waits for implicits]
+152:10  solve  ?0 (a) := ?2
+152:10  solve  ?1 (b) := String
+152:19  unify  ?2 -> String  =?=  ?2 -> String   ok
+152:31  unify  Bytes  =?=  Bytes   ok
+152:35  unify  Bytes  =?=  Bytes   ok
+152:19  solve  ?2 (a) := prelude.Bytes
+152:25  unify  List Bytes  =?=  List Bytes   ok
+152:19  solve  ?3 (text) := prelude.instanceShowBytes
+152:19  instance  found instanceShowBytes : Show Bytes
+154:10  meta  ?0 (a) : Type
+154:10  meta  ?1 (b) : Type
+154:19  meta  ?2 (a) : Type
+154:19  meta  ?3 (text) : prelude.Show ?2
+154:19  instance  wanted Show ?2  [waits for implicits]
+154:10  solve  ?0 (a) := ?2
+154:10  solve  ?1 (b) := String
+154:19  unify  ?2 -> String  =?=  ?2 -> String   ok
+154:31  unify  Bytes  =?=  Bytes   ok
+154:38  unify  Bytes  =?=  Bytes   ok
+154:19  solve  ?2 (a) := prelude.Bytes
+154:25  unify  List Bytes  =?=  List Bytes   ok
+154:19  solve  ?3 (text) := prelude.instanceShowBytes
+154:19  instance  found instanceShowBytes : Show Bytes
+186:10  meta  ?0 (a) : Type
+186:10  meta  ?1 (ord) : prelude.Order (?0 bytes.foldl x1 x2 x3 x4 x5 x6 x7)
+186:10  instance  wanted Order (?0 bytes.foldl a f z b from i acc)  [waits for implicits]
+186:10  solve  ?0 (a) := \x x x x x x x x -> Int
+186:8  unify  (\x x x x x x x x -> Int) bytes.foldl a f z b from i acc  =?=  Int   ok
+186:10  solve  ?1 (ord) := \x x x x x x x x -> prelude.instanceOrderInt
+186:10  instance  found instanceOrderInt : Order Int
+186:25  unify  Bytes  =?=  Bytes   ok
+186:13  unify  Int  =?=  Int   ok
+186:32  unify  a  =?=  a   ok
+186:49  meta  ?2 (a) : Type
+186:49  meta  ?3 (add) : prelude.Addition (?2 bytes.foldl x1 x2 x3 x4 x5 x6 x7)
+186:49  instance  wanted Addition (?2 bytes.foldl a f z b from i acc)  [waits for implicits]
+186:49  solve  ?2 (a) := \x x x x x x x x -> Int
+186:47  unify  (\x x x x x x x x -> Int) bytes.foldl a f z b from i acc  =?=  Int   ok
+186:49  solve  ?3 (add) := \x x x x x x x x -> prelude.instanceAdditionInt
+186:49  instance  found instanceAdditionInt : Addition Int
+186:49  unify  Int  =?=  Int   ok
+186:57  unify  a  =?=  a   ok
+186:70  unify  Bytes  =?=  Bytes   ok
+186:72  unify  Int  =?=  Int   ok
+186:62  unify  UInt8  =?=  UInt8   ok
+186:55  unify  a  =?=  a   ok
+186:41  unify  a  =?=  a   ok
+181:22  unify  a  =?=  a   ok
+181:15  unify  a  =?=  a   ok
+178:10  meta  ?0 (a) : Type
+178:33  meta  ?1 (a) : Type
+178:33  meta  ?2 (add) : prelude.Addition ?1
+178:33  instance  wanted Addition ?1  [waits for implicits]
+178:27  meta  ?3 (a) : Type
+178:27  meta  ?4 (mul) : prelude.Multiplication ?3
+178:27  instance  wanted Multiplication ?3  [waits for implicits]
+178:27  solve  ?3 (a) := \x x -> ?0
+178:25  unify  (\x x -> ?0) n b  =?=  ?0   ok
+178:29  meta  ?5 (literal) : ?0
+178:29  delay  literal waits for its type ?5
+178:33  solve  ?1 (a) := \x x -> ?0
+178:27  unify  (\x x -> ?0) n b  =?=  ?0   ok
+178:47  unify  UInt8  =?=  UInt8   ok
+178:10  solve  ?0 (a) := Int
+178:35  unify  Int  =?=  Int   ok
+178:29  solve  ?5 (literal) := \x x -> 256
+178:33  solve  ?2 (add) := \x x -> prelude.instanceAdditionInt
+178:33  instance  found instanceAdditionInt : Addition Int
+178:27  solve  ?4 (mul) := \x x -> prelude.instanceMultiplicationInt
+178:27  instance  found instanceMultiplicationInt : Multiplication Int
+178:33  unify  Int  =?=  Int   ok
+178:53  unify  Bytes  =?=  Bytes   ok
+194:52  unify  Int  =?=  Int   ok
+194:38  unify  UInt8  =?=  UInt8   ok
+194:35  unify  UInt8  =?=  UInt8   ok
+194:22  unify  Int  =?=  Int   ok
+194:72  unify  Bytes  =?=  Bytes   ok
+194:58  unify  String  =?=  String   ok
+194:6  unify  String  =?=  String   ok
+193:3  unify  Bytes  =?=  Bytes   ok
+189:31  meta  ?0 (a) : Type
+189:31  meta  ?1 (add) : prelude.Addition ?0
+189:31  instance  wanted Addition ?0  [waits for implicits]
+189:31  solve  ?0 (a) := \x -> UInt8
+189:29  unify  (\x -> UInt8) x  =?=  UInt8   ok
+189:31  solve  ?1 (add) := \x -> uint8.instanceAdditionUInt8
+189:31  instance  found UInt8.instanceAdditionUInt8 : Addition UInt8
+189:31  unify  UInt8  =?=  UInt8   ok
+189:37  unify  Bytes  =?=  Bytes   ok
+189:18  unify  Bytes  =?=  Bytes   ok
+204:6  unify  Bytes -> Bytes -> Bool  =?=  Bytes -> Bytes -> Bool   ok
+201:25  unify  String  =?=  String   ok
+201:14  unify  Bytes  =?=  Bytes   ok
+201:32  unify  Bytes  =?=  Bytes   ok
 --stderr--
 --exit 0

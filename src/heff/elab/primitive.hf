@@ -598,7 +598,7 @@ textPrims =
 
 -- | those the library may declare (`primitive`), in order
 -- | >>> List.length libraryPrims
--- | 245
+-- | 246
 libraryPrims : List Prim
 libraryPrims =
   List.append

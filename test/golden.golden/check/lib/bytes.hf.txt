@@ -1,4 +1,4 @@
-module bytes (bytesAt, bytesAppend, bytesFromList, bytesFromString, bytesAsString, length, toList, fromList, empty, fromString, asString, index, slice, append, concat, foldl, map, eq)
+module bytes (bytesAt, bytesAppend, bytesFromList, bytesFromString, bytesAsString, length, toList, fromList, empty, fromString, asString, index, slice, append, concat, indexOf, split, foldl, map, eq)
 
 import uint8 as UInt8
 
@@ -17,6 +17,8 @@ index : Bytes -> Int -> Maybe UInt8
 slice : Bytes -> Int -> Int -> Bytes
 append : Bytes -> Bytes -> Bytes
 concat : List Bytes -> Bytes
+indexOf : Bytes -> Bytes -> (from : Int) -> Maybe Int
+split : Bytes -> Bytes -> List Bytes
 foldl : {a : Type} -> (a -> UInt8 -> a) -> a -> Bytes -> a
 map : (UInt8 -> UInt8) -> Bytes -> Bytes
 eq : Bytes -> Bytes -> Bool

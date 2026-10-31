@@ -1,0 +1,63 @@
+-- `Bytes` searched and split, each backend held to the interpreter:
+-- found or not, at the start, at the end, overlapping, from before the
+-- start or past the end, an empty needle or separator; bytes that are no
+-- text (0, 255); a body long enough that its pieces are views of it in
+-- C, a separator found at the edges of each.
+
+module test.programs.bytes-search
+
+import bytes as Bytes
+
+hay : Bytes
+hay = b["--xx\r\n\r\nbody\x00\xff\r\n--xx--\r\n"]
+
+found : List (Maybe Int)
+found =
+  [ Bytes.indexOf b["\r\n"] hay 0
+  , Bytes.indexOf b["\r\n"] hay 5
+  , Bytes.indexOf b["--xx"] hay 1
+  , Bytes.indexOf b["--xx--\r\n"] hay 0
+  , Bytes.indexOf b["\x00\xff"] hay 0
+  , Bytes.indexOf b["\xff\xff"] hay 0
+  , Bytes.indexOf b["aa"] b["aaa"] 1
+  , Bytes.indexOf b["aa"] b["aaa"] 2
+  , Bytes.indexOf b["a"] b["aaa"] -7
+  , Bytes.indexOf b["a"] b["aaa"] 3
+  , Bytes.indexOf b[] b["aaa"] 3
+  , Bytes.indexOf b[] b["aaa"] 4
+  , Bytes.indexOf b[] Bytes.empty 0
+  , Bytes.indexOf b["abc"] b["ab"] 0
+  , Bytes.indexOf b["aab"] b["aaaab"] 0
+  ]
+
+pieces : List (List String)
+pieces =
+  List.map
+    (\p -> List.map debug p)
+    [ Bytes.split b["\r\n"] hay
+    , Bytes.split b["--xx"] hay
+    , Bytes.split b["aa"] b["aaaaa"]
+    , Bytes.split b[] hay
+    , Bytes.split b[","] Bytes.empty
+    , Bytes.split b[","] b[","]
+    , Bytes.split b["\x00"] b["\x00a\x00\x00b\x00"]
+    ]
+
+-- (a body of 200 copies of a line, split at its line ends: each piece a
+-- view of it in C, the last one empty)
+long : Bytes
+long =
+  Bytes.concat
+    (List.map
+       (\i -> Bytes.append (Bytes.fromString (show i)) b["-----------------------------------------------\r\n"])
+       (List.range 1 200))
+
+longPieces : List Int
+longPieces = List.map Bytes.length (Bytes.split b["\r\n"] long)
+
+longFound : List (Maybe Int)
+longFound =
+  [ Bytes.indexOf b["200-"] long 0
+  , Bytes.indexOf b["\r\n"] long (Bytes.length long - 2)
+  , Bytes.indexOf b["\r\n"] long (Bytes.length long - 1)
+  ]

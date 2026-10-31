@@ -27,6 +27,8 @@ module bytes
   , slice
   , append
   , concat
+  , indexOf
+  , split
   , foldl
   , map
   , eq
@@ -39,6 +41,7 @@ primitive bytesAppend : Bytes -> Bytes -> Bytes
 primitive bytesFromList : List UInt8 -> Bytes
 primitive bytesFromString : String -> Bytes
 primitive bytesAsString : Bytes -> String
+primitive bytesFind : Bytes -> Bytes -> Int -> Int
 
 -- Read
 --------------------------------------------------------------------------------
@@ -108,6 +111,65 @@ append = bytesAppend
 -- | [1, 2, 3]
 concat : List Bytes -> Bytes
 concat = bytesConcat
+
+-- Searched
+--------------------------------------------------------------------------------
+
+-- | Where the bytes `needle` are first in `b`, from byte `from` on (from
+-- | 0, a `from` below it), if they are: as a string's `indexOf`, by
+-- | the runtime, not a byte at a time.
+-- | >>> List.map (indexOf b["lo"] b["hello, world: lo"]) [0, 4, 15, 99, -5]
+-- | [Just 3, Just 14, Nothing, Nothing, Just 3]
+-- | >>> List.map (indexOf b["he"] b["hello"]) [0, 1]
+-- | [Just 0, Nothing]
+-- | >>> indexOf b["x"] b["hello"] 0
+-- | Nothing
+-- | >>> List.map (indexOf b["aa"] b["aaa"]) [0, 1, 2]
+-- | [Just 0, Just 1, Nothing]
+-- | >>> List.map (indexOf b[] b["ab"]) [-1, 2, 3]
+-- | [Just 0, Just 2, Nothing]
+-- | >>> indexOf b["\r\n"] b[255, 0, "\r\n"] (from := 1)
+-- | Just 2
+indexOf : Bytes -> Bytes -> (from : Int) -> Maybe Int
+indexOf needle b from = foundAt (bytesFind needle b from)
+  where
+  -- (an index found, if it is one: -1 is none)
+  foundAt : Int -> Maybe Int
+  foundAt j = if j < 0 then Nothing else Just j
+
+-- | The pieces of `b` between the `sep`s, as a string's `split`: one
+-- | where there is none, an empty one where two are side by side or
+-- | `b` begins or ends with one, and `b` whole where `sep` is empty.
+-- | Each piece is a `slice` of `b`.
+-- | >>> List.map show (split b["--"] b["a--b----c"])
+-- | ["a", "b", "", "c"]
+-- | >>> List.map show (split b["\r\n"] b["\r\nhead\r\n"])
+-- | ["", "head", ""]
+-- | >>> List.map show (split b[","] b["abc"])
+-- | ["abc"]
+-- | >>> List.map show (split b["aa"] b["aaa"])
+-- | ["", "a"]
+-- | >>> List.map show (split b[] b["ab"])
+-- | ["ab"]
+-- | >>> List.map show (split b[","] empty)
+-- | [""]
+split : Bytes -> Bytes -> List Bytes
+split sep b =
+  if bytesLength sep == 0 then [b] else splitFrom 0 (bytesFind sep b 0) Nil
+  where
+  backwards : List Bytes -> List Bytes -> List Bytes
+  backwards [] out = out
+  backwards (x :: xs) out = backwards xs (x :: out)
+
+  -- (the pieces of `b` from `i` on, the next `sep` at `j` (-1: none),
+  -- into `acc`, last first)
+  splitFrom : Int -> Int -> List Bytes -> List Bytes
+  splitFrom i j acc =
+    if j < 0 then backwards (bytesSlice b i (bytesLength b) :: acc) Nil
+    else splitFrom
+        (j + bytesLength sep)
+        (bytesFind sep b (j + bytesLength sep))
+        (bytesSlice b i j :: acc)
 
 -- Gone through
 --------------------------------------------------------------------------------
