@@ -427,6 +427,11 @@ primJs BytesOfInt =
   ^ " const m = Number(n); if (!(m >= 0 && m <= 64 && m % 8 === 0)) return $abandon(); const r = new Uint8Array(m / 8); wr(r, 0, word(v, m, f), m); return r; }"
 primJs BytesHasAt =
   "(a) => (o) => (b) => { const at = Number(o); if (!(at >= 0 && at <= a.length - b.length)) return $F; for (let i = 0; i < b.length; i++) if (a[at + i] !== b[i]) return $F; return $T; }"
+-- (where the bytes `n` are first in `a` from `i` on (from 0, `i` below
+-- it), or -1: their first byte looked for by `indexOf`, the rest
+-- compared there, as the runtime's)
+primJs BytesFind =
+  "(n) => (a) => (i) => { const m = n.length, end = a.length - m; let k = i < 0n ? 0 : Number(i); if (k > end) return -1n; if (m === 0) return BigInt(k); for (;;) { k = a.indexOf(n[0], k); if (k < 0 || k > end) return -1n; let j = 1; while (j < m && a[k + j] === n[j]) j++; if (j === m) return BigInt(k); k++; } }"
 -- (`bits`'s: `Bits` are a `Uint8Array` whose `bits` is their length,
 -- the bits past it 0, never changed once made; of bytes, and as bytes,
 -- the same buffer; a `Float64`'s bits, IEEE's, of 64 or of 32, a NaN the

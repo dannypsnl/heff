@@ -108,6 +108,7 @@ data Prim
   | BytesIntAt
   | BytesOfInt
   | BytesHasAt
+  | BytesFind
   -- `Bits`'
   | BitsLength
   | BitsIntAt
@@ -285,6 +286,7 @@ primName BytesToString = "bytesToString"
 primName BytesIntAt = "bytesIntAt"
 primName BytesOfInt = "bytesOfInt"
 primName BytesHasAt = "bytesHasAt"
+primName BytesFind = "bytesFind"
 primName BitsLength = "bitsLength"
 primName BitsIntAt = "bitsIntAt"
 primName BitsOfInt = "bitsOfInt"
@@ -426,6 +428,7 @@ primArity BytesToString = 1
 primArity BytesIntAt = 4
 primArity BytesOfInt = 3
 primArity BytesHasAt = 3
+primArity BytesFind = 3
 primArity BitsLength = 1
 primArity BitsIntAt = 4
 primArity BitsOfInt = 3
@@ -574,6 +577,7 @@ textPrims =
   , BytesIntAt
   , BytesOfInt
   , BytesHasAt
+  , BytesFind
   , BitsLength
   , BitsIntAt
   , BitsOfInt

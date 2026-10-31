@@ -1088,6 +1088,12 @@ prim BytesHasAt =
                              && strEq
                                (strSlice a o (o + strLength b))
                                b)))))))
+prim BytesFind =
+  bytes2
+    (\n a ->
+       Ok
+         (int1
+            (\i -> Ok (VInt (fromMaybe (-1) (indexOf n a (max 0 i)))))))
 -- (`Bits`: how many, and the bytes they are in)
 prim BitsLength = bits1 (\n s -> Ok (VInt n))
 prim BitsIntAt =

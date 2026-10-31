@@ -50,6 +50,7 @@ lendingPrim BytesSlice = True
 lendingPrim BytesEq = True
 lendingPrim BytesIntAt = True
 lendingPrim BytesHasAt = True
+lendingPrim BytesFind = True
 lendingPrim _ = False
 
 -- A function's parameter is lent, not given (borrowed), where the

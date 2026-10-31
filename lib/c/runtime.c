@@ -4742,6 +4742,11 @@ HEFF_FAST V heff_bytesHasAt_lent(V a, V o, V b, int give) {
 }
 HEFF_FN V heff_bytesHasAt(V a, V o, V b) { return heff_bytesHasAt_lent(a, o, b, 5); }
 
+// (where the bytes `n` are first in `a` from `i` on (from 0, `i` below
+// it), or -1: a string's search, `heff_strFind`)
+HEFF_FN V heff_bytesFind_lent(V n, V a, V i, int give) { return heff_strFind_lent(n, a, i, give); }
+HEFF_FN V heff_bytesFind(V n, V a, V i) { return heff_strFind_lent(n, a, i, 3); }
+
 // Bits
 // ---------------------------------------------------------------------
 
