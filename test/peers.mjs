@@ -218,13 +218,22 @@ if (mode === "client") {
     ["HTTP/1.0, kept alive", [[0, "GET /hello HTTP/1.0\r\nConnection: keep-alive\r\n\r\nGET /hello HTTP/1.0\r\n\r\n"]]],
     ["Expect: 100-continue",
       [[0, "POST /echo HTTP/1.1\r\nContent-Length: 5\r\nExpect: 100-continue\r\nConnection: close\r\n\r\n"], ["100 Continue\r\n\r\n", "hello"]]],
-    ["a chunked body", [[0, "POST /echo HTTP/1.1\r\nTransfer-Encoding: chunked\r\n\r\n3\r\nabc\r\n0\r\n\r\n"]]],
+    ["a chunked body", [[0, "POST /echo HTTP/1.1\r\nTransfer-Encoding: chunked\r\nConnection: close\r\n\r\n3\r\nabc\r\n0\r\n\r\n"]]],
+    // (a body in chunks sent a piece at a time, a piece ending within a
+    // chunk's size, its data, its end; an extension, a trailer; and a
+    // request after it, in its last piece)
+    ["a chunked body in pieces",
+      [[0, "POST /echo HTTP/1.1\r\nTransfer-Encoding: chunked\r\nExpect: 100-continue\r\n\r\n"], ["100 Continue\r\n\r\n", "5\r\nhel"],
+        [50, "lo\r\n7;ext=1\r\n, worl"], [50, "d\r\n0\r\nX-Trailer: t\r"],
+        [50, "\n\r\nGET /hello HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n"]]],
+    ["chunks and a length", [[0, "POST /echo HTTP/1.1\r\nTransfer-Encoding: chunked\r\nContent-Length: 3\r\n\r\n3\r\nabc\r\n0\r\n\r\n"]]],
+    ["a body in gzip", [[0, "POST /echo HTTP/1.1\r\nTransfer-Encoding: gzip\r\nContent-Length: 3\r\n\r\nabc"]]],
     // (refused, the client sending on after the response: drained, not
     // reset, so that it reads the response)
     ["a body too long, sent on",
       [[0, "POST /echo HTTP/1.1\r\nContent-Length: 100000000\r\n\r\n" + "x".repeat(32768)], ["Content Too Large\n", "y".repeat(524288)]]],
-    ["a chunked body, sent on",
-      [[0, "POST /echo HTTP/1.1\r\nTransfer-Encoding: chunked\r\n\r\n8000\r\n" + "x".repeat(32768)], ["Not Implemented\n", "y".repeat(524288)]]],
+    ["a chunk too long, sent on",
+      [[0, "POST /echo HTTP/1.1\r\nTransfer-Encoding: chunked\r\n\r\n4000001\r\n" + "x".repeat(32768)], ["Content Too Large\n", "y".repeat(524288)]]],
     ["no request", [[0, "NONSENSE\r\n\r\n"]]],
     // (replies of std.http.server's other than whole: streamed in
     // chunks, the connection kept after them; streamed to HTTP/1.0, its
@@ -684,6 +693,25 @@ if (mode === "streams") {
     c.s.write(Buffer.concat([Buffer.from(upgrade), Buffer.from([0x81, 0x02, 0x68, 0x69])]));
     const closed = await ended(c, 5000);
     said("a frame not masked", `${JSON.stringify(frames(afterHead(c)))}, ${closed ? "closed" : "still open"}`);
+  }
+  // (a body in chunks sent a piece at a time, after `100 Continue`, a
+  // piece ending within a chunk's size, its data, its end; an extension,
+  // a trailer; and a request after it, in its last piece.  Then chunks
+  // beside a length, refused)
+  {
+    const c = await opened();
+    c.s.write("POST /echo HTTP/1.1\r\nHost: x\r\nTransfer-Encoding: chunked\r\nExpect: 100-continue\r\n\r\n");
+    await c.until((g) => g.toString("latin1").includes("100 Continue\r\n\r\n"));
+    for (const p of ["5\r\nhel", "lo\r\n7;ext=1\r\n, worl", "d\r\n0\r\nX-Trailer: t\r", "\n\r\nGET /hello HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n"]) {
+      c.s.write(p);
+      await wait(50);
+    }
+    await Promise.race([c.ended, wait(5000)]);
+    said("a chunked body in pieces", JSON.stringify(c.text()));
+    const l = await opened();
+    l.s.write("POST /echo HTTP/1.1\r\nHost: x\r\nTransfer-Encoding: chunked\r\nContent-Length: 3\r\n\r\n3\r\nabc\r\n0\r\n\r\n");
+    await Promise.race([l.ended, wait(5000)]);
+    said("chunks and a length", l.text().split("\r\n")[0]);
   }
   await wait(200);
   said("gone, sockets", `${goneCount(await asked("GET", "/log"), "socket")} time(s)`);

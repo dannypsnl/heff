@@ -216,11 +216,12 @@
 -- closes its connection.
 --
 -- Requests are read as std.http.server reads them, by its `requestIn`,
--- a piece at a time, each piece an act: a body by `Content-Length`, a
--- `100 Continue` written where the client waits for one, a request
--- refused as std.http.server refuses it (`400`, `413`, `431`, `501`,
--- `505`), what the client still sends then read, up to a mebibyte, and
--- let go of before its connection is closed.  Requests sent one after
+-- a piece at a time, each piece an act: a body by `Content-Length`, or
+-- sent in chunks, each piece read undone as it comes, a `100 Continue`
+-- written where the client waits for one, a request refused as
+-- std.http.server refuses it (`400`, `413`, `431`, `501`, `505`), what
+-- the client still sends then read, up to a mebibyte, and let go of
+-- before its connection is closed.  Requests sent one after
 -- another on a connection without waiting (pipelined) are answered in
 -- turn.  A connection whose client sends nothing for `idle`
 -- milliseconds -- 30 seconds unless another is given, by name,
@@ -400,8 +401,11 @@ data Phase = Reading | Answering | Writing | InStream | InSocket | Closing
 -- (how far the next request is read: its head not yet -- the last bytes
 -- looked through for its end, three at most, kept, for an end read
 -- in two pieces -- or its head, its body to come, from where that
--- starts)
-data Part = InHead Bytes | InBody Server.Request Int
+-- starts; or its head, its body sent in chunks, read so far)
+data Part
+  = InHead Bytes
+  | InBody Server.Request Int
+  | InChunks Server.Request Server.Chunks
 
 -- (when the head being read is to be read by, on the monotonic clock,
 -- in milliseconds: at no time -- a body is read, or there is no limit
@@ -919,10 +923,41 @@ expects (Just r) =
     (\v -> HTTP.sameName v "100-continue")
     (Server.header "expect" r)
 
--- (how far a request is read, its head read, its body starting `at`)
-bodyPart : Maybe Server.Request -> Int -> Part
-bodyPart (Just r) at = InBody r at
-bodyPart Nothing at = InHead Bytes.empty
+-- (the request whose head is read, where it is)
+wantedOf : Server.Wanted -> Maybe Server.Request
+wantedOf (MoreHead want) = Nothing
+wantedOf (MoreBody r want) = Just r
+wantedOf (MoreChunks r ch) = Just r
+
+-- (the connection's state, the head of its request read, `buf` all that
+-- is read of it, the head's blank line at `i`, as what the request still
+-- wants says: so many bytes in all, its body from `i + 4` on; or its
+-- body's chunks, which hold what is read of them)
+wanting : {e : HFunctor}
+        -> {err : Type}
+        -> Conn e err
+        -> Bytes
+        -> Int
+        -> Server.Wanted
+        -> Conn e err
+wanting st buf i (MoreHead want) =
+  { st
+  | parts = [buf]
+  , got = Bytes.length buf
+  , want = want
+  , part = InHead Bytes.empty
+  , by = Whenever
+  }
+wanting st buf i (MoreBody r want) =
+  { st
+  | parts = [buf]
+  , got = Bytes.length buf
+  , want = want
+  , part = InBody r (i + 4)
+  , by = Whenever
+  }
+wanting st buf i (MoreChunks r ch) =
+  { st | parts = Nil, got = 0, want = 0, part = InChunks r ch, by = Whenever }
 
 -- The behaviours
 --------------------------------------------------------------------------------
@@ -1312,6 +1347,30 @@ mutual
   took sg cn st (InHead tail) b = looked sg cn st tail b
   took sg cn st (InBody r at) b =
     advanced sg cn { st | parts = b :: st.parts, got = st.got + Bytes.length b }
+  took sg cn st (InChunks r ch) b =
+    dechunked sg cn st r (Server.feedChunks ch b)
+
+  -- (what a piece of a body sent in chunks came to: the request, all
+  -- read, handed to the handler; more read; or the request refused)
+  dechunked : {e : HFunctor}
+            -> {rg : Type}
+            -> {err : Type}
+            -> {{bc : BOC.boc <: e}}
+            -> {{nt : Net.net <: e}}
+            -> {{clock : Time.time <: e}}
+            -> Serving e rg err
+            -> Connection e rg err
+            -> Conn e err
+            -> Server.Request
+            -> Server.Dechunked
+            -> Co e (Conn e err)
+  dechunked sg cn st r (BodyRead body rest) =
+    answered sg cn st (Asked { r | body = body } rest)
+  dechunked sg cn st r (ChunksToCome ch) = do
+    reading sg cn readSize Whenever
+    pure { st | part = InChunks r ch }
+  dechunked sg cn st r (ChunksRefused status) =
+    answered sg cn st (Refused status)
 
   -- (bytes `b` read of a head, its end looked for in them alone, and in
   -- `tail`, the last bytes read before them: where it is found, the
@@ -1357,16 +1416,9 @@ mutual
   headed sg cn st i = do
     let buf = leftOf st.parts
     case Server.requestIn (from := i) cn.peer buf of
-      Left (head, want) -> do
-        let more =
-          { st
-          | parts = [buf]
-          , got = Bytes.length buf
-          , want = want
-          , part = bodyPart head (i + 4)
-          , by = Whenever
-          }
-        if expects head && not st.continued
+      Left wanted -> do
+        let more = wanting st buf i wanted
+        if expects (wantedOf wanted) && not st.continued
         then do
           continuing sg cn
           pure { more | continued = True }
@@ -1418,6 +1470,7 @@ mutual
            (Bytes.slice buf st.want (Bytes.length buf)))
   bodied sg cn st (InHead tail) =
     looked sg cn { st | parts = Nil, got = 0 } Bytes.empty (leftOf st.parts)
+  bodied sg cn st (InChunks r ch) = dechunked sg cn st r (ChunksToCome ch)
 
   -- (what a request read came to: handed to the handler, or refused, or
   -- the connection's end: the connection's state after)

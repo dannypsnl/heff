@@ -9,7 +9,8 @@
 -- `/stream`, three pieces, then finished; `/events`, a stream of events
 -- kept in a hub, `/publish` its body an event to each; `/flood`, a
 -- stream kept in another, `/pump` 64 KiB to each; `/ws`, a socket, each
--- message sent back; `/log`, each `gone` called so far, a line each.
+-- message sent back; `/echo`, its body; `/log`, each `gone` called so
+-- far, a line each.
 
 module test.node.boc-streams
 
@@ -153,6 +154,8 @@ answering k l r respond =
   then do
     with l := k.log do
       respond (Whole (Server.plain 200 (joinWith "," (List.reverse l))))
+  else if r.target == "/echo"
+  then respond (Whole (Server.plain 200 (Bytes.asString r.body)))
   else if r.target == "/stop"
   then do
     respond (Whole (Server.plain 200 "stopping"))

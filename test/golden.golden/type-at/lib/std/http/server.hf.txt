@@ -1,19 +1,19 @@
-@5703
+@6434
 nothing there
-@11170
-Maybe : (a : Type) -> Type   (global)
-@14863
-e : HFunctor   (local)
-@18780
-Just : Maybe Request   (global)
-@24984
-Bytes.fromString : String -> Bytes   (global)
-@29447
-res : HTTP.Response   (local)
-@33517
-True : Bool   (global)
-@36300
-pure : {h : HFunctor} -> {a : Type} -> a -> Co h a   (global)
+@13605
+codings : List (String, String) -> List String   (global)
+@19852
+m : Int   (local)
+@25983
+HFunctor : Theory   (global)
+@32112
+Net.read : {e : HFunctor} -> {s : Type} -> {timeout : Int := 0} -> {{ev : Net.net <: e}} -> With s Net.TcpStream -> Int -> Co e (Either Net.NetError Bytes)   (global)
+@37912
+head : String   (local)
+@45743
+nothing there
+@50073
+c : With s Net.TcpStream   (local)
 @0
 nothing there
 @nope
