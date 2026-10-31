@@ -1,19 +1,19 @@
-@5703
+@6072
 nothing there
-@11170
-Maybe : (a : Type) -> Type   (global)
-@14863
-e : HFunctor   (local)
-@18780
-Just : Maybe Request   (global)
-@24984
-Bytes.fromString : String -> Bytes   (global)
-@29447
-res : HTTP.Response   (local)
-@33517
-True : Bool   (global)
-@36300
-pure : {h : HFunctor} -> {a : Type} -> a -> Co h a   (global)
+@12626
+strSlice : String -> Int -> Int -> String   (global)
+@18580
+nothing there
+@23116
+Net.net : HFunctor   (global)
+@28013
+Bytes : Type   (global)
+@34016
+Bool : Type   (global)
+@38396
+Bytes : Type   (global)
+@41292
+idle : Int   (local)
 @0
 nothing there
 @nope

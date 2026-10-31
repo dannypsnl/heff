@@ -1,21 +1,29 @@
-module std.http.server (Request, header, plain, parseHead, BodyIs(..), HeadRead(..), Got(..), requestIn, reason, responseBytes, chunk, Head, streamedHead, takeoverHead, keptAlive, After(..), Taken, Reply(..), serveConnection, serveUntil, serve)
+module std.http.server (Request, header, plain, json, notAllowed, segments, queries, queryAll, query, parseHead, BodyIs(..), HeadRead(..), Got(..), requestIn, reason, responseBytes, chunk, Head, streamedHead, takeoverHead, keptAlive, After(..), Taken, Reply(..), serveConnection, serveUntil, serve)
 
 import co
 import exception
 import resource
 import bytes as Bytes
 import custodian as Custodian
+import json as JSON
 import std.duration as Duration
 import std.http as HTTP
 import std.net as Net
 import std.time as Time
+import std.url as URL
 import stream as Stream
 import uint8 as UInt8
 
 type Request = { method : String, target : String, version : String, headers : List (String, String), body : Bytes, peer : Net.Address }
 header : String -> Request -> Maybe String
 plain : Int -> String -> HTTP.Response
+json : Int -> JSON.Json -> HTTP.Response
+notAllowed : List String -> HTTP.Response
 parseHead : Net.Address -> String -> Maybe Request
+segments : Request -> List String
+queries : Request -> List (String, String)
+queryAll : String -> Request -> List String
+query : String -> Request -> Maybe String
 data BodyIs = Length Int | Refuse Int
 data HeadRead = HeadAt Bytes Int | HeadTooLong | HeadEnded
 data Got = Asked Request Bytes | Refused Int | Ended

@@ -37,6 +37,13 @@
 --   either throw pure r
 -- ```
 --
+-- A handler reads a request's path as its segments, a list to match
+-- on with the method, `case (r.method, Server.segments r)` and a branch
+-- `("GET", ["rooms", name])`; its query by a key (`query`, `queryAll`),
+-- or whole (`queries`).  Beside `plain`, it answers with `json`, and a
+-- method a path has not with `notAllowed`, its `Allow` the methods it
+-- has.
+--
 -- A handler answers with a `Reply`, which is one of three: a response
 -- whole (`Whole`); a head -- a status and headers, a `Head` -- and a body
 -- given a piece at a time (`Streamed`); or a head, after which the
@@ -117,6 +124,12 @@ module std.http.server
   ( Request
   , header
   , plain
+  , json
+  , notAllowed
+  , segments
+  , queries
+  , queryAll
+  , query
   , parseHead
   , BodyIs(..)
   , HeadRead(..)
@@ -140,10 +153,12 @@ import bytes as Bytes
 import co
 import custodian as Custodian
 import exception
+import json as JSON
 import std.duration as Duration
 import std.http as HTTP
 import std.net as Net
 import std.time as Time
+import std.url as URL
 import stream as Stream
 import uint8 as UInt8
 import resource
@@ -175,6 +190,35 @@ plain status t =
   { status = status
   , headers = [MkPair "Content-Type" "text/plain; charset=utf-8"]
   , body = Bytes.fromString t
+  }
+
+-- | A response of JSON, `application/json`: the value as `JSON.stringify`
+-- | writes it, and a line's end.
+-- | >>> Bytes.asString (json 200 (JSON.obj [JSON.kv "ok" (JBool True)])).body
+-- | "{\"ok\":true}\n"
+-- | >>> (json 201 JNull).headers
+-- | [MkPair "Content-Type" "application/json"]
+json : Int -> JSON.Json -> HTTP.Response
+json status j =
+  { status = status
+  , headers = [MkPair "Content-Type" "application/json"]
+  , body = Bytes.fromString (JSON.stringify j ^ "\n")
+  }
+
+-- | `405 Method Not Allowed`, its `Allow` the methods the path has, as
+-- | they are given.
+-- | >>> (notAllowed ["GET", "HEAD"]).headers
+-- | [MkPair "Content-Type" "text/plain; charset=utf-8", MkPair "Allow" "GET, HEAD"]
+-- | >>> (notAllowed ["POST"]).status
+-- | 405
+notAllowed : List String -> HTTP.Response
+notAllowed methods =
+  { status = 405
+  , headers =
+      [ MkPair "Content-Type" "text/plain; charset=utf-8"
+      , MkPair "Allow" (joinWith ", " methods)
+      ]
+  , body = Bytes.fromString "method not allowed\n"
   }
 
 -- Limits
@@ -276,6 +320,78 @@ headOfLines peer (l :: rest) = requestOf peer (split " " l) (headerLines rest)
 -- | "none"
 parseHead : Net.Address -> String -> Maybe Request
 parseHead peer text = headOfLines peer (split "\r\n" text)
+
+-- Paths and queries
+--------------------------------------------------------------------------------
+
+-- (where a string ends, at the first `stop` in it or else at its end)
+endAt : String -> String -> Int
+endAt stop s = fromMaybe (strLength s) (indexOf stop s 0)
+
+-- (what is before the first `stop`; all, where there is none)
+beforeFirst : String -> String -> String
+beforeFirst stop s = strSlice s 0 (endAt stop s)
+
+-- (what is after the first `stop`; "", where there is none)
+afterFirst : String -> String -> String
+afterFirst stop s =
+  strSlice s (min (endAt stop s + 1) (strLength s)) (strLength s)
+
+-- (a target's path: what is before its `?` and its `#`)
+pathOf : String -> String
+pathOf t = beforeFirst "?" (beforeFirst "#" t)
+
+-- (a target's query: what is after its `?`, before its `#`)
+queryOf : String -> String
+queryOf t = afterFirst "?" (beforeFirst "#" t)
+
+-- (the pieces without the first, where it is empty)
+emptyFirstDropped : List String -> List String
+emptyFirstDropped ("" :: rest) = rest
+emptyFirstDropped pieces = pieces
+
+-- (a segment unescaped; as it is written where an escape is broken)
+segmentRead : String -> String
+segmentRead s = fromMaybe s (URL.unescape s)
+
+-- | The segments of a request's path, to match on (`["rooms", name]`):
+-- | the target's path, before its `?` and its `#`, split at each `/`, each
+-- | piece unescaped after -- so `%2F` is a `/` in a segment, not between
+-- | two -- and a `+` kept.  The empty piece before the first `/` is not
+-- | a segment, nor one after a last `/`: `/rooms/` is `/rooms`'s, and `/`
+-- | has none.  An empty segment between two `/`s is kept (`""`).  A
+-- | piece whose `%` is not followed by two hex digits is as written.
+-- | >>> List.map (\t -> maybe Nil segments (parseHead { host = "::1", port = 1 } ("GET " ^ t ^ " HTTP/1.1"))) ["/rooms/lobby/events", "/rooms/", "/", "/files/a%2Fb+c%20d", "/a//b?x=1#top", "/a/%zz"]
+-- | [["rooms", "lobby", "events"], ["rooms"], [], ["files", "a/b+c d"], ["a", "", "b"], ["a", "%zz"]]
+segments : Request -> List String
+segments r =
+  List.map
+    segmentRead
+    (List.reverse
+       (emptyFirstDropped
+          (List.reverse (emptyFirstDropped (split "/" (pathOf r.target))))))
+
+-- | A request's query, its keys and values in order, as `URL.parseQuery`
+-- | reads them: `+` a space, an escape its byte, a key without `=` a
+-- | value of `""`, a key given twice twice.  A query that does not read
+-- | (a `%` not followed by two hex digits) has none; no `?`, none.
+-- | >>> List.map (\t -> maybe Nil queries (parseHead { host = "::1", port = 1 } ("GET " ^ t ^ " HTTP/1.1"))) ["/a?x=1&y=a+b%26", "/a?", "/a", "/a?a&b=1", "/a?k=1&k=2#f", "/a?x=%zz&y=1"]
+-- | [[MkPair ("x") ("1"), MkPair ("y") ("a b&")], [], [], [MkPair ("a") (""), MkPair ("b") ("1")], [MkPair ("k") ("1"), MkPair ("k") ("2")], []]
+queries : Request -> List (Pair String String)
+queries r = fromMaybe Nil (URL.parseQuery (queryOf r.target))
+
+-- | The values a key of a request's query is given, in order.
+-- | >>> List.map (\k -> maybe Nil (queryAll k) (parseHead { host = "::1", port = 1 } "GET /a?k=1&b&k=2 HTTP/1.1")) ["k", "b", "z"]
+-- | [["1", "2"], [""], []]
+queryAll : String -> Request -> List String
+queryAll key r = List.map snd (List.keepIf (\kv -> fst kv == key) (queries r))
+
+-- | The first value a key of a request's query is given, if it is given
+-- | one: a key without `=` is given `""`.
+-- | >>> List.map (\k -> maybe Nothing (query k) (parseHead { host = "::1", port = 1 } "GET /a?k=1&b&k=2 HTTP/1.1")) ["k", "b", "z"]
+-- | [Just ("1"), Just (""), Nothing]
+query : String -> Request -> Maybe String
+query key r = List.head (queryAll key r)
 
 -- (what a request's head says of its body: its length, or the status it
 -- is answered with, its connection then closed)
