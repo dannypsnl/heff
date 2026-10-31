@@ -12,8 +12,9 @@
 -- written by bodies that fail, that do not write the cown, and that give
 -- it to another behaviour; one a pair in a cown holds, by bodies that
 -- fail, give it on, and read the pair after; `parMap`'s values, in
--- order; and a `with` on one cown twice, a failure said as it is
--- spawned, the behaviour spawning it going on.  Each part is started by the one before it, once that one's
+-- order; a `with` on one cown twice, a failure said as it is spawned,
+-- the behaviour spawning it going on; and how many threads the pool
+-- has.  Each part is started by the one before it, once that one's
 -- line is put: what its cowns hold, once every behaviour of it is done,
 -- is put in a line by a behaviour on them and on the lines, spawned
 -- after those -- or waiting until they hold what the last writes -- and
@@ -630,6 +631,13 @@ said cores out = do
               ls
               rs
               (\(r, s) -> "the same cown twice: " ^ debug r ^ " " ^ debug s)
+              next
+      , \next -> do
+          w <- BOC.workers
+          put
+              ls
+              ("workers, as many as the threads: "
+               ^ (if w == cores then "yes" else debug w))
               next
       ]
       (BOC.when ls (\l -> do

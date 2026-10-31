@@ -1,4 +1,4 @@
-module boc (Cown, Cowns, instanceCownsCown, instanceCownsPair, instanceBinderCown, instanceBinderCowns, instanceBinderCownsMore, instanceHolderCown, instanceHolderCowns, instanceHolderCownsMore, instanceWaiterCown, instanceWaiterCowns, instanceWaiterCownsMore, Await, await, awaitFirst, instanceBinderAwait, instanceBinderCownsAwait, instanceHolderAwait, instanceHolderCownsAwait, boc, newCown, when, parMap)
+module boc (Cown, Cowns, instanceCownsCown, instanceCownsPair, instanceBinderCown, instanceBinderCowns, instanceBinderCownsMore, instanceHolderCown, instanceHolderCowns, instanceHolderCownsMore, instanceWaiterCown, instanceWaiterCowns, instanceWaiterCownsMore, Await, await, awaitFirst, instanceBinderAwait, instanceBinderCownsAwait, instanceHolderAwait, instanceHolderCownsAwait, boc, newCown, workers, when, parMap)
 
 import co
 import array as Array
@@ -14,6 +14,7 @@ instance instanceCownsCown : {a : Type} -> Cowns (Cown a)
 instance instanceCownsPair : {c d : Type} -> {{l : Cowns c}} -> {{r : Cowns d}} -> Cowns (c, d)
 boc : HFunctor
 newCown : {e : HFunctor} -> {a : Type} -> {{bc : boc <: e}} -> a -> Co e (Cown a)
+workers : {e : HFunctor} -> {{bc : boc <: e}} -> Co e Int
 when : {c : Type} -> {e : HFunctor} -> c -> {{cw : Cowns c}} -> {{bc : boc <: e}} -> (cw.Contents -> Co e cw.Contents) -> Co e Unit
 instance instanceBinderCown : {a : Type} -> Binder (Cown a)
 instance instanceBinderCowns : {a b : Type} -> {{cw : Cowns (Cown a, Cown b)}} -> Binder (Cown a, Cown b)

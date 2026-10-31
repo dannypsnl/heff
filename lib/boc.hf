@@ -54,6 +54,7 @@
 -- `with a := c` / `r := BOC.await act do ...` | the same, the body a behaviour on `c` once `act` has come to `r`
 -- `with r := BOC.awaitFirst a b do ...` | `a` and `b` raced: the body once the first has come to its value, `r` `Left` or `Right` it, the other given up
 -- `parMap f xs k` | `f` of each of `xs`, each in a behaviour of its own, at once; `k` given them, in order, by a behaviour once all are done
+-- `workers` | how many threads the program's pool runs behaviours on
 --
 -- A behaviour's body is given what its cowns hold, a tuple as the cowns
 -- are (`(a, b, log)` hands it an `(x, y, l)`), and gives back their new
@@ -243,6 +244,7 @@ module boc
   , instanceHolderCownsAwait
   , boc
   , newCown
+  , workers
   , when
   , parMap
   )
@@ -351,8 +353,9 @@ givingThen g (MkGiving tn v x) = MkGiving tn v (g x)
 -- | outside every behaviour, what comes once it has its value -- the
 -- | behaviour after it spawned -- its own rest; two acts raced, each
 -- | given the race as its turn, and asking it, once it has its value,
--- | whether it is the first to (`Won`), the other given up where it is.
--- | The computations are `m`'s, wrapped where the operation is, by the
+-- | whether it is the first to (`Won`), the other given up where it is;
+-- | how many threads the pool runs behaviours on (`Workers`).  The
+-- | computations are `m`'s, wrapped where the operation is, by the
 -- | handler in force there; what is of a type of its own is beside them,
 -- | not mapped.
 data BocF (m : Type -> Type) x
@@ -363,6 +366,7 @@ data BocF (m : Type -> Type) x
   | Awaits (Turn -> m Unit) x
   | Races (Turn -> m Unit) (Turn -> m Unit) x
   | Won Turn (Bool -> x)
+  | Workers (Int -> x)
 
 -- | Behaviours on cowns, the runtime's: cowns made, behaviours queued on
 -- | them, each run once its cowns are free, on the program's pool.
@@ -377,6 +381,7 @@ boc =
       Awaits c x -> Awaits c (g x)
       Races l r x -> Races l r (g x)
       Won tn k -> Won tn (\b -> g (k b))
+      Workers k -> Workers (\n -> g (k n))
   , hmap = \m n nt p -> case p of
       NewCown s -> NewCown s
       When s b x -> When s (\tn -> nt (b tn)) x
@@ -385,6 +390,7 @@ boc =
       Awaits c x -> Awaits (\tn -> nt (c tn)) x
       Races l r x -> Races (\tn -> nt (l tn)) (\tn -> nt (r tn)) x
       Won tn k -> Won tn k
+      Workers k -> Workers k
   }
 
 -- | A cown holding `v`.
@@ -394,6 +400,14 @@ newCown : {e : HFunctor}
         -> a
         -> Co e (Cown a)
 newCown v = op (bc (NewCown (\r use -> use a (MkCowning v (\c -> c))))) val
+
+-- | How many threads the program's pool runs behaviours on, at least
+-- | 1: as many as the machine has cores, on C's; 1 in JavaScript's one
+-- | thread.  Asked before the pool is opened, it is how many it will
+-- | have; asking does not open it.  So work split in as many parts as
+-- | there are workers keeps each busy, and no more parts than that.
+workers : {e : HFunctor} -> {{bc : boc <: e}} -> Co e Int
+workers = op (bc (Workers (\n -> n))) val
 
 -- (what the cowns of the behaviour running, `tn`, hold, as the runtime
 -- took them for its body: of the type the body takes, which the

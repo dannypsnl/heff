@@ -50,9 +50,9 @@
 --     ticked g (i + 1)
 -- ```
 --
--- A group is made by `newGroup`, of as many shards as the machine has
--- cores (std.process's `processors`) unless another number is given,
--- by name, `Broadcast.newGroup (shards := 4)`.  A sender is in one
+-- A group is made by `newGroup`, of as many shards as boc's pool has
+-- threads (`BOC.workers`) unless another number is given, by name,
+-- `Broadcast.newGroup (shards := 4)`.  A sender is in one
 -- shard, by its number (`senderNumber`, its connection's, no two open
 -- at once numbered the same): `join` puts it in, `leave` takes it out
 -- -- in a stream's `gone`, as above -- and `finish` takes it out and
@@ -90,7 +90,6 @@ module std.http.broadcast
 import boc as BOC
 import co
 import std.http.bocserver as BocServer
-import std.process as Process
 
 -- (a shard: the senders in it)
 type Shard a = BOC.Cown (List (BocServer.Sender a))
@@ -111,21 +110,17 @@ shardsMade k made =
     c <- BOC.newCown Nil
     shardsMade (k - 1) (c :: made)
 
--- (the shards, as many as `k`, or as the machine has cores where `k`
+-- (the shards, as many as `k`, or as the pool has threads where `k`
 -- is none)
-shardsOf : {f : HFunctor}
-         -> {{sys : Process.process <: f}}
-         -> Int
-         -> Co f Int
-shardsOf k = if k > 0 then pure k else Process.processors
+shardsOf : {f : HFunctor} -> {{bc : BOC.boc <: f}} -> Int -> Co f Int
+shardsOf k = if k > 0 then pure k else BOC.workers
 
--- | A group, empty, of `shards` shards: as many as the machine has
--- | cores unless another number is given, by name.
+-- | A group, empty, of `shards` shards: as many as boc's pool has
+-- | threads unless another number is given, by name.
 newGroup : {f : HFunctor}
          -> {a : Type}
          -> {shards : Int := 0}
          -> {{bc : BOC.boc <: f}}
-         -> {{sys : Process.process <: f}}
          -> Co f (Group a)
 newGroup = do
   k <- shardsOf shards

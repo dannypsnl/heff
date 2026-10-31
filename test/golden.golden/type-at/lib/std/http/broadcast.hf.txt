@@ -1,19 +1,19 @@
-@3737
+@3725
 nothing there
-@4434
+@4392
 c : BOC.Cown (List (BocServer.Sender a))   (local)
-@5164
-Shard : (a : Type) -> Type   (global)
-@5638
-a : Type   (local)
-@6190
+@5055
+nothing there
+@5531
+nothing there
+@6076
+nothing there
+@6754
 f : HFunctor   (local)
-@6850
-BocServer.Sender : (a : Type) -> Type   (global)
-@7373
+@7302
 nothing there
-@8024
-nothing there
+@7958
+BOC.boc : HFunctor   (global)
 @0
 nothing there
 @nope

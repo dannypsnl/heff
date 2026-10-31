@@ -1409,6 +1409,17 @@ static BcPool *bc_program_pool(void) {
   return pl;
 }
 
+// (how many threads the pool here has: this thread's, else the
+// program's; where none is open yet, how many it will have, none
+// opened)
+static int64_t bc_workers(void) {
+  if (bc_current) return bc_current->n;
+  pthread_mutex_lock(&bc_program_mu);
+  int64_t n = bc_program ? bc_program->n : bc_cores();
+  pthread_mutex_unlock(&bc_program_mu);
+  return n;
+}
+
 // (the pool a `when` here spawns in; a body's operation counted, and at
 // its fuel's end the behaviour kept let out)
 static BcPool *bc_here(void) {
@@ -1509,6 +1520,12 @@ static V heff_provider_boc(V p, V k) {
     V f = heff_dup(heff_field(p, 1));
     heff_drop(p);
     x = heff_answer(f, NTAG(first ? TAG_True : TAG_False));
+    break;
+  }
+  case TAG_Workers: {
+    V f = heff_dup(heff_field(p, 0));
+    heff_drop(p);
+    x = heff_answer(f, MK_INT(bc_workers()));
     break;
   }
   default:

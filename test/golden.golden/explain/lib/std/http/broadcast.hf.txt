@@ -1,597 +1,595 @@
-96:49  unify  Type  =?=  Type   ok
-96:32  unify  Type  =?=  Type   ok
-96:26  unify  Type  =?=  Type   ok
-96:16  unify  Type  =?=  Type   ok
-99:41  unify  Type  =?=  Type   ok
-99:35  unify  Type  =?=  Type   ok
-104:22  unify  HFunctor  =?=  HFunctor   ok
-104:33  unify  HFunctor  =?=  HFunctor   ok
+95:49  unify  Type  =?=  Type   ok
+95:32  unify  Type  =?=  Type   ok
+95:26  unify  Type  =?=  Type   ok
+95:16  unify  Type  =?=  Type   ok
+98:41  unify  Type  =?=  Type   ok
+98:35  unify  Type  =?=  Type   ok
+103:22  unify  HFunctor  =?=  HFunctor   ok
+103:33  unify  HFunctor  =?=  HFunctor   ok
+105:27  unify  Type  =?=  Type   ok
+105:21  unify  Type  =?=  Type   ok
+106:18  unify  HFunctor  =?=  HFunctor   ok
+106:33  unify  Type  =?=  Type   ok
 106:27  unify  Type  =?=  Type   ok
 106:21  unify  Type  =?=  Type   ok
-107:18  unify  HFunctor  =?=  HFunctor   ok
-107:33  unify  Type  =?=  Type   ok
-107:27  unify  Type  =?=  Type   ok
-107:21  unify  Type  =?=  Type   ok
-109:8  meta  ?0 (a) : Type
-109:8  meta  ?1 (ord) : prelude.Order (?0 std.http.broadcast.shardsMade x1 x2 x3 x4 x5)
-109:8  instance  wanted Order (?0 std.http.broadcast.shardsMade f a bc k made)  [waits for implicits]
-109:8  solve  ?0 (a) := \x x x x x x -> Int
-109:6  unify  (\x x x x x x -> Int) std.http.broadcast.shardsMade f a bc k made  =?=  Int   ok
-109:8  solve  ?1 (ord) := \x x x x x x -> prelude.instanceOrderInt
-109:8  instance  found instanceOrderInt : Order Int
-109:18  meta  ?2 (h) : co.HFunctor
-109:18  meta  ?3 (a) : Type
-109:18  solve  ?2 (h) := \x x x x x x -> x''''
-109:18  solve  ?3 (a) := \x x x x x x -> builtin.List (boc.Cown (builtin.List (std.http.bocserver.Sender x''')))
-109:18  unify  Co f (List (BOC.Cown (List (BocServer.Sender a))))  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> List (BOC.Cown (List (BocServer.Sender x''')))) std.http.broadcast.shardsMade f a bc k made)   ok, before the arguments
-109:23  unify  List (BOC.Cown (List (BocServer.Sender a)))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-110:8  meta  ?4 (h) : co.HFunctor
-110:8  meta  ?5 (a) : Type
-110:8  meta  ?6 (b) : Type
-110:8  solve  ?4 (h) := \x x x x x x -> x''''
-110:8  solve  ?6 (b) := \x x x x x x -> builtin.List (boc.Cown (builtin.List (std.http.bocserver.Sender x''')))
-110:8  unify  Co f (List (BOC.Cown (List (BocServer.Sender a))))  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> List (BOC.Cown (List (BocServer.Sender x''')))) std.http.broadcast.shardsMade f a bc k made)   ok, before the arguments
-111:10  meta  ?7 (e) : co.HFunctor
-111:10  meta  ?8 (a) : Type
-111:10  meta  ?9 (bc) : co.<: boc.boc (?7 std.http.broadcast.shardsMade x1 x2 x3 x4 x5)
-111:10  instance  wanted BOC.boc <: ?7 std.http.broadcast.shardsMade f a bc k made  [evidence: its one witness, or waits]
-111:10  solve  ?7 (e) := \x x x x x x -> x''''
-111:10  solve  ?8 (a) := \x x x x x x -> ?10
-110:8  solve  ?5 (a) := \x x x x x x -> boc.Cown ?10
-111:10  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> BOC.Cown ?10) std.http.broadcast.shardsMade f a bc k made)  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) (BOC.Cown ((\x x x x x x -> ?10) std.http.broadcast.shardsMade f a bc k made))   ok, before the arguments
-111:10  meta  ?11 (argument) : ?10 x1 x2 x3 x4 x5
-111:10  delay  argument waits for its type ?11
-111:10  solve  ?9 (bc) := \x x x x x x -> x''
-111:10  instance  found bc : BOC.boc <: f
-112:5  meta  ?12 (f) : co.HFunctor
-112:5  meta  ?13 (a) : Type
-112:5  meta  ?14 (bc) : co.<: boc.boc (?12 std.http.broadcast.shardsMade x1 x2 x3 x4 x5 x6)
-112:5  instance  wanted BOC.boc <: ?12 std.http.broadcast.shardsMade f a bc k made c  [evidence: its one witness, or waits]
-112:5  solve  ?12 (f) := \x x x x x x x -> x'''''
-112:5  solve  ?13 (a) := \x x x x x x x -> x''''
-112:5  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> List (BOC.Cown (List (BocServer.Sender x''')))) std.http.broadcast.shardsMade f a bc k made)  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.shardsMade f a bc k made c) (List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made c)))))   ok, before the arguments
-112:19  meta  ?15 (a) : Type
-112:19  meta  ?16 (sub) : prelude.Subtraction (?15 std.http.broadcast.shardsMade x1 x2 x3 x4 x5 x6)
-112:19  instance  wanted Subtraction (?15 std.http.broadcast.shardsMade f a bc k made c)  [waits for implicits]
-112:19  solve  ?15 (a) := \x x x x x x x -> Int
-112:17  unify  (\x x x x x x x -> Int) std.http.broadcast.shardsMade f a bc k made c  =?=  Int   ok
-112:5  solve  ?14 (bc) := \x x x x x x x -> x'''
-112:5  instance  found bc : BOC.boc <: f
-112:19  solve  ?16 (sub) := \x x x x x x x -> prelude.instanceSubtractionInt
-112:19  instance  found instanceSubtractionInt : Subtraction Int
-112:19  unify  Int  =?=  Int   ok
-112:27  meta  ?17 (a) : Type
-112:27  solve  ?17 (a) := \x x x x x x x -> boc.Cown ?10
-112:25  unify  (\x x x x x x x -> BOC.Cown ?10) std.http.broadcast.shardsMade f a bc k made c  =?=  BOC.Cown ?10   ok
-111:10  solve  ?10 (a) := \x x x x x -> builtin.List (std.http.bocserver.Sender x''')
-112:30  unify  List ((\x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''))) std.http.broadcast.shardsMade f a bc k made c)  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-111:10  solve  ?11 (argument) := \x x x x x x -> []
-112:27  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made c))))  =?=  List ((\x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''))) std.http.broadcast.shardsMade f a bc k made c)   ok
-117:21  unify  HFunctor  =?=  HFunctor   ok
-117:40  unify  HFunctor  =?=  HFunctor   ok
-119:16  unify  HFunctor  =?=  HFunctor   ok
-120:19  meta  ?0 (a) : Type
-120:19  meta  ?1 (ord) : prelude.Order (?0 std.http.broadcast.shardsOf x1 x2 x3)
-120:19  instance  wanted Order (?0 std.http.broadcast.shardsOf f sys k)  [waits for implicits]
-120:19  solve  ?0 (a) := \x x x x -> Int
-120:17  unify  (\x x x x -> Int) std.http.broadcast.shardsOf f sys k  =?=  Int   ok
-120:19  solve  ?1 (ord) := \x x x x -> prelude.instanceOrderInt
-120:19  instance  found instanceOrderInt : Order Int
-120:28  meta  ?2 (h) : co.HFunctor
-120:28  meta  ?3 (a) : Type
-120:28  solve  ?2 (h) := \x x x x -> x''
-120:28  solve  ?3 (a) := \x x x x -> Int
-120:28  unify  Co f Int  =?=  Co ((\x x x x -> x'') std.http.broadcast.shardsOf f sys k) ((\x x x x -> Int) std.http.broadcast.shardsOf f sys k)   ok, before the arguments
-120:33  unify  Int  =?=  Int   ok
-120:40  meta  ?4 (e) : co.HFunctor
-120:40  meta  ?5 (ev) : co.<: std.process.process (?4 std.http.broadcast.shardsOf x1 x2 x3)
-120:40  instance  wanted Process.process <: ?4 std.http.broadcast.shardsOf f sys k  [evidence: its one witness, or waits]
-120:40  solve  ?4 (e) := \x x x x -> x''
-120:40  unify  Co f Int  =?=  Co ((\x x x x -> x'') std.http.broadcast.shardsOf f sys k) Int   ok
-120:40  solve  ?5 (ev) := \x x x x -> x'
-120:40  instance  found sys : Process.process <: f
-127:20  unify  HFunctor  =?=  HFunctor   ok
-127:31  unify  HFunctor  =?=  HFunctor   ok
-128:21  unify  HFunctor  =?=  HFunctor   ok
-128:40  unify  HFunctor  =?=  HFunctor   ok
-129:16  unify  HFunctor  =?=  HFunctor   ok
-129:25  unify  Type  =?=  Type   ok
-129:19  unify  Type  =?=  Type   ok
-130:12  meta  ?0 (h) : co.HFunctor
-130:12  meta  ?1 (a) : Type
-130:12  meta  ?2 (b) : Type
-130:12  solve  ?0 (h) := \x x x x x x -> x''''
-130:12  solve  ?2 (b) := \x x x x x x -> std.http.broadcast.Group x'''
-130:12  unify  Co f (Group a)  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc sys) ((\x x x x x x -> Group x''') std.http.broadcast.newGroup f a shards bc sys)   ok, before the arguments
-131:8  meta  ?3 (f) : co.HFunctor
-131:8  meta  ?4 (sys) : co.<: std.process.process (?3 std.http.broadcast.newGroup x1 x2 x3 x4 x5)
-131:8  instance  wanted Process.process <: ?3 std.http.broadcast.newGroup f a shards bc sys  [evidence: its one witness, or waits]
-131:8  solve  ?3 (f) := \x x x x x x -> x''''
-130:12  solve  ?1 (a) := \x x x x x x -> Int
-131:8  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc sys) ((\x x x x x x -> Int) std.http.broadcast.newGroup f a shards bc sys)  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc sys) Int   ok, before the arguments
-131:17  unify  Int  =?=  Int   ok
-131:8  solve  ?4 (sys) := \x x x x x x -> x
-131:8  instance  found sys : Process.process <: f
-130:12  meta  ?5 (h) : co.HFunctor
-130:12  meta  ?6 (a) : Type
-130:12  meta  ?7 (b) : Type
-130:12  solve  ?5 (h) := \x x x x x x x -> x'''''
-130:12  solve  ?7 (b) := \x x x x x x x -> std.http.broadcast.Group x''''
-130:12  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc sys) ((\x x x x x x -> Group x''') std.http.broadcast.newGroup f a shards bc sys)  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.newGroup f a shards bc sys k) ((\x x x x x x x -> Group x'''') std.http.broadcast.newGroup f a shards bc sys k)   ok, before the arguments
-132:11  meta  ?8 (f) : co.HFunctor
-132:11  meta  ?9 (a) : Type
-132:11  meta  ?10 (bc) : co.<: boc.boc (?8 std.http.broadcast.newGroup x1 x2 x3 x4 x5 x6)
-132:11  instance  wanted BOC.boc <: ?8 std.http.broadcast.newGroup f a shards bc sys k  [evidence: its one witness, or waits]
-132:11  solve  ?8 (f) := \x x x x x x x -> x'''''
-132:11  solve  ?9 (a) := \x x x x x x x -> ?11
-130:12  solve  ?6 (a) := \x x x x x x x -> builtin.List (boc.Cown (builtin.List (std.http.bocserver.Sender ?11)))
-132:11  unify  Co ((\x x x x x x x -> x''''') std.http.broadcast.newGroup f a shards bc sys k) ((\x x x x x x x -> List (BOC.Cown (List (BocServer.Sender ?11)))) std.http.broadcast.newGroup f a shards bc sys k)  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.newGroup f a shards bc sys k) (List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x -> ?11) std.http.broadcast.newGroup f a shards bc sys k)))))   ok, before the arguments
-132:22  unify  Int  =?=  Int   ok
-132:11  solve  ?10 (bc) := \x x x x x x x -> x''
-132:11  instance  found bc : BOC.boc <: f
-133:3  meta  ?12 (h) : co.HFunctor
-133:3  meta  ?13 (a) : Type
-133:3  solve  ?12 (h) := \x x x x x x x x -> x''''''
-133:3  solve  ?13 (a) := \x x x x x x x x -> std.http.broadcast.Group x'''''
-133:3  unify  Co ((\x x x x x x x -> x''''') std.http.broadcast.newGroup f a shards bc sys k) ((\x x x x x x x -> Group x'''') std.http.broadcast.newGroup f a shards bc sys k)  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.newGroup f a shards bc sys k made) ((\x x x x x x x x -> Group x''''') std.http.broadcast.newGroup f a shards bc sys k made)   ok, before the arguments
-133:17  unify  Int  =?=  Int   ok
-132:11  solve  ?11 (a) := \x x x x x x -> x''''
-133:19  unify  List (BOC.Cown (List (BocServer.Sender a)))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-136:44  unify  Type  =?=  Type   ok
-136:38  unify  Type  =?=  Type   ok
-136:63  unify  Type  =?=  Type   ok
-136:57  unify  Type  =?=  Type   ok
-137:20  meta  ?0 (a) : Type
-137:31  meta  ?1 (a) : Type
-137:41  unify  Int  =?=  Int   ok
-137:31  solve  ?1 (a) := \x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''))
-137:43  unify  List ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-137:20  solve  ?0 (a) := \x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''))
-137:31  unify  List ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)  =?=  List ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)   ok
-137:20  unify  Maybe (BOC.Cown (List (BocServer.Sender a)))  =?=  Maybe ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)   ok
-142:19  unify  HFunctor  =?=  HFunctor   ok
-142:30  unify  HFunctor  =?=  HFunctor   ok
-143:25  unify  Type  =?=  Type   ok
-143:19  unify  Type  =?=  Type   ok
-144:36  unify  Type  =?=  Type   ok
-144:19  unify  Type  =?=  Type   ok
-144:45  unify  HFunctor  =?=  HFunctor   ok
-144:71  unify  Type  =?=  Type   ok
-144:54  unify  Type  =?=  Type   ok
-144:48  unify  Type  =?=  Type   ok
-145:15  unify  HFunctor  =?=  HFunctor   ok
-145:17  unify  Type  =?=  Type   ok
-146:24  meta  ?0 (h) : co.HFunctor
-146:24  meta  ?1 (a) : Type
-146:24  solve  ?0 (h) := \x x x x x x -> x''''
-146:24  solve  ?1 (a) := \x x x x x x -> builtin.Unit
-146:24  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.onShard f a bc x1 body) ((\x x x x x x -> Unit) std.http.broadcast.onShard f a bc x1 body)   ok, before the arguments
-146:29  unify  Unit  =?=  Unit   ok
-147:25  meta  ?2 (c) : Type
-147:25  meta  ?3 (e) : co.HFunctor
-147:25  solve  ?2 (c) := \x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''))
-147:34  unify  (\x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''))) std.http.broadcast.onShard f a bc x1 body c  =?=  BOC.Cown (List (BocServer.Sender a))   ok
-147:25  meta  ?4 (cw) : boc.Cowns ((\x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''))) std.http.broadcast.onShard x1 x2 x3 x4 x5 x6)
-147:25  instance  wanted BOC.Cowns (BOC.Cown (List (BocServer.Sender a)))  [ready at the call]
-147:25  meta  ?5 (a) : Type
-147:25  solve  ?5 (a) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
-147:25  solve  ?4 (cw) := \x x x x x x x -> boc.instanceCownsCown
-147:25  instance  found BOC.instanceCownsCown : BOC.Cowns (BOC.Cown (List (BocServer.Sender a)))
-147:25  meta  ?6 (bc) : co.<: boc.boc (?3 std.http.broadcast.onShard x1 x2 x3 x4 x5 x6)
-147:25  instance  wanted BOC.boc <: ?3 std.http.broadcast.onShard f a bc x1 body c  [evidence: its one witness, or waits]
-147:25  solve  ?3 (e) := \x x x x x x x -> x'''''
-147:36  unify  ((\x x x x x x x -> BOC.instanceCownsCown) std.http.broadcast.onShard f a bc x1 body c).Contents -> Co ((\x x x x x x x -> x''''') std.http.broadcast.onShard f a bc x1 body c) ((\x x x x x x x -> BOC.instanceCownsCown) std.http.broadcast.onShard f a bc x1 body c).Contents  =?=  List (BocServer.Sender a) -> Co f (List (BocServer.Sender a))   ok
-147:25  solve  ?6 (bc) := \x x x x x x x -> x'''
-147:25  instance  found bc : BOC.boc <: f
-147:25  unify  Co f Unit  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.onShard f a bc x1 body c) Unit   ok
-150:31  unify  Type  =?=  Type   ok
-150:53  unify  Type  =?=  Type   ok
-150:71  unify  Type  =?=  Type   ok
-150:65  unify  Type  =?=  Type   ok
-152:3  meta  ?0 (a) : Type
-152:51  meta  ?1 (a) : Type
-152:51  meta  ?2 (mod) : prelude.Remainder (?1 std.http.broadcast.shardOf x1 x2 x3 x4 x5)
-152:51  instance  wanted Remainder (?1 std.http.broadcast.shardOf a x1 out k shards)  [waits for implicits]
-152:46  meta  ?3 (a) : Type
-152:46  meta  ?4 (add) : prelude.Addition (?3 std.http.broadcast.shardOf x1 x2 x3 x4 x5)
-152:46  instance  wanted Addition (?3 std.http.broadcast.shardOf a x1 out k shards)  [waits for implicits]
-152:41  meta  ?5 (a) : Type
-152:41  meta  ?6 (mod) : prelude.Remainder (?5 std.http.broadcast.shardOf x1 x2 x3 x4 x5)
-152:41  instance  wanted Remainder (?5 std.http.broadcast.shardOf a x1 out k shards)  [waits for implicits]
-152:14  meta  ?7 (a) : Type
-152:14  solve  ?7 (a) := \x x x x x x -> x''''
-152:37  unify  BocServer.Sender ((\x x x x x x -> x'''') std.http.broadcast.shardOf a x1 out k shards)  =?=  BocServer.Sender a   ok
-152:41  solve  ?5 (a) := \x x x x x x -> Int
-152:14  unify  (\x x x x x x -> Int) std.http.broadcast.shardOf a x1 out k shards  =?=  Int   ok
-152:41  solve  ?6 (mod) := \x x x x x x -> prelude.instanceRemainderInt
-152:41  instance  found instanceRemainderInt : Remainder Int
-152:43  unify  Int  =?=  Int   ok
-152:46  solve  ?3 (a) := \x x x x x x -> Int
-152:41  unify  (\x x x x x x -> Int) std.http.broadcast.shardOf a x1 out k shards  =?=  Int   ok
-152:46  solve  ?4 (add) := \x x x x x x -> prelude.instanceAdditionInt
-152:46  instance  found instanceAdditionInt : Addition Int
-152:48  unify  Int  =?=  Int   ok
-152:51  solve  ?1 (a) := \x x x x x x -> Int
-152:46  unify  (\x x x x x x -> Int) std.http.broadcast.shardOf a x1 out k shards  =?=  Int   ok
-152:51  solve  ?2 (mod) := \x x x x x x -> prelude.instanceRemainderInt
-152:51  instance  found instanceRemainderInt : Remainder Int
-152:53  unify  Int  =?=  Int   ok
-152:51  unify  Int  =?=  Int   ok
-152:3  solve  ?0 (a) := \x x x x x x -> x''''
-152:56  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x'''') std.http.broadcast.shardOf a x1 out k shards))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-152:3  unify  Maybe (BOC.Cown (List (BocServer.Sender a)))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x'''') std.http.broadcast.shardOf a x1 out k shards))))   ok
-157:35  unify  Type  =?=  Type   ok
-157:18  unify  Type  =?=  Type   ok
-158:35  unify  Type  =?=  Type   ok
-158:18  unify  Type  =?=  Type   ok
-160:3  meta  ?0 (a) : Type
-160:52  meta  ?1 (a) : Type
-160:52  meta  ?2 (eq) : prelude.Equality (?1 std.http.broadcast.without x1 x2 x3 x4)
-160:52  instance  wanted Equality (?1 std.http.broadcast.without a n senders o)  [waits for implicits]
-160:27  meta  ?3 (a) : Type
-160:27  solve  ?3 (a) := \x x x x x -> ?4
-160:3  solve  ?0 (a) := \x x x x -> std.http.bocserver.Sender ?4
-160:50  unify  BocServer.Sender ((\x x x x x -> ?4) std.http.broadcast.without a n senders o)  =?=  (\x x x x -> BocServer.Sender ?4) std.http.broadcast.without a n senders   ok
-160:52  solve  ?1 (a) := \x x x x x -> Int
-160:27  unify  (\x x x x x -> Int) std.http.broadcast.without a n senders o  =?=  Int   ok
-160:52  solve  ?2 (eq) := \x x x x x -> prelude.instanceEqualityInt
-160:52  instance  found instanceEqualityInt : Equality Int
-160:55  unify  Int  =?=  Int   ok
-160:52  unify  Bool  =?=  Bool   ok
-160:22  unify  Bool  =?=  Bool   ok
-160:27  solve  ?4 (a) := \x x x -> x''
-160:59  unify  List ((\x x x x -> BocServer.Sender x'') std.http.broadcast.without a n senders)  =?=  List (BocServer.Sender a)   ok
-160:3  unify  List (BocServer.Sender a)  =?=  List ((\x x x x -> BocServer.Sender x'') std.http.broadcast.without a n senders)   ok
-165:16  unify  HFunctor  =?=  HFunctor   ok
-165:27  unify  HFunctor  =?=  HFunctor   ok
-166:15  unify  Type  =?=  Type   ok
-167:26  unify  Type  =?=  Type   ok
-168:12  unify  HFunctor  =?=  HFunctor   ok
-168:14  unify  Type  =?=  Type   ok
-169:14  meta  ?0 (f) : co.HFunctor
-169:14  meta  ?1 (a) : Type
-169:14  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.join x1 x2 x3 x4 x5)
-169:14  instance  wanted BOC.boc <: ?0 std.http.broadcast.join f a bc g out  [evidence: its one witness, or waits]
-169:14  solve  ?0 (f) := \x x x x x x -> x''''
-169:14  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.join f a bc g out) Unit   ok, before the arguments
-169:23  meta  ?3 (a) : Type
-169:23  solve  ?3 (a) := \x x x x x x -> x'''
-169:31  unify  Group ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out)  =?=  Group a   ok
-169:14  solve  ?2 (bc) := \x x x x x x -> x''
-169:14  instance  found bc : BOC.boc <: f
-169:33  unify  BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out)  =?=  BocServer.Sender a   ok
-169:14  solve  ?1 (a) := \x x x x x x -> x'''
-169:23  unify  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out))))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out))))   ok
-169:51  meta  ?4 (h) : co.HFunctor
-169:51  meta  ?5 (a) : Type
-169:51  solve  ?4 (h) := \x x x x x x x -> x'''''
-169:51  solve  ?5 (a) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
-169:51  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.join f a bc g out) (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out)))  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.join f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.join f a bc g out senders)   ok, before the arguments
-169:61  meta  ?6 (a) : Type
-169:61  solve  ?6 (a) := \x x x x x x x -> std.http.bocserver.Sender x''''
-169:57  unify  (\x x x x x x x -> BocServer.Sender x'''') std.http.broadcast.join f a bc g out senders  =?=  BocServer.Sender a   ok
-169:64  unify  List ((\x x x x x x x -> BocServer.Sender x'''') std.http.broadcast.join f a bc g out senders)  =?=  List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out))   ok
-169:61  unify  List (BocServer.Sender a)  =?=  List ((\x x x x x x x -> BocServer.Sender x'''') std.http.broadcast.join f a bc g out senders)   ok
-175:17  unify  HFunctor  =?=  HFunctor   ok
-175:28  unify  HFunctor  =?=  HFunctor   ok
-176:16  unify  Type  =?=  Type   ok
-177:27  unify  Type  =?=  Type   ok
-178:13  unify  HFunctor  =?=  HFunctor   ok
-178:15  unify  Type  =?=  Type   ok
-180:3  meta  ?0 (f) : co.HFunctor
-180:3  meta  ?1 (a) : Type
-180:3  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.leave x1 x2 x3 x4 x5)
-180:3  instance  wanted BOC.boc <: ?0 std.http.broadcast.leave f a bc g out  [evidence: its one witness, or waits]
-180:3  solve  ?0 (f) := \x x x x x x -> x''''
-180:3  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.leave f a bc g out) Unit   ok, before the arguments
-181:6  meta  ?3 (a) : Type
-181:6  solve  ?3 (a) := \x x x x x x -> x'''
-181:14  unify  Group ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out)  =?=  Group a   ok
-180:3  solve  ?2 (bc) := \x x x x x x -> x''
-180:3  instance  found bc : BOC.boc <: f
-181:16  unify  BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out)  =?=  BocServer.Sender a   ok
-180:3  solve  ?1 (a) := \x x x x x x -> x'''
-181:6  unify  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out))))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out))))   ok
-182:18  meta  ?4 (h) : co.HFunctor
-182:18  meta  ?5 (a) : Type
-182:18  solve  ?4 (h) := \x x x x x x x -> x'''''
-182:18  solve  ?5 (a) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
-182:18  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.leave f a bc g out) (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out)))  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.leave f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.leave f a bc g out senders)   ok, before the arguments
-182:24  meta  ?6 (a) : Type
-182:33  meta  ?7 (a) : Type
-182:33  solve  ?7 (a) := \x x x x x x x -> x''''
-182:56  unify  BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.leave f a bc g out senders)  =?=  BocServer.Sender a   ok
-182:33  unify  Int  =?=  Int   ok
-182:24  solve  ?6 (a) := \x x x x x x x -> x''''
-182:61  unify  List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.leave f a bc g out senders))  =?=  List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out))   ok
-182:24  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.leave f a bc g out senders))   ok
-188:18  unify  HFunctor  =?=  HFunctor   ok
-188:29  unify  HFunctor  =?=  HFunctor   ok
-189:17  unify  Type  =?=  Type   ok
-190:28  unify  Type  =?=  Type   ok
-191:14  unify  HFunctor  =?=  HFunctor   ok
-191:16  unify  Type  =?=  Type   ok
-193:3  meta  ?0 (f) : co.HFunctor
-193:3  meta  ?1 (a) : Type
-193:3  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.finish x1 x2 x3 x4 x5)
-193:3  instance  wanted BOC.boc <: ?0 std.http.broadcast.finish f a bc g out  [evidence: its one witness, or waits]
-193:3  solve  ?0 (f) := \x x x x x x -> x''''
-193:3  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.finish f a bc g out) Unit   ok, before the arguments
-194:6  meta  ?3 (a) : Type
-194:6  solve  ?3 (a) := \x x x x x x -> x'''
-194:14  unify  Group ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out)  =?=  Group a   ok
-193:3  solve  ?2 (bc) := \x x x x x x -> x''
-193:3  instance  found bc : BOC.boc <: f
-194:16  unify  BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out)  =?=  BocServer.Sender a   ok
-193:3  solve  ?1 (a) := \x x x x x x -> x'''
-194:6  unify  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out))))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out))))   ok
-194:34  meta  ?4 (h) : co.HFunctor
-194:34  meta  ?5 (a) : Type
-194:34  meta  ?6 (b) : Type
-194:34  solve  ?4 (h) := \x x x x x x x -> x'''''
-194:34  solve  ?6 (b) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
-194:34  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.finish f a bc g out) (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out)))  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.finish f a bc g out senders)   ok, before the arguments
-195:7  meta  ?7 (f) : co.HFunctor
-195:7  meta  ?8 (a) : Type
-195:7  meta  ?9 (bc) : co.<: boc.boc (?7 std.http.broadcast.finish x1 x2 x3 x4 x5 x6)
-195:7  instance  wanted BOC.boc <: ?7 std.http.broadcast.finish f a bc g out senders  [evidence: its one witness, or waits]
-195:7  solve  ?7 (f) := \x x x x x x x -> x'''''
-194:34  solve  ?5 (a) := \x x x x x x x -> builtin.Unit
-195:7  unify  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) ((\x x x x x x x -> Unit) std.http.broadcast.finish f a bc g out senders)  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) Unit   ok, before the arguments
-195:7  solve  ?8 (a) := \x x x x x x x -> x''''
-195:24  unify  BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.finish f a bc g out senders)  =?=  BocServer.Sender a   ok
-195:7  solve  ?9 (bc) := \x x x x x x x -> x'''
-195:7  instance  found bc : BOC.boc <: f
-196:7  meta  ?10 (h) : co.HFunctor
-196:7  meta  ?11 (a) : Type
-196:7  solve  ?10 (h) := \x x x x x x x x -> x''''''
-196:7  solve  ?11 (a) := \x x x x x x x x -> builtin.List (std.http.bocserver.Sender x''''')
-196:7  unify  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.finish f a bc g out senders)  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.finish f a bc g out senders _) ((\x x x x x x x x -> List (BocServer.Sender x''''')) std.http.broadcast.finish f a bc g out senders _)   ok, before the arguments
-196:13  meta  ?12 (a) : Type
-196:22  meta  ?13 (a) : Type
-196:22  solve  ?13 (a) := \x x x x x x x x -> x'''''
-196:45  unify  BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders _)  =?=  BocServer.Sender a   ok
-196:22  unify  Int  =?=  Int   ok
-196:13  solve  ?12 (a) := \x x x x x x x x -> x'''''
-196:50  unify  List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders _))  =?=  List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out))   ok
-196:13  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders _))   ok
-201:18  unify  HFunctor  =?=  HFunctor   ok
-201:29  unify  HFunctor  =?=  HFunctor   ok
-203:34  unify  Type  =?=  Type   ok
-203:17  unify  Type  =?=  Type   ok
-204:14  unify  HFunctor  =?=  HFunctor   ok
-204:16  unify  Type  =?=  Type   ok
-205:15  meta  ?0 (h) : co.HFunctor
-205:15  meta  ?1 (a) : Type
-205:15  solve  ?0 (h) := \x x x x x x -> x''''
-205:15  solve  ?1 (a) := \x x x x x x -> builtin.Unit
-205:15  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.sentTo f a bc x x2) ((\x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2)   ok, before the arguments
-205:20  unify  Unit  =?=  Unit   ok
-206:26  meta  ?2 (h) : co.HFunctor
-206:26  meta  ?3 (a) : Type
-206:26  meta  ?4 (b) : Type
-206:26  solve  ?2 (h) := \x x x x x x x x -> x''''''
-206:26  solve  ?4 (b) := \x x x x x x x x -> builtin.Unit
-206:26  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) ((\x x x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2 out rest)   ok, before the arguments
-207:3  meta  ?5 (f) : co.HFunctor
-207:3  meta  ?6 (a) : Type
-207:3  meta  ?7 (bc) : co.<: boc.boc (?5 std.http.broadcast.sentTo x1 x2 x3 x4 x5 x6 x7)
-207:3  instance  wanted BOC.boc <: ?5 std.http.broadcast.sentTo f a bc x x2 out rest  [evidence: its one witness, or waits]
-207:3  solve  ?5 (f) := \x x x x x x x x -> x''''''
-206:26  solve  ?3 (a) := \x x x x x x x x -> builtin.Unit
-207:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) ((\x x x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2 out rest)  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) Unit   ok, before the arguments
-207:3  solve  ?6 (a) := \x x x x x x x x -> x'''''
-207:18  unify  BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.sentTo f a bc x x2 out rest)  =?=  BocServer.Sender a   ok
-207:3  solve  ?7 (bc) := \x x x x x x x x -> x''''
-207:3  instance  found bc : BOC.boc <: f
-207:22  unify  a  =?=  a   ok
-208:3  meta  ?8 (f) : co.HFunctor
-208:3  meta  ?9 (a) : Type
-208:3  meta  ?10 (bc) : co.<: boc.boc (?8 std.http.broadcast.sentTo x1 x2 x3 x4 x5 x6 x7 x8)
-208:3  instance  wanted BOC.boc <: ?8 std.http.broadcast.sentTo f a bc x x2 out rest _  [evidence: its one witness, or waits]
-208:3  solve  ?8 (f) := \x x x x x x x x x -> x'''''''
-208:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) ((\x x x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2 out rest)  =?=  Co ((\x x x x x x x x x -> x''''''') std.http.broadcast.sentTo f a bc x x2 out rest _) Unit   ok, before the arguments
-208:3  solve  ?9 (a) := \x x x x x x x x x -> x''''''
-208:10  unify  (\x x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest _  =?=  a   ok
-208:3  solve  ?10 (bc) := \x x x x x x x x x -> x'''''
-208:3  instance  found bc : BOC.boc <: f
-208:12  unify  List (BocServer.Sender ((\x x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest _))  =?=  List (BocServer.Sender a)   ok
-213:18  unify  HFunctor  =?=  HFunctor   ok
-213:29  unify  HFunctor  =?=  HFunctor   ok
-215:23  unify  Type  =?=  Type   ok
-215:17  unify  Type  =?=  Type   ok
-216:14  unify  HFunctor  =?=  HFunctor   ok
-216:16  unify  Type  =?=  Type   ok
-217:15  meta  ?0 (h) : co.HFunctor
-217:15  meta  ?1 (a) : Type
-217:15  solve  ?0 (h) := \x x x x x x -> x''''
-217:15  solve  ?1 (a) := \x x x x x x -> builtin.Unit
-217:15  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.spread f a bc x x2) ((\x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2)   ok, before the arguments
-217:20  unify  Unit  =?=  Unit   ok
-218:24  meta  ?2 (h) : co.HFunctor
-218:24  meta  ?3 (a) : Type
-218:24  meta  ?4 (b) : Type
-218:24  solve  ?2 (h) := \x x x x x x x x -> x''''''
-218:24  solve  ?4 (b) := \x x x x x x x x -> builtin.Unit
-218:24  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest)   ok, before the arguments
-219:3  meta  ?5 (e) : co.HFunctor
-219:3  meta  ?6 (c) : Type
-219:3  meta  ?7 (r) : Type
-219:3  solve  ?6 (c) := \x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x'''''))
-219:19  unify  (\x x x x x x x x -> BOC.Cown (List (BocServer.Sender x'''''))) std.http.broadcast.spread f a bc x x2 c rest  =?=  BOC.Cown (List (BocServer.Sender a))   ok
-219:3  meta  ?8 (b) : co.Binder ((\x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x'''''))) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7)
-219:3  instance  wanted Binder (BOC.Cown (List (BocServer.Sender a)))  [ready at the call]
-219:3  meta  ?9 (a) : Type
-219:3  solve  ?9 (a) := \x x x x x x x x -> builtin.List (std.http.bocserver.Sender x''''')
-219:3  solve  ?8 (b) := \x x x x x x x x -> boc.instanceBinderCown
-219:3  instance  found BOC.instanceBinderCown : Binder (BOC.Cown (List (BocServer.Sender a)))
-219:3  meta  ?10 (h) : co.Holder (?5 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7) ((\x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x'''''))) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7) (((\x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7).Contents (?5 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7)) ((\x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7).World ((\x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7).Result
-219:3  instance  wanted Holder (?5 std.http.broadcast.spread f a bc x x2 c rest) (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents (?5 std.http.broadcast.spread f a bc x x2 c rest)) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result  [waits for implicits]
-219:3  unify  Bool  =?=  Bool   ok
-219:3  meta  ?11 (h) : co.HFunctor
-219:3  meta  ?12 (a) : Type
-219:3  meta  ?13 (b) : Type
-219:3  solve  ?11 (h) := \x x x x x x x x x x -> ?14
-219:3  solve  ?5 (e) := \x x x x x x x x -> ?14
-219:3  solve  ?7 (r) := \x x x x x x x x -> ?15
-219:3  solve  ?13 (b) := \x x x x x x x x x x -> (?15, builtin.List (std.http.bocserver.Sender x'''''''))
-219:3  unify  Co (((\x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.spread f a bc x x2 c rest).World ((\x x x x x x x x -> ?14) std.http.broadcast.spread f a bc x x2 c rest)) ((\x x x x x x x x -> ?15) std.http.broadcast.spread f a bc x x2 c rest, ((\x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.spread f a bc x x2 c rest).Contents ((\x x x x x x x x -> ?14) std.http.broadcast.spread f a bc x x2 c rest) s)  =?=  Co ((\x x x x x x x x x x -> ?14) std.http.broadcast.spread f a bc x x2 c rest s senders) ((\x x x x x x x x x x -> (?15, List (BocServer.Sender x'''''''))) std.http.broadcast.spread f a bc x x2 c rest s senders)   ok, before the arguments
-220:5  meta  ?16 (f) : co.HFunctor
-220:5  meta  ?17 (a) : Type
-220:5  meta  ?18 (bc) : co.<: boc.boc (?16 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7 x8 x9)
-220:5  instance  wanted BOC.boc <: ?16 std.http.broadcast.spread f a bc x x2 c rest s senders  [evidence: its one witness, or waits]
-220:5  solve  ?16 (f) := \x x x x x x x x x x -> ?19
-219:3  solve  ?14 (h) := \x x x x x x x -> ?19
-219:3  solve  ?12 (a) := \x x x x x x x x x x -> builtin.Unit
-220:5  unify  Co ((\x x x x x x x x x x -> ?19) std.http.broadcast.spread f a bc x x2 c rest s senders) ((\x x x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest s senders)  =?=  Co ((\x x x x x x x x x x -> ?19) std.http.broadcast.spread f a bc x x2 c rest s senders) Unit   ok, before the arguments
-220:5  solve  ?17 (a) := \x x x x x x x x x x -> x'''''''
-220:12  unify  (\x x x x x x x x x x -> x''''''') std.http.broadcast.spread f a bc x x2 c rest s senders  =?=  a   ok
-220:14  unify  List (BocServer.Sender ((\x x x x x x x x x x -> x''''''') std.http.broadcast.spread f a bc x x2 c rest s senders))  =?=  List (BocServer.Sender a)   ok
-220:5  meta  ?20 (h) : co.HFunctor
-220:5  meta  ?21 (a) : Type
-220:5  solve  ?20 (h) := \x x x x x x x x x x x -> ?22
-220:5  solve  ?19 (f) := \x x x x x x x -> ?22
-220:5  solve  ?21 (a) := \x x x x x x x x x x x -> (?15, builtin.List (std.http.bocserver.Sender x''''''''))
-220:5  unify  Co ((\x x x x x x x x x x -> ?22) std.http.broadcast.spread f a bc x x2 c rest s senders) ((\x x x x x x x x x x -> (?15, List (BocServer.Sender x'''''''))) std.http.broadcast.spread f a bc x x2 c rest s senders)  =?=  Co ((\x x x x x x x x x x x -> ?22) std.http.broadcast.spread f a bc x x2 c rest s senders last#7581) ((\x x x x x x x x x x x -> (?15, List (BocServer.Sender x''''''''))) std.http.broadcast.spread f a bc x x2 c rest s senders last#7581)   ok, before the arguments
-219:3  solve  ?15 (r) := \x x x x x x x -> builtin.Unit
-220:5  unify  (\x x x x x x x -> Unit) f a bc x x2 c rest  =?=  Unit   ok
-219:8  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender a)   ok
-220:5  solve  ?22 (h) := \x x x x x x x -> x''''''
-218:24  solve  ?3 (a) := \x x x x x x x x -> builtin.Unit
-219:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest)  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) (((\x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.spread f a bc x x2 c rest).Result ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest))   ok
-220:5  solve  ?18 (bc) := \x x x x x x x x x x -> x''''''
-220:5  instance  found bc : BOC.boc <: f
-219:3  meta  ?23 (e) : co.HFunctor
-219:3  meta  ?24 (a) : Type
-219:3  meta  ?25 (bc) : co.<: boc.boc (?23 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7)
-219:3  solve  ?23 (e) := \x x x x x x x x -> x''''''
-219:3  solve  ?24 (a) := \x x x x x x x x -> builtin.List (std.http.bocserver.Sender x''''')
-219:3  solve  ?10 (h) := \x x x x x x x x -> boc.instanceHolderCown
-219:3  instance  found BOC.instanceHolderCown : Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result
-219:3  instance  wanted BOC.boc <: f  [by BOC.instanceHolderCown for Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result]
-219:3  solve  ?25 (bc) := \x x x x x x x x -> x''''
-219:3  instance  found bc : BOC.boc <: f
-221:3  meta  ?26 (f) : co.HFunctor
-221:3  meta  ?27 (a) : Type
-221:3  meta  ?28 (bc) : co.<: boc.boc (?26 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7 x8)
-221:3  instance  wanted BOC.boc <: ?26 std.http.broadcast.spread f a bc x x2 c rest _  [evidence: its one witness, or waits]
-221:3  solve  ?26 (f) := \x x x x x x x x x -> x'''''''
-221:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest)  =?=  Co ((\x x x x x x x x x -> x''''''') std.http.broadcast.spread f a bc x x2 c rest _) Unit   ok, before the arguments
-221:3  solve  ?27 (a) := \x x x x x x x x x -> x''''''
-221:10  unify  (\x x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest _  =?=  a   ok
-221:3  solve  ?28 (bc) := \x x x x x x x x x -> x'''''
-221:3  instance  found bc : BOC.boc <: f
-221:12  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest _))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-227:21  unify  HFunctor  =?=  HFunctor   ok
-227:32  unify  HFunctor  =?=  HFunctor   ok
-228:20  unify  Type  =?=  Type   ok
-230:17  unify  HFunctor  =?=  HFunctor   ok
-230:19  unify  Type  =?=  Type   ok
-231:34  meta  ?0 (f) : co.HFunctor
-231:34  meta  ?1 (a) : Type
-231:34  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.broadcast x1 x2 x3 x4 x5 x6 x7)
-231:34  instance  wanted BOC.boc <: ?0 std.http.broadcast.broadcast f a bc x1 x k shards  [evidence: its one witness, or waits]
-231:34  solve  ?0 (f) := \x x x x x x x x -> x''''''
-231:34  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.broadcast f a bc x1 x k shards) Unit   ok, before the arguments
-231:34  solve  ?1 (a) := \x x x x x x x x -> x'''''
-231:41  unify  (\x x x x x x x x -> x''''') std.http.broadcast.broadcast f a bc x1 x k shards  =?=  a   ok
-231:34  solve  ?2 (bc) := \x x x x x x x x -> x''''
-231:34  instance  found bc : BOC.boc <: f
-231:43  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.broadcast f a bc x1 x k shards))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-236:23  unify  HFunctor  =?=  HFunctor   ok
-236:34  unify  HFunctor  =?=  HFunctor   ok
-237:28  unify  Type  =?=  Type   ok
-237:22  unify  Type  =?=  Type   ok
-239:27  unify  HFunctor  =?=  HFunctor   ok
-239:29  unify  Type  =?=  Type   ok
-240:19  unify  HFunctor  =?=  HFunctor   ok
-240:21  unify  Type  =?=  Type   ok
-241:24  unify  Int  =?=  Int   ok
-241:22  unify  Co f Unit  =?=  Co f Unit   ok
-243:3  meta  ?0 (e) : co.HFunctor
-243:3  meta  ?1 (c) : Type
-243:3  meta  ?2 (r) : Type
-243:3  solve  ?1 (c) := \x x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''''))
-243:19  unify  (\x x x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest  =?=  BOC.Cown (List (BocServer.Sender a))   ok
-243:3  meta  ?3 (b) : co.Binder ((\x x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''''))) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8)
-243:3  instance  wanted Binder (BOC.Cown (List (BocServer.Sender a)))  [ready at the call]
-243:3  meta  ?4 (a) : Type
-243:3  solve  ?4 (a) := \x x x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''''')
-243:3  solve  ?3 (b) := \x x x x x x x x x -> boc.instanceBinderCown
-243:3  instance  found BOC.instanceBinderCown : Binder (BOC.Cown (List (BocServer.Sender a)))
-243:3  meta  ?5 (h) : co.Holder (?0 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8) ((\x x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''''))) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8) (((\x x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8).Contents (?0 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8)) ((\x x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8).World ((\x x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8).Result
-243:3  instance  wanted Holder (?0 std.http.broadcast.countedFrom f a bc x1 n k c rest) (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents (?0 std.http.broadcast.countedFrom f a bc x1 n k c rest)) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result  [waits for implicits]
-243:3  unify  Bool  =?=  Bool   ok
-243:3  meta  ?6 (h) : co.HFunctor
-243:3  meta  ?7 (a) : Type
-243:3  meta  ?8 (b) : Type
-243:3  solve  ?6 (h) := \x x x x x x x x x x x -> ?9
-243:3  solve  ?0 (e) := \x x x x x x x x x -> ?9
-243:3  solve  ?2 (r) := \x x x x x x x x x -> ?10
-243:3  solve  ?8 (b) := \x x x x x x x x x x x -> (?10, builtin.List (std.http.bocserver.Sender x''''''''))
-243:3  unify  Co (((\x x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.countedFrom f a bc x1 n k c rest).World ((\x x x x x x x x x -> ?9) std.http.broadcast.countedFrom f a bc x1 n k c rest)) ((\x x x x x x x x x -> ?10) std.http.broadcast.countedFrom f a bc x1 n k c rest, ((\x x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.countedFrom f a bc x1 n k c rest).Contents ((\x x x x x x x x x -> ?9) std.http.broadcast.countedFrom f a bc x1 n k c rest) s)  =?=  Co ((\x x x x x x x x x x x -> ?9) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) ((\x x x x x x x x x x x -> (?10, List (BocServer.Sender x''''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)   ok, before the arguments
-244:5  meta  ?11 (f) : co.HFunctor
-244:5  meta  ?12 (a) : Type
-244:5  meta  ?13 (bc) : co.<: boc.boc (?11 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8 x9 x10)
-244:5  instance  wanted BOC.boc <: ?11 std.http.broadcast.countedFrom f a bc x1 n k c rest s senders  [evidence: its one witness, or waits]
-244:5  solve  ?11 (f) := \x x x x x x x x x x x -> ?14
-243:3  solve  ?9 (h) := \x x x x x x x x -> ?14
-243:3  solve  ?7 (a) := \x x x x x x x x x x x -> builtin.Unit
-244:5  unify  Co ((\x x x x x x x x x x x -> ?14) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) ((\x x x x x x x x x x x -> Unit) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  =?=  Co ((\x x x x x x x x x x x -> ?14) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) Unit   ok, before the arguments
-244:5  solve  ?12 (a) := \x x x x x x x x x x x -> x''''''''
-244:17  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x x x x -> x'''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-244:25  meta  ?15 (a) : Type
-244:25  meta  ?16 (add) : prelude.Addition (?15 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8 x9 x10)
-244:25  instance  wanted Addition (?15 std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  [waits for implicits]
-244:25  solve  ?15 (a) := \x x x x x x x x x x x -> Int
-244:23  unify  (\x x x x x x x x x x x -> Int) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders  =?=  Int   ok
-244:25  solve  ?16 (add) := \x x x x x x x x x x x -> prelude.instanceAdditionInt
-244:25  instance  found instanceAdditionInt : Addition Int
-244:27  meta  ?17 (a) : Type
-244:27  solve  ?17 (a) := \x x x x x x x x x x x -> std.http.bocserver.Sender x''''''''
-244:39  unify  List ((\x x x x x x x x x x x -> BocServer.Sender x'''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  =?=  List (BocServer.Sender a)   ok
-244:27  unify  Int  =?=  Int   ok
-244:25  unify  Int  =?=  Int   ok
-244:5  solve  ?14 (f) := \x x x x x x x x -> x'''''''
-244:48  unify  Int -> Co ((\x x x x x x x x x x x -> x''''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) Unit  =?=  Int -> Co f Unit   ok
-244:5  solve  ?13 (bc) := \x x x x x x x x x x x -> x'''''''
-244:5  instance  found bc : BOC.boc <: f
-243:3  meta  ?18 (e) : co.HFunctor
-243:3  meta  ?19 (a) : Type
-243:3  meta  ?20 (bc) : co.<: boc.boc (?18 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8)
-243:3  solve  ?18 (e) := \x x x x x x x x x -> x'''''''
-243:3  solve  ?19 (a) := \x x x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''''')
-243:3  solve  ?5 (h) := \x x x x x x x x x -> boc.instanceHolderCown
-243:3  instance  found BOC.instanceHolderCown : Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result
-243:3  instance  wanted BOC.boc <: f  [by BOC.instanceHolderCown for Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result]
-243:3  solve  ?20 (bc) := \x x x x x x x x x -> x'''''
-243:3  instance  found bc : BOC.boc <: f
-244:5  meta  ?21 (h) : co.HFunctor
-244:5  meta  ?22 (a) : Type
-244:5  solve  ?21 (h) := \x x x x x x x x x x x x -> x''''''''''
-244:5  solve  ?22 (a) := \x x x x x x x x x x x x -> (?10, builtin.List (std.http.bocserver.Sender x'''''''''))
-244:5  unify  Co ((\x x x x x x x x x x x -> x''''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) ((\x x x x x x x x x x x -> (?10, List (BocServer.Sender x''''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  =?=  Co ((\x x x x x x x x x x x x -> x'''''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders last#8293) ((\x x x x x x x x x x x x -> (?10, List (BocServer.Sender x'''''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders last#8293)   ok, before the arguments
-243:3  solve  ?10 (r) := \x x x x x x x x -> builtin.Unit
-244:5  unify  (\x x x x x x x x -> Unit) f a bc x1 n k c rest  =?=  Unit   ok
-243:8  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender a)   ok
-243:3  unify  Co f Unit  =?=  Co ((\x x x x x x x x x -> x''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest) (((\x x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.countedFrom f a bc x1 n k c rest).Result ((\x x x x x x x x x -> Unit) std.http.broadcast.countedFrom f a bc x1 n k c rest))   ok
-250:16  unify  HFunctor  =?=  HFunctor   ok
-250:27  unify  HFunctor  =?=  HFunctor   ok
-251:15  unify  Type  =?=  Type   ok
-252:20  unify  HFunctor  =?=  HFunctor   ok
-252:22  unify  Type  =?=  Type   ok
-253:12  unify  HFunctor  =?=  HFunctor   ok
-253:14  unify  Type  =?=  Type   ok
-254:32  meta  ?0 (f) : co.HFunctor
-254:32  meta  ?1 (a) : Type
-254:32  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.size x1 x2 x3 x4 x5 x6 x7)
-254:32  instance  wanted BOC.boc <: ?0 std.http.broadcast.size f a bc x1 cont k shards  [evidence: its one witness, or waits]
-254:32  solve  ?0 (f) := \x x x x x x x x -> x''''''
-254:32  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.size f a bc x1 cont k shards) Unit   ok, before the arguments
-254:32  solve  ?1 (a) := \x x x x x x x x -> x'''''
-254:44  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.size f a bc x1 cont k shards))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
-254:32  solve  ?2 (bc) := \x x x x x x x x -> x''''
-254:32  instance  found bc : BOC.boc <: f
-254:53  unify  Int -> Co ((\x x x x x x x x -> x'''''') std.http.broadcast.size f a bc x1 cont k shards) Unit  =?=  Int -> Co f Unit   ok
+108:8  meta  ?0 (a) : Type
+108:8  meta  ?1 (ord) : prelude.Order (?0 std.http.broadcast.shardsMade x1 x2 x3 x4 x5)
+108:8  instance  wanted Order (?0 std.http.broadcast.shardsMade f a bc k made)  [waits for implicits]
+108:8  solve  ?0 (a) := \x x x x x x -> Int
+108:6  unify  (\x x x x x x -> Int) std.http.broadcast.shardsMade f a bc k made  =?=  Int   ok
+108:8  solve  ?1 (ord) := \x x x x x x -> prelude.instanceOrderInt
+108:8  instance  found instanceOrderInt : Order Int
+108:18  meta  ?2 (h) : co.HFunctor
+108:18  meta  ?3 (a) : Type
+108:18  solve  ?2 (h) := \x x x x x x -> x''''
+108:18  solve  ?3 (a) := \x x x x x x -> builtin.List (boc.Cown (builtin.List (std.http.bocserver.Sender x''')))
+108:18  unify  Co f (List (BOC.Cown (List (BocServer.Sender a))))  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> List (BOC.Cown (List (BocServer.Sender x''')))) std.http.broadcast.shardsMade f a bc k made)   ok, before the arguments
+108:23  unify  List (BOC.Cown (List (BocServer.Sender a)))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+109:8  meta  ?4 (h) : co.HFunctor
+109:8  meta  ?5 (a) : Type
+109:8  meta  ?6 (b) : Type
+109:8  solve  ?4 (h) := \x x x x x x -> x''''
+109:8  solve  ?6 (b) := \x x x x x x -> builtin.List (boc.Cown (builtin.List (std.http.bocserver.Sender x''')))
+109:8  unify  Co f (List (BOC.Cown (List (BocServer.Sender a))))  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> List (BOC.Cown (List (BocServer.Sender x''')))) std.http.broadcast.shardsMade f a bc k made)   ok, before the arguments
+110:10  meta  ?7 (e) : co.HFunctor
+110:10  meta  ?8 (a) : Type
+110:10  meta  ?9 (bc) : co.<: boc.boc (?7 std.http.broadcast.shardsMade x1 x2 x3 x4 x5)
+110:10  instance  wanted BOC.boc <: ?7 std.http.broadcast.shardsMade f a bc k made  [evidence: its one witness, or waits]
+110:10  solve  ?7 (e) := \x x x x x x -> x''''
+110:10  solve  ?8 (a) := \x x x x x x -> ?10
+109:8  solve  ?5 (a) := \x x x x x x -> boc.Cown ?10
+110:10  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> BOC.Cown ?10) std.http.broadcast.shardsMade f a bc k made)  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) (BOC.Cown ((\x x x x x x -> ?10) std.http.broadcast.shardsMade f a bc k made))   ok, before the arguments
+110:10  meta  ?11 (argument) : ?10 x1 x2 x3 x4 x5
+110:10  delay  argument waits for its type ?11
+110:10  solve  ?9 (bc) := \x x x x x x -> x''
+110:10  instance  found bc : BOC.boc <: f
+111:5  meta  ?12 (f) : co.HFunctor
+111:5  meta  ?13 (a) : Type
+111:5  meta  ?14 (bc) : co.<: boc.boc (?12 std.http.broadcast.shardsMade x1 x2 x3 x4 x5 x6)
+111:5  instance  wanted BOC.boc <: ?12 std.http.broadcast.shardsMade f a bc k made c  [evidence: its one witness, or waits]
+111:5  solve  ?12 (f) := \x x x x x x x -> x'''''
+111:5  solve  ?13 (a) := \x x x x x x x -> x''''
+111:5  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made) ((\x x x x x x -> List (BOC.Cown (List (BocServer.Sender x''')))) std.http.broadcast.shardsMade f a bc k made)  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.shardsMade f a bc k made c) (List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made c)))))   ok, before the arguments
+111:19  meta  ?15 (a) : Type
+111:19  meta  ?16 (sub) : prelude.Subtraction (?15 std.http.broadcast.shardsMade x1 x2 x3 x4 x5 x6)
+111:19  instance  wanted Subtraction (?15 std.http.broadcast.shardsMade f a bc k made c)  [waits for implicits]
+111:19  solve  ?15 (a) := \x x x x x x x -> Int
+111:17  unify  (\x x x x x x x -> Int) std.http.broadcast.shardsMade f a bc k made c  =?=  Int   ok
+111:5  solve  ?14 (bc) := \x x x x x x x -> x'''
+111:5  instance  found bc : BOC.boc <: f
+111:19  solve  ?16 (sub) := \x x x x x x x -> prelude.instanceSubtractionInt
+111:19  instance  found instanceSubtractionInt : Subtraction Int
+111:19  unify  Int  =?=  Int   ok
+111:27  meta  ?17 (a) : Type
+111:27  solve  ?17 (a) := \x x x x x x x -> boc.Cown ?10
+111:25  unify  (\x x x x x x x -> BOC.Cown ?10) std.http.broadcast.shardsMade f a bc k made c  =?=  BOC.Cown ?10   ok
+110:10  solve  ?10 (a) := \x x x x x -> builtin.List (std.http.bocserver.Sender x''')
+111:30  unify  List ((\x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''))) std.http.broadcast.shardsMade f a bc k made c)  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+110:10  solve  ?11 (argument) := \x x x x x x -> []
+111:27  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.shardsMade f a bc k made c))))  =?=  List ((\x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''))) std.http.broadcast.shardsMade f a bc k made c)   ok
+115:37  unify  HFunctor  =?=  HFunctor   ok
+115:48  unify  HFunctor  =?=  HFunctor   ok
+115:65  unify  HFunctor  =?=  HFunctor   ok
+116:19  meta  ?0 (a) : Type
+116:19  meta  ?1 (ord) : prelude.Order (?0 std.http.broadcast.shardsOf x1 x2 x3)
+116:19  instance  wanted Order (?0 std.http.broadcast.shardsOf f bc k)  [waits for implicits]
+116:19  solve  ?0 (a) := \x x x x -> Int
+116:17  unify  (\x x x x -> Int) std.http.broadcast.shardsOf f bc k  =?=  Int   ok
+116:19  solve  ?1 (ord) := \x x x x -> prelude.instanceOrderInt
+116:19  instance  found instanceOrderInt : Order Int
+116:28  meta  ?2 (h) : co.HFunctor
+116:28  meta  ?3 (a) : Type
+116:28  solve  ?2 (h) := \x x x x -> x''
+116:28  solve  ?3 (a) := \x x x x -> Int
+116:28  unify  Co f Int  =?=  Co ((\x x x x -> x'') std.http.broadcast.shardsOf f bc k) ((\x x x x -> Int) std.http.broadcast.shardsOf f bc k)   ok, before the arguments
+116:33  unify  Int  =?=  Int   ok
+116:40  meta  ?4 (e) : co.HFunctor
+116:40  meta  ?5 (bc) : co.<: boc.boc (?4 std.http.broadcast.shardsOf x1 x2 x3)
+116:40  instance  wanted BOC.boc <: ?4 std.http.broadcast.shardsOf f bc k  [evidence: its one witness, or waits]
+116:40  solve  ?4 (e) := \x x x x -> x''
+116:40  unify  Co f Int  =?=  Co ((\x x x x -> x'') std.http.broadcast.shardsOf f bc k) Int   ok
+116:40  solve  ?5 (bc) := \x x x x -> x'
+116:40  instance  found bc : BOC.boc <: f
+123:20  unify  HFunctor  =?=  HFunctor   ok
+123:31  unify  HFunctor  =?=  HFunctor   ok
+124:16  unify  HFunctor  =?=  HFunctor   ok
+124:25  unify  Type  =?=  Type   ok
+124:19  unify  Type  =?=  Type   ok
+125:12  meta  ?0 (h) : co.HFunctor
+125:12  meta  ?1 (a) : Type
+125:12  meta  ?2 (b) : Type
+125:12  solve  ?0 (h) := \x x x x x -> x'''
+125:12  solve  ?2 (b) := \x x x x x -> std.http.broadcast.Group x''
+125:12  unify  Co f (Group a)  =?=  Co ((\x x x x x -> x''') std.http.broadcast.newGroup f a shards bc) ((\x x x x x -> Group x'') std.http.broadcast.newGroup f a shards bc)   ok, before the arguments
+126:8  meta  ?3 (f) : co.HFunctor
+126:8  meta  ?4 (bc) : co.<: boc.boc (?3 std.http.broadcast.newGroup x1 x2 x3 x4)
+126:8  instance  wanted BOC.boc <: ?3 std.http.broadcast.newGroup f a shards bc  [evidence: its one witness, or waits]
+126:8  solve  ?3 (f) := \x x x x x -> x'''
+125:12  solve  ?1 (a) := \x x x x x -> Int
+126:8  unify  Co ((\x x x x x -> x''') std.http.broadcast.newGroup f a shards bc) ((\x x x x x -> Int) std.http.broadcast.newGroup f a shards bc)  =?=  Co ((\x x x x x -> x''') std.http.broadcast.newGroup f a shards bc) Int   ok, before the arguments
+126:17  unify  Int  =?=  Int   ok
+126:8  solve  ?4 (bc) := \x x x x x -> x
+126:8  instance  found bc : BOC.boc <: f
+125:12  meta  ?5 (h) : co.HFunctor
+125:12  meta  ?6 (a) : Type
+125:12  meta  ?7 (b) : Type
+125:12  solve  ?5 (h) := \x x x x x x -> x''''
+125:12  solve  ?7 (b) := \x x x x x x -> std.http.broadcast.Group x'''
+125:12  unify  Co ((\x x x x x -> x''') std.http.broadcast.newGroup f a shards bc) ((\x x x x x -> Group x'') std.http.broadcast.newGroup f a shards bc)  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc k) ((\x x x x x x -> Group x''') std.http.broadcast.newGroup f a shards bc k)   ok, before the arguments
+127:11  meta  ?8 (f) : co.HFunctor
+127:11  meta  ?9 (a) : Type
+127:11  meta  ?10 (bc) : co.<: boc.boc (?8 std.http.broadcast.newGroup x1 x2 x3 x4 x5)
+127:11  instance  wanted BOC.boc <: ?8 std.http.broadcast.newGroup f a shards bc k  [evidence: its one witness, or waits]
+127:11  solve  ?8 (f) := \x x x x x x -> x''''
+127:11  solve  ?9 (a) := \x x x x x x -> ?11
+125:12  solve  ?6 (a) := \x x x x x x -> builtin.List (boc.Cown (builtin.List (std.http.bocserver.Sender ?11)))
+127:11  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc k) ((\x x x x x x -> List (BOC.Cown (List (BocServer.Sender ?11)))) std.http.broadcast.newGroup f a shards bc k)  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc k) (List (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> ?11) std.http.broadcast.newGroup f a shards bc k)))))   ok, before the arguments
+127:22  unify  Int  =?=  Int   ok
+127:11  solve  ?10 (bc) := \x x x x x x -> x'
+127:11  instance  found bc : BOC.boc <: f
+128:3  meta  ?12 (h) : co.HFunctor
+128:3  meta  ?13 (a) : Type
+128:3  solve  ?12 (h) := \x x x x x x x -> x'''''
+128:3  solve  ?13 (a) := \x x x x x x x -> std.http.broadcast.Group x''''
+128:3  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.newGroup f a shards bc k) ((\x x x x x x -> Group x''') std.http.broadcast.newGroup f a shards bc k)  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.newGroup f a shards bc k made) ((\x x x x x x x -> Group x'''') std.http.broadcast.newGroup f a shards bc k made)   ok, before the arguments
+128:17  unify  Int  =?=  Int   ok
+127:11  solve  ?11 (a) := \x x x x x -> x'''
+128:19  unify  List (BOC.Cown (List (BocServer.Sender a)))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+131:44  unify  Type  =?=  Type   ok
+131:38  unify  Type  =?=  Type   ok
+131:63  unify  Type  =?=  Type   ok
+131:57  unify  Type  =?=  Type   ok
+132:20  meta  ?0 (a) : Type
+132:31  meta  ?1 (a) : Type
+132:41  unify  Int  =?=  Int   ok
+132:31  solve  ?1 (a) := \x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''))
+132:43  unify  List ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+132:20  solve  ?0 (a) := \x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''))
+132:31  unify  List ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)  =?=  List ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)   ok
+132:20  unify  Maybe (BOC.Cown (List (BocServer.Sender a)))  =?=  Maybe ((\x x x x -> BOC.Cown (List (BocServer.Sender x''))) std.http.broadcast.shardAt a i shards)   ok
+137:19  unify  HFunctor  =?=  HFunctor   ok
+137:30  unify  HFunctor  =?=  HFunctor   ok
+138:25  unify  Type  =?=  Type   ok
+138:19  unify  Type  =?=  Type   ok
+139:36  unify  Type  =?=  Type   ok
+139:19  unify  Type  =?=  Type   ok
+139:45  unify  HFunctor  =?=  HFunctor   ok
+139:71  unify  Type  =?=  Type   ok
+139:54  unify  Type  =?=  Type   ok
+139:48  unify  Type  =?=  Type   ok
+140:15  unify  HFunctor  =?=  HFunctor   ok
+140:17  unify  Type  =?=  Type   ok
+141:24  meta  ?0 (h) : co.HFunctor
+141:24  meta  ?1 (a) : Type
+141:24  solve  ?0 (h) := \x x x x x x -> x''''
+141:24  solve  ?1 (a) := \x x x x x x -> builtin.Unit
+141:24  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.onShard f a bc x1 body) ((\x x x x x x -> Unit) std.http.broadcast.onShard f a bc x1 body)   ok, before the arguments
+141:29  unify  Unit  =?=  Unit   ok
+142:25  meta  ?2 (c) : Type
+142:25  meta  ?3 (e) : co.HFunctor
+142:25  solve  ?2 (c) := \x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''))
+142:34  unify  (\x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''))) std.http.broadcast.onShard f a bc x1 body c  =?=  BOC.Cown (List (BocServer.Sender a))   ok
+142:25  meta  ?4 (cw) : boc.Cowns ((\x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''))) std.http.broadcast.onShard x1 x2 x3 x4 x5 x6)
+142:25  instance  wanted BOC.Cowns (BOC.Cown (List (BocServer.Sender a)))  [ready at the call]
+142:25  meta  ?5 (a) : Type
+142:25  solve  ?5 (a) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
+142:25  solve  ?4 (cw) := \x x x x x x x -> boc.instanceCownsCown
+142:25  instance  found BOC.instanceCownsCown : BOC.Cowns (BOC.Cown (List (BocServer.Sender a)))
+142:25  meta  ?6 (bc) : co.<: boc.boc (?3 std.http.broadcast.onShard x1 x2 x3 x4 x5 x6)
+142:25  instance  wanted BOC.boc <: ?3 std.http.broadcast.onShard f a bc x1 body c  [evidence: its one witness, or waits]
+142:25  solve  ?3 (e) := \x x x x x x x -> x'''''
+142:36  unify  ((\x x x x x x x -> BOC.instanceCownsCown) std.http.broadcast.onShard f a bc x1 body c).Contents -> Co ((\x x x x x x x -> x''''') std.http.broadcast.onShard f a bc x1 body c) ((\x x x x x x x -> BOC.instanceCownsCown) std.http.broadcast.onShard f a bc x1 body c).Contents  =?=  List (BocServer.Sender a) -> Co f (List (BocServer.Sender a))   ok
+142:25  solve  ?6 (bc) := \x x x x x x x -> x'''
+142:25  instance  found bc : BOC.boc <: f
+142:25  unify  Co f Unit  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.onShard f a bc x1 body c) Unit   ok
+145:31  unify  Type  =?=  Type   ok
+145:53  unify  Type  =?=  Type   ok
+145:71  unify  Type  =?=  Type   ok
+145:65  unify  Type  =?=  Type   ok
+147:3  meta  ?0 (a) : Type
+147:51  meta  ?1 (a) : Type
+147:51  meta  ?2 (mod) : prelude.Remainder (?1 std.http.broadcast.shardOf x1 x2 x3 x4 x5)
+147:51  instance  wanted Remainder (?1 std.http.broadcast.shardOf a x1 out k shards)  [waits for implicits]
+147:46  meta  ?3 (a) : Type
+147:46  meta  ?4 (add) : prelude.Addition (?3 std.http.broadcast.shardOf x1 x2 x3 x4 x5)
+147:46  instance  wanted Addition (?3 std.http.broadcast.shardOf a x1 out k shards)  [waits for implicits]
+147:41  meta  ?5 (a) : Type
+147:41  meta  ?6 (mod) : prelude.Remainder (?5 std.http.broadcast.shardOf x1 x2 x3 x4 x5)
+147:41  instance  wanted Remainder (?5 std.http.broadcast.shardOf a x1 out k shards)  [waits for implicits]
+147:14  meta  ?7 (a) : Type
+147:14  solve  ?7 (a) := \x x x x x x -> x''''
+147:37  unify  BocServer.Sender ((\x x x x x x -> x'''') std.http.broadcast.shardOf a x1 out k shards)  =?=  BocServer.Sender a   ok
+147:41  solve  ?5 (a) := \x x x x x x -> Int
+147:14  unify  (\x x x x x x -> Int) std.http.broadcast.shardOf a x1 out k shards  =?=  Int   ok
+147:41  solve  ?6 (mod) := \x x x x x x -> prelude.instanceRemainderInt
+147:41  instance  found instanceRemainderInt : Remainder Int
+147:43  unify  Int  =?=  Int   ok
+147:46  solve  ?3 (a) := \x x x x x x -> Int
+147:41  unify  (\x x x x x x -> Int) std.http.broadcast.shardOf a x1 out k shards  =?=  Int   ok
+147:46  solve  ?4 (add) := \x x x x x x -> prelude.instanceAdditionInt
+147:46  instance  found instanceAdditionInt : Addition Int
+147:48  unify  Int  =?=  Int   ok
+147:51  solve  ?1 (a) := \x x x x x x -> Int
+147:46  unify  (\x x x x x x -> Int) std.http.broadcast.shardOf a x1 out k shards  =?=  Int   ok
+147:51  solve  ?2 (mod) := \x x x x x x -> prelude.instanceRemainderInt
+147:51  instance  found instanceRemainderInt : Remainder Int
+147:53  unify  Int  =?=  Int   ok
+147:51  unify  Int  =?=  Int   ok
+147:3  solve  ?0 (a) := \x x x x x x -> x''''
+147:56  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x'''') std.http.broadcast.shardOf a x1 out k shards))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+147:3  unify  Maybe (BOC.Cown (List (BocServer.Sender a)))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x'''') std.http.broadcast.shardOf a x1 out k shards))))   ok
+152:35  unify  Type  =?=  Type   ok
+152:18  unify  Type  =?=  Type   ok
+153:35  unify  Type  =?=  Type   ok
+153:18  unify  Type  =?=  Type   ok
+155:3  meta  ?0 (a) : Type
+155:52  meta  ?1 (a) : Type
+155:52  meta  ?2 (eq) : prelude.Equality (?1 std.http.broadcast.without x1 x2 x3 x4)
+155:52  instance  wanted Equality (?1 std.http.broadcast.without a n senders o)  [waits for implicits]
+155:27  meta  ?3 (a) : Type
+155:27  solve  ?3 (a) := \x x x x x -> ?4
+155:3  solve  ?0 (a) := \x x x x -> std.http.bocserver.Sender ?4
+155:50  unify  BocServer.Sender ((\x x x x x -> ?4) std.http.broadcast.without a n senders o)  =?=  (\x x x x -> BocServer.Sender ?4) std.http.broadcast.without a n senders   ok
+155:52  solve  ?1 (a) := \x x x x x -> Int
+155:27  unify  (\x x x x x -> Int) std.http.broadcast.without a n senders o  =?=  Int   ok
+155:52  solve  ?2 (eq) := \x x x x x -> prelude.instanceEqualityInt
+155:52  instance  found instanceEqualityInt : Equality Int
+155:55  unify  Int  =?=  Int   ok
+155:52  unify  Bool  =?=  Bool   ok
+155:22  unify  Bool  =?=  Bool   ok
+155:27  solve  ?4 (a) := \x x x -> x''
+155:59  unify  List ((\x x x x -> BocServer.Sender x'') std.http.broadcast.without a n senders)  =?=  List (BocServer.Sender a)   ok
+155:3  unify  List (BocServer.Sender a)  =?=  List ((\x x x x -> BocServer.Sender x'') std.http.broadcast.without a n senders)   ok
+160:16  unify  HFunctor  =?=  HFunctor   ok
+160:27  unify  HFunctor  =?=  HFunctor   ok
+161:15  unify  Type  =?=  Type   ok
+162:26  unify  Type  =?=  Type   ok
+163:12  unify  HFunctor  =?=  HFunctor   ok
+163:14  unify  Type  =?=  Type   ok
+164:14  meta  ?0 (f) : co.HFunctor
+164:14  meta  ?1 (a) : Type
+164:14  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.join x1 x2 x3 x4 x5)
+164:14  instance  wanted BOC.boc <: ?0 std.http.broadcast.join f a bc g out  [evidence: its one witness, or waits]
+164:14  solve  ?0 (f) := \x x x x x x -> x''''
+164:14  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.join f a bc g out) Unit   ok, before the arguments
+164:23  meta  ?3 (a) : Type
+164:23  solve  ?3 (a) := \x x x x x x -> x'''
+164:31  unify  Group ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out)  =?=  Group a   ok
+164:14  solve  ?2 (bc) := \x x x x x x -> x''
+164:14  instance  found bc : BOC.boc <: f
+164:33  unify  BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out)  =?=  BocServer.Sender a   ok
+164:14  solve  ?1 (a) := \x x x x x x -> x'''
+164:23  unify  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out))))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out))))   ok
+164:51  meta  ?4 (h) : co.HFunctor
+164:51  meta  ?5 (a) : Type
+164:51  solve  ?4 (h) := \x x x x x x x -> x'''''
+164:51  solve  ?5 (a) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
+164:51  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.join f a bc g out) (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out)))  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.join f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.join f a bc g out senders)   ok, before the arguments
+164:61  meta  ?6 (a) : Type
+164:61  solve  ?6 (a) := \x x x x x x x -> std.http.bocserver.Sender x''''
+164:57  unify  (\x x x x x x x -> BocServer.Sender x'''') std.http.broadcast.join f a bc g out senders  =?=  BocServer.Sender a   ok
+164:64  unify  List ((\x x x x x x x -> BocServer.Sender x'''') std.http.broadcast.join f a bc g out senders)  =?=  List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.join f a bc g out))   ok
+164:61  unify  List (BocServer.Sender a)  =?=  List ((\x x x x x x x -> BocServer.Sender x'''') std.http.broadcast.join f a bc g out senders)   ok
+170:17  unify  HFunctor  =?=  HFunctor   ok
+170:28  unify  HFunctor  =?=  HFunctor   ok
+171:16  unify  Type  =?=  Type   ok
+172:27  unify  Type  =?=  Type   ok
+173:13  unify  HFunctor  =?=  HFunctor   ok
+173:15  unify  Type  =?=  Type   ok
+175:3  meta  ?0 (f) : co.HFunctor
+175:3  meta  ?1 (a) : Type
+175:3  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.leave x1 x2 x3 x4 x5)
+175:3  instance  wanted BOC.boc <: ?0 std.http.broadcast.leave f a bc g out  [evidence: its one witness, or waits]
+175:3  solve  ?0 (f) := \x x x x x x -> x''''
+175:3  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.leave f a bc g out) Unit   ok, before the arguments
+176:6  meta  ?3 (a) : Type
+176:6  solve  ?3 (a) := \x x x x x x -> x'''
+176:14  unify  Group ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out)  =?=  Group a   ok
+175:3  solve  ?2 (bc) := \x x x x x x -> x''
+175:3  instance  found bc : BOC.boc <: f
+176:16  unify  BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out)  =?=  BocServer.Sender a   ok
+175:3  solve  ?1 (a) := \x x x x x x -> x'''
+176:6  unify  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out))))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out))))   ok
+177:18  meta  ?4 (h) : co.HFunctor
+177:18  meta  ?5 (a) : Type
+177:18  solve  ?4 (h) := \x x x x x x x -> x'''''
+177:18  solve  ?5 (a) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
+177:18  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.leave f a bc g out) (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out)))  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.leave f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.leave f a bc g out senders)   ok, before the arguments
+177:24  meta  ?6 (a) : Type
+177:33  meta  ?7 (a) : Type
+177:33  solve  ?7 (a) := \x x x x x x x -> x''''
+177:56  unify  BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.leave f a bc g out senders)  =?=  BocServer.Sender a   ok
+177:33  unify  Int  =?=  Int   ok
+177:24  solve  ?6 (a) := \x x x x x x x -> x''''
+177:61  unify  List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.leave f a bc g out senders))  =?=  List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.leave f a bc g out))   ok
+177:24  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.leave f a bc g out senders))   ok
+183:18  unify  HFunctor  =?=  HFunctor   ok
+183:29  unify  HFunctor  =?=  HFunctor   ok
+184:17  unify  Type  =?=  Type   ok
+185:28  unify  Type  =?=  Type   ok
+186:14  unify  HFunctor  =?=  HFunctor   ok
+186:16  unify  Type  =?=  Type   ok
+188:3  meta  ?0 (f) : co.HFunctor
+188:3  meta  ?1 (a) : Type
+188:3  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.finish x1 x2 x3 x4 x5)
+188:3  instance  wanted BOC.boc <: ?0 std.http.broadcast.finish f a bc g out  [evidence: its one witness, or waits]
+188:3  solve  ?0 (f) := \x x x x x x -> x''''
+188:3  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.finish f a bc g out) Unit   ok, before the arguments
+189:6  meta  ?3 (a) : Type
+189:6  solve  ?3 (a) := \x x x x x x -> x'''
+189:14  unify  Group ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out)  =?=  Group a   ok
+188:3  solve  ?2 (bc) := \x x x x x x -> x''
+188:3  instance  found bc : BOC.boc <: f
+189:16  unify  BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out)  =?=  BocServer.Sender a   ok
+188:3  solve  ?1 (a) := \x x x x x x -> x'''
+189:6  unify  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out))))  =?=  Maybe (BOC.Cown (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out))))   ok
+189:34  meta  ?4 (h) : co.HFunctor
+189:34  meta  ?5 (a) : Type
+189:34  meta  ?6 (b) : Type
+189:34  solve  ?4 (h) := \x x x x x x x -> x'''''
+189:34  solve  ?6 (b) := \x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''')
+189:34  unify  Co ((\x x x x x x -> x'''') std.http.broadcast.finish f a bc g out) (List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out)))  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.finish f a bc g out senders)   ok, before the arguments
+190:7  meta  ?7 (f) : co.HFunctor
+190:7  meta  ?8 (a) : Type
+190:7  meta  ?9 (bc) : co.<: boc.boc (?7 std.http.broadcast.finish x1 x2 x3 x4 x5 x6)
+190:7  instance  wanted BOC.boc <: ?7 std.http.broadcast.finish f a bc g out senders  [evidence: its one witness, or waits]
+190:7  solve  ?7 (f) := \x x x x x x x -> x'''''
+189:34  solve  ?5 (a) := \x x x x x x x -> builtin.Unit
+190:7  unify  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) ((\x x x x x x x -> Unit) std.http.broadcast.finish f a bc g out senders)  =?=  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) Unit   ok, before the arguments
+190:7  solve  ?8 (a) := \x x x x x x x -> x''''
+190:24  unify  BocServer.Sender ((\x x x x x x x -> x'''') std.http.broadcast.finish f a bc g out senders)  =?=  BocServer.Sender a   ok
+190:7  solve  ?9 (bc) := \x x x x x x x -> x'''
+190:7  instance  found bc : BOC.boc <: f
+191:7  meta  ?10 (h) : co.HFunctor
+191:7  meta  ?11 (a) : Type
+191:7  solve  ?10 (h) := \x x x x x x x x -> x''''''
+191:7  solve  ?11 (a) := \x x x x x x x x -> builtin.List (std.http.bocserver.Sender x''''')
+191:7  unify  Co ((\x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders) ((\x x x x x x x -> List (BocServer.Sender x'''')) std.http.broadcast.finish f a bc g out senders)  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.finish f a bc g out senders _) ((\x x x x x x x x -> List (BocServer.Sender x''''')) std.http.broadcast.finish f a bc g out senders _)   ok, before the arguments
+191:13  meta  ?12 (a) : Type
+191:22  meta  ?13 (a) : Type
+191:22  solve  ?13 (a) := \x x x x x x x x -> x'''''
+191:45  unify  BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders _)  =?=  BocServer.Sender a   ok
+191:22  unify  Int  =?=  Int   ok
+191:13  solve  ?12 (a) := \x x x x x x x x -> x'''''
+191:50  unify  List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders _))  =?=  List (BocServer.Sender ((\x x x x x x -> x''') std.http.broadcast.finish f a bc g out))   ok
+191:13  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.finish f a bc g out senders _))   ok
+196:18  unify  HFunctor  =?=  HFunctor   ok
+196:29  unify  HFunctor  =?=  HFunctor   ok
+198:34  unify  Type  =?=  Type   ok
+198:17  unify  Type  =?=  Type   ok
+199:14  unify  HFunctor  =?=  HFunctor   ok
+199:16  unify  Type  =?=  Type   ok
+200:15  meta  ?0 (h) : co.HFunctor
+200:15  meta  ?1 (a) : Type
+200:15  solve  ?0 (h) := \x x x x x x -> x''''
+200:15  solve  ?1 (a) := \x x x x x x -> builtin.Unit
+200:15  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.sentTo f a bc x x2) ((\x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2)   ok, before the arguments
+200:20  unify  Unit  =?=  Unit   ok
+201:26  meta  ?2 (h) : co.HFunctor
+201:26  meta  ?3 (a) : Type
+201:26  meta  ?4 (b) : Type
+201:26  solve  ?2 (h) := \x x x x x x x x -> x''''''
+201:26  solve  ?4 (b) := \x x x x x x x x -> builtin.Unit
+201:26  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) ((\x x x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2 out rest)   ok, before the arguments
+202:3  meta  ?5 (f) : co.HFunctor
+202:3  meta  ?6 (a) : Type
+202:3  meta  ?7 (bc) : co.<: boc.boc (?5 std.http.broadcast.sentTo x1 x2 x3 x4 x5 x6 x7)
+202:3  instance  wanted BOC.boc <: ?5 std.http.broadcast.sentTo f a bc x x2 out rest  [evidence: its one witness, or waits]
+202:3  solve  ?5 (f) := \x x x x x x x x -> x''''''
+201:26  solve  ?3 (a) := \x x x x x x x x -> builtin.Unit
+202:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) ((\x x x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2 out rest)  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) Unit   ok, before the arguments
+202:3  solve  ?6 (a) := \x x x x x x x x -> x'''''
+202:18  unify  BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.sentTo f a bc x x2 out rest)  =?=  BocServer.Sender a   ok
+202:3  solve  ?7 (bc) := \x x x x x x x x -> x''''
+202:3  instance  found bc : BOC.boc <: f
+202:22  unify  a  =?=  a   ok
+203:3  meta  ?8 (f) : co.HFunctor
+203:3  meta  ?9 (a) : Type
+203:3  meta  ?10 (bc) : co.<: boc.boc (?8 std.http.broadcast.sentTo x1 x2 x3 x4 x5 x6 x7 x8)
+203:3  instance  wanted BOC.boc <: ?8 std.http.broadcast.sentTo f a bc x x2 out rest _  [evidence: its one witness, or waits]
+203:3  solve  ?8 (f) := \x x x x x x x x x -> x'''''''
+203:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest) ((\x x x x x x x x -> Unit) std.http.broadcast.sentTo f a bc x x2 out rest)  =?=  Co ((\x x x x x x x x x -> x''''''') std.http.broadcast.sentTo f a bc x x2 out rest _) Unit   ok, before the arguments
+203:3  solve  ?9 (a) := \x x x x x x x x x -> x''''''
+203:10  unify  (\x x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest _  =?=  a   ok
+203:3  solve  ?10 (bc) := \x x x x x x x x x -> x'''''
+203:3  instance  found bc : BOC.boc <: f
+203:12  unify  List (BocServer.Sender ((\x x x x x x x x x -> x'''''') std.http.broadcast.sentTo f a bc x x2 out rest _))  =?=  List (BocServer.Sender a)   ok
+208:18  unify  HFunctor  =?=  HFunctor   ok
+208:29  unify  HFunctor  =?=  HFunctor   ok
+210:23  unify  Type  =?=  Type   ok
+210:17  unify  Type  =?=  Type   ok
+211:14  unify  HFunctor  =?=  HFunctor   ok
+211:16  unify  Type  =?=  Type   ok
+212:15  meta  ?0 (h) : co.HFunctor
+212:15  meta  ?1 (a) : Type
+212:15  solve  ?0 (h) := \x x x x x x -> x''''
+212:15  solve  ?1 (a) := \x x x x x x -> builtin.Unit
+212:15  unify  Co f Unit  =?=  Co ((\x x x x x x -> x'''') std.http.broadcast.spread f a bc x x2) ((\x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2)   ok, before the arguments
+212:20  unify  Unit  =?=  Unit   ok
+213:24  meta  ?2 (h) : co.HFunctor
+213:24  meta  ?3 (a) : Type
+213:24  meta  ?4 (b) : Type
+213:24  solve  ?2 (h) := \x x x x x x x x -> x''''''
+213:24  solve  ?4 (b) := \x x x x x x x x -> builtin.Unit
+213:24  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest)   ok, before the arguments
+214:3  meta  ?5 (e) : co.HFunctor
+214:3  meta  ?6 (c) : Type
+214:3  meta  ?7 (r) : Type
+214:3  solve  ?6 (c) := \x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x'''''))
+214:19  unify  (\x x x x x x x x -> BOC.Cown (List (BocServer.Sender x'''''))) std.http.broadcast.spread f a bc x x2 c rest  =?=  BOC.Cown (List (BocServer.Sender a))   ok
+214:3  meta  ?8 (b) : co.Binder ((\x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x'''''))) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7)
+214:3  instance  wanted Binder (BOC.Cown (List (BocServer.Sender a)))  [ready at the call]
+214:3  meta  ?9 (a) : Type
+214:3  solve  ?9 (a) := \x x x x x x x x -> builtin.List (std.http.bocserver.Sender x''''')
+214:3  solve  ?8 (b) := \x x x x x x x x -> boc.instanceBinderCown
+214:3  instance  found BOC.instanceBinderCown : Binder (BOC.Cown (List (BocServer.Sender a)))
+214:3  meta  ?10 (h) : co.Holder (?5 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7) ((\x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x'''''))) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7) (((\x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7).Contents (?5 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7)) ((\x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7).World ((\x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7).Result
+214:3  instance  wanted Holder (?5 std.http.broadcast.spread f a bc x x2 c rest) (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents (?5 std.http.broadcast.spread f a bc x x2 c rest)) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result  [waits for implicits]
+214:3  unify  Bool  =?=  Bool   ok
+214:3  meta  ?11 (h) : co.HFunctor
+214:3  meta  ?12 (a) : Type
+214:3  meta  ?13 (b) : Type
+214:3  solve  ?11 (h) := \x x x x x x x x x x -> ?14
+214:3  solve  ?5 (e) := \x x x x x x x x -> ?14
+214:3  solve  ?7 (r) := \x x x x x x x x -> ?15
+214:3  solve  ?13 (b) := \x x x x x x x x x x -> (?15, builtin.List (std.http.bocserver.Sender x'''''''))
+214:3  unify  Co (((\x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.spread f a bc x x2 c rest).World ((\x x x x x x x x -> ?14) std.http.broadcast.spread f a bc x x2 c rest)) ((\x x x x x x x x -> ?15) std.http.broadcast.spread f a bc x x2 c rest, ((\x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.spread f a bc x x2 c rest).Contents ((\x x x x x x x x -> ?14) std.http.broadcast.spread f a bc x x2 c rest) s)  =?=  Co ((\x x x x x x x x x x -> ?14) std.http.broadcast.spread f a bc x x2 c rest s senders) ((\x x x x x x x x x x -> (?15, List (BocServer.Sender x'''''''))) std.http.broadcast.spread f a bc x x2 c rest s senders)   ok, before the arguments
+215:5  meta  ?16 (f) : co.HFunctor
+215:5  meta  ?17 (a) : Type
+215:5  meta  ?18 (bc) : co.<: boc.boc (?16 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7 x8 x9)
+215:5  instance  wanted BOC.boc <: ?16 std.http.broadcast.spread f a bc x x2 c rest s senders  [evidence: its one witness, or waits]
+215:5  solve  ?16 (f) := \x x x x x x x x x x -> ?19
+214:3  solve  ?14 (h) := \x x x x x x x -> ?19
+214:3  solve  ?12 (a) := \x x x x x x x x x x -> builtin.Unit
+215:5  unify  Co ((\x x x x x x x x x x -> ?19) std.http.broadcast.spread f a bc x x2 c rest s senders) ((\x x x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest s senders)  =?=  Co ((\x x x x x x x x x x -> ?19) std.http.broadcast.spread f a bc x x2 c rest s senders) Unit   ok, before the arguments
+215:5  solve  ?17 (a) := \x x x x x x x x x x -> x'''''''
+215:12  unify  (\x x x x x x x x x x -> x''''''') std.http.broadcast.spread f a bc x x2 c rest s senders  =?=  a   ok
+215:14  unify  List (BocServer.Sender ((\x x x x x x x x x x -> x''''''') std.http.broadcast.spread f a bc x x2 c rest s senders))  =?=  List (BocServer.Sender a)   ok
+215:5  meta  ?20 (h) : co.HFunctor
+215:5  meta  ?21 (a) : Type
+215:5  solve  ?20 (h) := \x x x x x x x x x x x -> ?22
+215:5  solve  ?19 (f) := \x x x x x x x -> ?22
+215:5  solve  ?21 (a) := \x x x x x x x x x x x -> (?15, builtin.List (std.http.bocserver.Sender x''''''''))
+215:5  unify  Co ((\x x x x x x x x x x -> ?22) std.http.broadcast.spread f a bc x x2 c rest s senders) ((\x x x x x x x x x x -> (?15, List (BocServer.Sender x'''''''))) std.http.broadcast.spread f a bc x x2 c rest s senders)  =?=  Co ((\x x x x x x x x x x x -> ?22) std.http.broadcast.spread f a bc x x2 c rest s senders last#7453) ((\x x x x x x x x x x x -> (?15, List (BocServer.Sender x''''''''))) std.http.broadcast.spread f a bc x x2 c rest s senders last#7453)   ok, before the arguments
+214:3  solve  ?15 (r) := \x x x x x x x -> builtin.Unit
+215:5  unify  (\x x x x x x x -> Unit) f a bc x x2 c rest  =?=  Unit   ok
+214:8  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender a)   ok
+215:5  solve  ?22 (h) := \x x x x x x x -> x''''''
+213:24  solve  ?3 (a) := \x x x x x x x x -> builtin.Unit
+214:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest)  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) (((\x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.spread f a bc x x2 c rest).Result ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest))   ok
+215:5  solve  ?18 (bc) := \x x x x x x x x x x -> x''''''
+215:5  instance  found bc : BOC.boc <: f
+214:3  meta  ?23 (e) : co.HFunctor
+214:3  meta  ?24 (a) : Type
+214:3  meta  ?25 (bc) : co.<: boc.boc (?23 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7)
+214:3  solve  ?23 (e) := \x x x x x x x x -> x''''''
+214:3  solve  ?24 (a) := \x x x x x x x x -> builtin.List (std.http.bocserver.Sender x''''')
+214:3  solve  ?10 (h) := \x x x x x x x x -> boc.instanceHolderCown
+214:3  instance  found BOC.instanceHolderCown : Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result
+214:3  instance  wanted BOC.boc <: f  [by BOC.instanceHolderCown for Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result]
+214:3  solve  ?25 (bc) := \x x x x x x x x -> x''''
+214:3  instance  found bc : BOC.boc <: f
+216:3  meta  ?26 (f) : co.HFunctor
+216:3  meta  ?27 (a) : Type
+216:3  meta  ?28 (bc) : co.<: boc.boc (?26 std.http.broadcast.spread x1 x2 x3 x4 x5 x6 x7 x8)
+216:3  instance  wanted BOC.boc <: ?26 std.http.broadcast.spread f a bc x x2 c rest _  [evidence: its one witness, or waits]
+216:3  solve  ?26 (f) := \x x x x x x x x x -> x'''''''
+216:3  unify  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest) ((\x x x x x x x x -> Unit) std.http.broadcast.spread f a bc x x2 c rest)  =?=  Co ((\x x x x x x x x x -> x''''''') std.http.broadcast.spread f a bc x x2 c rest _) Unit   ok, before the arguments
+216:3  solve  ?27 (a) := \x x x x x x x x x -> x''''''
+216:10  unify  (\x x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest _  =?=  a   ok
+216:3  solve  ?28 (bc) := \x x x x x x x x x -> x'''''
+216:3  instance  found bc : BOC.boc <: f
+216:12  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x x -> x'''''') std.http.broadcast.spread f a bc x x2 c rest _))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+222:21  unify  HFunctor  =?=  HFunctor   ok
+222:32  unify  HFunctor  =?=  HFunctor   ok
+223:20  unify  Type  =?=  Type   ok
+225:17  unify  HFunctor  =?=  HFunctor   ok
+225:19  unify  Type  =?=  Type   ok
+226:34  meta  ?0 (f) : co.HFunctor
+226:34  meta  ?1 (a) : Type
+226:34  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.broadcast x1 x2 x3 x4 x5 x6 x7)
+226:34  instance  wanted BOC.boc <: ?0 std.http.broadcast.broadcast f a bc x1 x k shards  [evidence: its one witness, or waits]
+226:34  solve  ?0 (f) := \x x x x x x x x -> x''''''
+226:34  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.broadcast f a bc x1 x k shards) Unit   ok, before the arguments
+226:34  solve  ?1 (a) := \x x x x x x x x -> x'''''
+226:41  unify  (\x x x x x x x x -> x''''') std.http.broadcast.broadcast f a bc x1 x k shards  =?=  a   ok
+226:34  solve  ?2 (bc) := \x x x x x x x x -> x''''
+226:34  instance  found bc : BOC.boc <: f
+226:43  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.broadcast f a bc x1 x k shards))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+231:23  unify  HFunctor  =?=  HFunctor   ok
+231:34  unify  HFunctor  =?=  HFunctor   ok
+232:28  unify  Type  =?=  Type   ok
+232:22  unify  Type  =?=  Type   ok
+234:27  unify  HFunctor  =?=  HFunctor   ok
+234:29  unify  Type  =?=  Type   ok
+235:19  unify  HFunctor  =?=  HFunctor   ok
+235:21  unify  Type  =?=  Type   ok
+236:24  unify  Int  =?=  Int   ok
+236:22  unify  Co f Unit  =?=  Co f Unit   ok
+238:3  meta  ?0 (e) : co.HFunctor
+238:3  meta  ?1 (c) : Type
+238:3  meta  ?2 (r) : Type
+238:3  solve  ?1 (c) := \x x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''''))
+238:19  unify  (\x x x x x x x x x -> BOC.Cown (List (BocServer.Sender x''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest  =?=  BOC.Cown (List (BocServer.Sender a))   ok
+238:3  meta  ?3 (b) : co.Binder ((\x x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''''))) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8)
+238:3  instance  wanted Binder (BOC.Cown (List (BocServer.Sender a)))  [ready at the call]
+238:3  meta  ?4 (a) : Type
+238:3  solve  ?4 (a) := \x x x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''''')
+238:3  solve  ?3 (b) := \x x x x x x x x x -> boc.instanceBinderCown
+238:3  instance  found BOC.instanceBinderCown : Binder (BOC.Cown (List (BocServer.Sender a)))
+238:3  meta  ?5 (h) : co.Holder (?0 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8) ((\x x x x x x x x x -> boc.Cown (builtin.List (std.http.bocserver.Sender x''''''))) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8) (((\x x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8).Contents (?0 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8)) ((\x x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8).World ((\x x x x x x x x x -> boc.instanceBinderCown) std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8).Result
+238:3  instance  wanted Holder (?0 std.http.broadcast.countedFrom f a bc x1 n k c rest) (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents (?0 std.http.broadcast.countedFrom f a bc x1 n k c rest)) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result  [waits for implicits]
+238:3  unify  Bool  =?=  Bool   ok
+238:3  meta  ?6 (h) : co.HFunctor
+238:3  meta  ?7 (a) : Type
+238:3  meta  ?8 (b) : Type
+238:3  solve  ?6 (h) := \x x x x x x x x x x x -> ?9
+238:3  solve  ?0 (e) := \x x x x x x x x x -> ?9
+238:3  solve  ?2 (r) := \x x x x x x x x x -> ?10
+238:3  solve  ?8 (b) := \x x x x x x x x x x x -> (?10, builtin.List (std.http.bocserver.Sender x''''''''))
+238:3  unify  Co (((\x x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.countedFrom f a bc x1 n k c rest).World ((\x x x x x x x x x -> ?9) std.http.broadcast.countedFrom f a bc x1 n k c rest)) ((\x x x x x x x x x -> ?10) std.http.broadcast.countedFrom f a bc x1 n k c rest, ((\x x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.countedFrom f a bc x1 n k c rest).Contents ((\x x x x x x x x x -> ?9) std.http.broadcast.countedFrom f a bc x1 n k c rest) s)  =?=  Co ((\x x x x x x x x x x x -> ?9) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) ((\x x x x x x x x x x x -> (?10, List (BocServer.Sender x''''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)   ok, before the arguments
+239:5  meta  ?11 (f) : co.HFunctor
+239:5  meta  ?12 (a) : Type
+239:5  meta  ?13 (bc) : co.<: boc.boc (?11 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8 x9 x10)
+239:5  instance  wanted BOC.boc <: ?11 std.http.broadcast.countedFrom f a bc x1 n k c rest s senders  [evidence: its one witness, or waits]
+239:5  solve  ?11 (f) := \x x x x x x x x x x x -> ?14
+238:3  solve  ?9 (h) := \x x x x x x x x -> ?14
+238:3  solve  ?7 (a) := \x x x x x x x x x x x -> builtin.Unit
+239:5  unify  Co ((\x x x x x x x x x x x -> ?14) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) ((\x x x x x x x x x x x -> Unit) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  =?=  Co ((\x x x x x x x x x x x -> ?14) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) Unit   ok, before the arguments
+239:5  solve  ?12 (a) := \x x x x x x x x x x x -> x''''''''
+239:17  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x x x x -> x'''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+239:25  meta  ?15 (a) : Type
+239:25  meta  ?16 (add) : prelude.Addition (?15 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8 x9 x10)
+239:25  instance  wanted Addition (?15 std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  [waits for implicits]
+239:25  solve  ?15 (a) := \x x x x x x x x x x x -> Int
+239:23  unify  (\x x x x x x x x x x x -> Int) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders  =?=  Int   ok
+239:25  solve  ?16 (add) := \x x x x x x x x x x x -> prelude.instanceAdditionInt
+239:25  instance  found instanceAdditionInt : Addition Int
+239:27  meta  ?17 (a) : Type
+239:27  solve  ?17 (a) := \x x x x x x x x x x x -> std.http.bocserver.Sender x''''''''
+239:39  unify  List ((\x x x x x x x x x x x -> BocServer.Sender x'''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  =?=  List (BocServer.Sender a)   ok
+239:27  unify  Int  =?=  Int   ok
+239:25  unify  Int  =?=  Int   ok
+239:5  solve  ?14 (f) := \x x x x x x x x -> x'''''''
+239:48  unify  Int -> Co ((\x x x x x x x x x x x -> x''''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) Unit  =?=  Int -> Co f Unit   ok
+239:5  solve  ?13 (bc) := \x x x x x x x x x x x -> x'''''''
+239:5  instance  found bc : BOC.boc <: f
+238:3  meta  ?18 (e) : co.HFunctor
+238:3  meta  ?19 (a) : Type
+238:3  meta  ?20 (bc) : co.<: boc.boc (?18 std.http.broadcast.countedFrom x1 x2 x3 x4 x5 x6 x7 x8)
+238:3  solve  ?18 (e) := \x x x x x x x x x -> x'''''''
+238:3  solve  ?19 (a) := \x x x x x x x x x -> builtin.List (std.http.bocserver.Sender x'''''')
+238:3  solve  ?5 (h) := \x x x x x x x x x -> boc.instanceHolderCown
+238:3  instance  found BOC.instanceHolderCown : Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result
+238:3  instance  wanted BOC.boc <: f  [by BOC.instanceHolderCown for Holder f (BOC.Cown (List (BocServer.Sender a))) ((BOC.instanceBinderCown (List (BocServer.Sender a))).Contents f) (\w -> w) (BOC.instanceBinderCown (List (BocServer.Sender a))).Result]
+238:3  solve  ?20 (bc) := \x x x x x x x x x -> x'''''
+238:3  instance  found bc : BOC.boc <: f
+239:5  meta  ?21 (h) : co.HFunctor
+239:5  meta  ?22 (a) : Type
+239:5  solve  ?21 (h) := \x x x x x x x x x x x x -> x''''''''''
+239:5  solve  ?22 (a) := \x x x x x x x x x x x x -> (?10, builtin.List (std.http.bocserver.Sender x'''''''''))
+239:5  unify  Co ((\x x x x x x x x x x x -> x''''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders) ((\x x x x x x x x x x x -> (?10, List (BocServer.Sender x''''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders)  =?=  Co ((\x x x x x x x x x x x x -> x'''''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest s senders last#8165) ((\x x x x x x x x x x x x -> (?10, List (BocServer.Sender x'''''''''))) std.http.broadcast.countedFrom f a bc x1 n k c rest s senders last#8165)   ok, before the arguments
+238:3  solve  ?10 (r) := \x x x x x x x x -> builtin.Unit
+239:5  unify  (\x x x x x x x x -> Unit) f a bc x1 n k c rest  =?=  Unit   ok
+238:8  unify  List (BocServer.Sender a)  =?=  List (BocServer.Sender a)   ok
+238:3  unify  Co f Unit  =?=  Co ((\x x x x x x x x x -> x''''''') std.http.broadcast.countedFrom f a bc x1 n k c rest) (((\x x x x x x x x x -> BOC.instanceBinderCown) std.http.broadcast.countedFrom f a bc x1 n k c rest).Result ((\x x x x x x x x x -> Unit) std.http.broadcast.countedFrom f a bc x1 n k c rest))   ok
+245:16  unify  HFunctor  =?=  HFunctor   ok
+245:27  unify  HFunctor  =?=  HFunctor   ok
+246:15  unify  Type  =?=  Type   ok
+247:20  unify  HFunctor  =?=  HFunctor   ok
+247:22  unify  Type  =?=  Type   ok
+248:12  unify  HFunctor  =?=  HFunctor   ok
+248:14  unify  Type  =?=  Type   ok
+249:32  meta  ?0 (f) : co.HFunctor
+249:32  meta  ?1 (a) : Type
+249:32  meta  ?2 (bc) : co.<: boc.boc (?0 std.http.broadcast.size x1 x2 x3 x4 x5 x6 x7)
+249:32  instance  wanted BOC.boc <: ?0 std.http.broadcast.size f a bc x1 cont k shards  [evidence: its one witness, or waits]
+249:32  solve  ?0 (f) := \x x x x x x x x -> x''''''
+249:32  unify  Co f Unit  =?=  Co ((\x x x x x x x x -> x'''''') std.http.broadcast.size f a bc x1 cont k shards) Unit   ok, before the arguments
+249:32  solve  ?1 (a) := \x x x x x x x x -> x'''''
+249:44  unify  List (BOC.Cown (List (BocServer.Sender ((\x x x x x x x x -> x''''') std.http.broadcast.size f a bc x1 cont k shards))))  =?=  List (BOC.Cown (List (BocServer.Sender a)))   ok
+249:32  solve  ?2 (bc) := \x x x x x x x x -> x''''
+249:32  instance  found bc : BOC.boc <: f
+249:53  unify  Int -> Co ((\x x x x x x x x -> x'''''') std.http.broadcast.size f a bc x1 cont k shards) Unit  =?=  Int -> Co f Unit   ok
 --stderr--
 --exit 0

@@ -18,6 +18,7 @@ givingThen = #fun
 BocF = #erased
 boc = { f = #fun, hfmap = #fun, hmap = #fun }
 newCown = #fun
+workers = #fun
 taken = #fun
 given = #fun
 ran = #fun

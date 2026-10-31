@@ -4272,6 +4272,7 @@ cownsSaid =
   ^ "parMap, in order: 1 4 9 16 25 36, of none: 0\n"
   ^ "a pattern bound: 1 24, read 13\n"
   ^ "the same cown twice: 1 11\n"
+  ^ "workers, as many as the threads: yes\n"
 
 -- | behaviours (boc), on the pool's threads of the system: a counter
 -- | many behaviours add to, money moved round accounts two cowns a

@@ -270,7 +270,6 @@ handled town r respond =
 -- (a room, by its name, and who is in it)
 placeMade : {e : HFunctor}
           -> {{bc : BOC.boc <: e}}
-          -> {{sys : process <: e}}
           -> String
           -> List String
           -> Co e (Pair String Place)
